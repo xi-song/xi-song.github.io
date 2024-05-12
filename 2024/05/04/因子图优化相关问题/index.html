@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>因子图优化相关问题 | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="因子图优化相关问题  :sun_with_face:这篇blog主要是记录毕设一些因子图相关的问题 不太好手动理解的点 主要途径就是通过看论文 还有gpt搜集到的一些理解的东西 记录一下  因子图为什么处理导航相关问题  局部测量与全局状态的关系：在GNSS&#x2F;PDR系统中，我们需要整合来自GNSS的卫星信号数据和PDR系统（如加速度计、陀螺仪等）提供的内部传感器数据。这些数据与用户">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>因子图优化相关问题 | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="因子图优化相关问题  🌞这篇blog主要是记录毕设一些因子图相关的问题 不太好手动理解的点 主要途径就是通过看论文 还有gpt搜集到的一些理解的东西 记录一下  因子图为什么处理导航相关问题 🌞  局部测量与全局状态的关系：在GNSS&#x2F;PDR系统中，我们需要整合来自GNSS的卫星信号数据和PDR系统（如加速度计、陀螺仪等）提供的内部传感器数据。这些数据与用户的全局位置和运动状态有直接关系。因子">
 <meta property="og:type" content="article">
 <meta property="og:title" content="因子图优化相关问题">
 <meta property="og:url" content="https://www.lling.online/2024/05/04/%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="汐汐的成长之路">
-<meta property="og:description" content="因子图优化相关问题  :sun_with_face:这篇blog主要是记录毕设一些因子图相关的问题 不太好手动理解的点 主要途径就是通过看论文 还有gpt搜集到的一些理解的东西 记录一下  因子图为什么处理导航相关问题  局部测量与全局状态的关系：在GNSS&#x2F;PDR系统中，我们需要整合来自GNSS的卫星信号数据和PDR系统（如加速度计、陀螺仪等）提供的内部传感器数据。这些数据与用户">
+<meta property="og:description" content="因子图优化相关问题  🌞这篇blog主要是记录毕设一些因子图相关的问题 不太好手动理解的点 主要途径就是通过看论文 还有gpt搜集到的一些理解的东西 记录一下  因子图为什么处理导航相关问题 🌞  局部测量与全局状态的关系：在GNSS&#x2F;PDR系统中，我们需要整合来自GNSS的卫星信号数据和PDR系统（如加速度计、陀螺仪等）提供的内部传感器数据。这些数据与用户的全局位置和运动状态有直接关系。因子">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.lling.online/img/miao.png">
 <meta property="article:published_time" content="2024-05-04T09:04:56.580Z">
-<meta property="article:modified_time" content="2024-05-12T13:13:44.191Z">
+<meta property="article:modified_time" content="2024-05-12T14:40:08.646Z">
 <meta property="article:author" content="汐汐">
 <meta property="article:tag" content="因子图优点分析">
 <meta name="twitter:card" content="summary">
@@ -63,7 +63,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-05-12 21:13:44'
+  postUpdate: '2024-05-12 22:40:08'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -160,13 +160,16 @@
         }
       }
       detectApple()
-    })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Abominable.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">因子图优化相关问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-04T09:04:56.580Z" title="发表于 2024-05-04 17:04:56">2024-05-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-12T13:13:44.191Z" title="更新于 2024-05-12 21:13:44">2024-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AF%BC%E8%88%AA%E5%AD%A6%E4%B9%A0/">导航学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">18.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>56分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="因子图优化相关问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="因子图优化相关问题">因子图优化相关问题</h1>
+    })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><meta name="generator" content="Hexo 7.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Abominable.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">因子图优化相关问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-04T09:04:56.580Z" title="发表于 2024-05-04 17:04:56">2024-05-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-12T14:40:08.646Z" title="更新于 2024-05-12 22:40:08">2024-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AF%BC%E8%88%AA%E5%AD%A6%E4%B9%A0/">导航学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">18.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>56分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="因子图优化相关问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="因子图优化相关问题">因子图优化相关问题</h1>
 <blockquote>
-<p>:sun_with_face:这篇blog主要是记录毕设一些因子图相关的问题
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌞</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f31e.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>这篇blog主要是记录毕设一些因子图相关的问题
 不太好手动理解的点 主要途径就是通过看论文 还有gpt搜集到的一些理解的东西
 记录一下</p>
 </blockquote>
 <h2 id="因子图为什么处理导航相关问题">因子图为什么处理导航相关问题</h2>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌞</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f31e.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
 <ol type="1">
 <li><p><strong>局部测量与全局状态的关系</strong>：在GNSS/PDR系统中，我们需要整合来自GNSS的卫星信号数据和PDR系统（如加速度计、陀螺仪等）提供的内部传感器数据。<strong>这些数据与用户的全局位置和运动状态有直接关系</strong>。因子图允许我们将这些关系表达为局部函数，这些函数仅与某些变量相关联。</p></li>
 <li><p><strong>联乘积形式的模型表示</strong>：在因子图中，全局函数（如位置和姿态的估计）可以被表示为多个局部函数的乘积。每个局部函数对应于一个特定的测量或状态变量的影响。例如，一个局部函数可能代表来自GNSS的位置测量，另一个局部函数可能代表来自步行检测算法的位移估计。这些局部函数的联乘积可以有效地融合来自不同源的数据，以优化全局状态的估计。</p></li>
@@ -176,7 +179,7 @@
 <blockquote>
 <p>由于非线性问题的复杂性，这种全局优化通常是迭代进行的。每一次迭代都会重新计算整个状态的最优估计，更新的估计会反过来影响下一次迭代的起始条件。这个过程一直重复，直到达到一个收敛条件，比如改进非常小或达到预设的迭代次数。</p>
 </blockquote>
-<p>:heavy_exclamation_mark:但是这个非线性的函数是需要自己手动添加的。那么问题来了，非线性函数都是自己手动给设置好的，怎么就直接参入因子图里面去了。就是编程里面？</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>❗</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/2757.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>但是这个非线性的函数是需要自己手动添加的。那么问题来了，非线性函数都是自己手动给设置好的，怎么就直接参入因子图里面去了。就是编程里面？</p>
 <blockquote>
 <p>后续需要编程学习！</p>
 </blockquote>
@@ -227,9 +230,7 @@ FGO通过仅在因子间建立显式连接，自然地体现了系统的稀疏�
 <p>综上所述，FGO为解决行人导航中的非线性问题、提高位置估计准确性、异步数据的处理和解算效率上提供了一种新的解决方案。</p>
 <h3 id="消元树">消元树</h3>
 <p>消元树是一种用来表示消除过程中变量依赖关系的树状结构，它帮助指导了矩阵分解过程中的计算流程，特别是在反向替代阶段。这里用一个具体的例子来说明这一点：</p>
-<p>假设我们有一个系统的矩阵 <span
-class="math display">\[A\]</span>，我们想要进行Cholesky分解（假设<span
-class="math display">\[A\]</span>是对称正定的）。我们首先选择一个变量来消除，这通常是基于某种启发式方法，比如最小填充法或最小度法。</p>
+<p>假设我们有一个系统的矩阵 <span class="math display">\[A\]</span>，我们想要进行Cholesky分解（假设<span class="math display">\[A\]</span>是对称正定的）。我们首先选择一个变量来消除，这通常是基于某种启发式方法，比如最小填充法或最小度法。</p>
 <p>考虑以下矩阵：</p>
 <p><span class="math display">\[
 A = \begin{bmatrix}
@@ -256,10 +257,7 @@ A = \begin{bmatrix}
 <li>依次类推，直到所有变量都被放置在树中。</li>
 </ul>
 <p><strong>在反向替代阶段的作用</strong></p>
-<p>在进行例如Cholesky分解后，求解线性系统 <span
-class="math display">\[Ax = b\]</span> 需要先进行前代（使用 <span
-class="math display">\[L\]</span> 矩阵）和后代（使用 <span
-class="math display">\[L^T\]</span>
+<p>在进行例如Cholesky分解后，求解线性系统 <span class="math display">\[Ax = b\]</span> 需要先进行前代（使用 <span class="math display">\[L\]</span> 矩阵）和后代（使用 <span class="math display">\[L^T\]</span>
 矩阵）。在后代过程中，消元树指导了计算的顺序：从树的叶子（最先消除的变量）开始，逐步向根节点（最后消除的变量）进行，确保在计算当前变量值之前，所有依赖于它的变量值已经被计算。</p>
 <p>通过这种方式，消元树不仅帮助优化计算过程，还确保了在计算过程中遵循正确的依赖关系，有效地利用了矩阵的稀疏性质。</p>
 <h3 id="滤波器与平滑器">滤波器与平滑器</h3>
@@ -611,11 +609,8 @@ A^T A \delta = A^T b
 <li><strong>效率和稳定性</strong>：
 <ul>
 <li><strong>效率</strong>：Cholesky分解相比于其他方法（如LU分解或QR分解）通常更为高效。它的计算复杂度大约是
-<span class="math display">\[\frac{1}{3} n^3\]</span> 对于 <span
-class="math display">\[n \times n\]</span>
-矩阵，而LU分解和QR分解的计算复杂度分别大约是 <span
-class="math display">\[\frac{2}{3} n^3\]</span> 和 <span
-class="math display">\[2n^3\]</span>。这使得Cholesky分解成为求解大型正定线性系统的首选方法。</li>
+<span class="math display">\[\frac{1}{3} n^3\]</span> 对于 <span class="math display">\[n \times n\]</span>
+矩阵，而LU分解和QR分解的计算复杂度分别大约是 <span class="math display">\[\frac{2}{3} n^3\]</span> 和 <span class="math display">\[2n^3\]</span>。这使得Cholesky分解成为求解大型正定线性系统的首选方法。</li>
 <li><strong>稳定性</strong>：对于对称正定矩阵，Cholesky分解非常稳定。由于对称性和正定性保证了分解的成功执行，它避免了在数值分解过程中的潜在不稳定性。</li>
 </ul></li>
 <li><strong>数值属性</strong>：
@@ -630,21 +625,16 @@ class="math display">\[2n^3\]</span>。这使得Cholesky分解成为求解大型
 被分解为一个下三角矩阵 <span class="math display">\[L\]</span>
 和其转置的上三角矩阵 <span class="math display">\[L^T\]</span>
 的乘积，即 <span class="math display">\[A^T A = L
-L^T\]</span>。这种分解简化了线性系统的求解，因为只需先解下三角系统 <span
-class="math display">\[L \mathbf{y} = A^T \mathbf{b}\]</span>
-获得临时向量 <span
-class="math display">\[\mathbf{y}\]</span>，然后解上三角系统 <span
-class="math display">\[L^T \mathbf{x} = \mathbf{y}\]</span> 获取最终解
+L^T\]</span>。这种分解简化了线性系统的求解，因为只需先解下三角系统 <span class="math display">\[L \mathbf{y} = A^T \mathbf{b}\]</span>
+获得临时向量 <span class="math display">\[\mathbf{y}\]</span>，然后解上三角系统 <span class="math display">\[L^T \mathbf{x} = \mathbf{y}\]</span> 获取最终解
 <span class="math display">\[\mathbf{x}\]</span>。</li>
 <li>这种分步求解的过程比直接求解原方程更易于处理，并且可以有效地利用现代计算机体系结构。</li>
 </ul></li>
 </ol>
 <p><strong>总结</strong></p>
 <p>由于上述优点，Cholesky分解成为解决正定线性系统（特别是在涉及正规方程时）的理想选择，提供了一种高效、稳定的方法来求解最小二乘问题中的线性系统。这在实际应用中，如图优化、信号处理、统计数据分析等领域，具有广泛的应用。</p>
-<h3 id="为什么要引进g_ii-i_dtimes-d">为什么要引进<span
-class="math inline">\(G_i^i=-I_{d\times d}\)</span></h3>
-<p>在因子图和图优化中进行线性化处理时，引入矩阵<span
-class="math inline">\(G_i^i = -I_{d \times
+<h3 id="为什么要引进g_ii-i_dtimes-d">为什么要引进<span class="math inline">\(G_i^i=-I_{d\times d}\)</span></h3>
+<p>在因子图和图优化中进行线性化处理时，引入矩阵<span class="math inline">\(G_i^i = -I_{d \times
 d}\)</span>是为了便于表达和操作线性化的状态变化量。这里，$ I_{d d} $表示
 ( d )-维的单位矩阵。矩阵 ( G_i^i ) 的作用是在数学表达式中简化状态变量 (
 x_i ) 的运算，从而使得该线性系统易于使用线性代数技术求解。</p>
@@ -742,8 +732,7 @@ F_i^{i-1} \delta x_{i-1} - \delta x_i = F_i^{i-1} \delta x_{i-1} + G_i^i
 <li><strong>时间标记</strong>：每个因子可以携带时间信息，因此状态更新可以在正确的时间点进行，与数据实际测量的时间相匹配。</li>
 </ul>
 <p>因此，因子图模型通过在合适的时间点添加因子来自然地处理非同步的传感器数据，从而避免了在卡尔曼滤波器中必须进行的数据插值或同步。这样不仅简化了处理过程，而且可能提高了系统的整体性能和精度。</p>
-<h3
-id="因子图优化更新节点状态"><strong>因子图优化更新节点状态</strong></h3>
+<h3 id="因子图优化更新节点状态"><strong>因子图优化更新节点状态</strong></h3>
 <ul>
 <li><strong>应用方式</strong>：图优化通常处理的是整个数据集（如历史路径或多个观测数据点），并且通常适用于离线或批处理模式，适用于大规模空间问题，如SLAM。而EKF通常在线性化当前或最近的状态来进行实时更新，适用于需要快速反应的动态系统，如实时机器人导航。</li>
 <li><strong>数据处理方式</strong>：EKF以递归方式连续更新状态，侧重于实时估计；图优化则可能在获得新数据后对整个历史数据进行重新优化，侧重于精度和全局一致性。</li>
@@ -793,12 +782,10 @@ g2o，这些工具能够有效地更新信息矩阵和求解增量更新问题�
 <ul>
 <li><p><strong>最大似然估计（MLE）</strong>:
 在这种情况下，我们寻找的是最大化观测数据 (Z) 出现概率的位置 (X) 和地图
-(L) 配置，不考虑位置和地图的先验概率。数学上表达为 <span
-class="math inline">\(\arg\max_{X, L} P(Z|X, L)\)</span>。</p></li>
+(L) 配置，不考虑位置和地图的先验概率。数学上表达为 <span class="math inline">\(\arg\max_{X, L} P(Z|X, L)\)</span>。</p></li>
 <li><p><strong>最大后验估计（MAP）</strong>:
 更常见的是，我们寻找能够最大化后验概率<span class="math inline">\(P(X, L
-| Z)\)</span>的 (X) 和 (L)。由于根据贝叶斯公式，<span
-class="math inline">\(P(X, L | Z) \propto P(Z | X, L) P(X,
+| Z)\)</span>的 (X) 和 (L)。由于根据贝叶斯公式，<span class="math inline">\(P(X, L | Z) \propto P(Z | X, L) P(X,
 L)\)</span>，这不仅考虑了观测数据的似然度，还包括了关于位置和地图的先验知识。</p></li>
 </ul>
 <p><strong>计算过程</strong></p>
@@ -829,8 +816,7 @@ L)\)</span>可能基于以前的知识或假设（如位置的均匀分布，或
 <p>通过最大化后验概率<span class="math inline">\(P(X, L |
 Z)\)</span>，我们找到一组 (X) 和 (L)，使得在已有的观测 (Z)
 和可能的先验知识下，这组配置是最有可能的。这就是如何使用联合概率模型来优化并解释机器人的导航和地图构建问题。这种方法使得可以在不确定的环境中做出最好的估计和决策。</p>
-<h3
-id="为什么用联合概率密度来描述导航问题">为什么用联合概率密度来描述导航问题</h3>
+<h3 id="为什么用联合概率密度来描述导航问题">为什么用联合概率密度来描述导航问题</h3>
 <p>在导航和其他机器人感知系统中，状态估计问题经常涉及位置（X），地图（L）和观测数据（Z）的不确定性。利用联合概率密度函数来表示这些变量，可以系统地包含所有相关的不确定性和依赖关系，从而使得可以进行精确的推断和决策。以下是详细解释为什么采用这种表示方法：</p>
 <p>在导航问题中：</p>
 <ul>
@@ -892,8 +878,7 @@ l_{j_k}))：每个观测 (z_k) 都依赖于特定时刻 (i_k) 的位置 (x_{i_k}
 <li><strong>灵活的推断和优化</strong>：有了这个联合模型，我们可以利用不同的数学工具和算法（如贝叶斯滤波器、粒子滤波、最大似然估计等）来推断未知的状态和地图。</li>
 </ul>
 <p>总结来说，这个联合概率密度函数提供了一种全面并且系统的方法来考虑和处理导航问题中的所有不确定性和依赖性。这种方法使得可以更有效地进行状态估计和环境映射，帮助机器人更好地理解和操作在其所处的环境中。</p>
-<h3
-id="因子图通过将测量值作为已知的参数而不是变量来简化问题表示">因子图通过将测量值作为已知的参数而不是变量来简化问题表示？</h3>
+<h3 id="因子图通过将测量值作为已知的参数而不是变量来简化问题表示">因子图通过将测量值作为已知的参数而不是变量来简化问题表示？</h3>
 <p>因子图通过将测量值作为已知的参数而不是变量来简化问题表示，使得模型更直接地关联到优化问题本身，这对于高效解决SLAM等复杂问题至关重要。
 这段话怎么理解？通过将测量值作为已知的参数而不是变量来简化问题表示？</p>
 <p>这段话指出因子图在处理如SLAM这样的问题时的一个关键特性：将测量数据视为已知参数，而不是作为需要求解的变量。这种处理方式在建模和求解复杂系统时有几个重要的好处：</p>
@@ -908,8 +893,7 @@ id="因子图通过将测量值作为已知的参数而不是变量来简化问�
 <li><p><strong>提高算法效率</strong>：当模型聚焦于核心变量时，优化算法可以更有效地调整和优化这些变量的值以达到最佳估计。这通常会导致更快的计算速度和更好的优化性能，因为算法可以直接利用固定的、已知的测量数据来逐步改进状态估计。</p></li>
 </ol>
 <p>总之，将测量值作为已知参数处理，有助于因子图更加高效和直接地应对复杂的优化问题，如SLAM，这样做能够减轻计算负担，同时提高问题求解的准确性和效率。这种方法使得模型设计和算法实现都更加直接和实用，特别是在实时或资源受限的应用场景中。</p>
-<h3
-id="在因子图中各个因子直接关联到一组变量并定义这些变量间的局部关系这对于执行如图搜索优化和推断等操作是非常有效的">在因子图中，各个因子直接关联到一组变量，并定义这些变量间的局部关系，这对于执行如图搜索、优化和推断等操作是非常有效的？</h3>
+<h3 id="在因子图中各个因子直接关联到一组变量并定义这些变量间的局部关系这对于执行如图搜索优化和推断等操作是非常有效的">在因子图中，各个因子直接关联到一组变量，并定义这些变量间的局部关系，这对于执行如图搜索、优化和推断等操作是非常有效的？</h3>
 <p>这段话描述了因子图的核心特性：因子图是一种图形模型，用于表示变量之间的依赖关系。在因子图中，各个因子直接与一组变量相连，并且定义了这些变量之间的具体关系。这种结构对于图搜索、优化和推断等操作非常有效。以下是几个关键点来帮助理解这个概念：</p>
 <p><strong>因子图的结构</strong></p>
 <ol type="1">
