@@ -1,4 +1,8 @@
+
+
 document.addEventListener('DOMContentLoaded', function () {
+  
+
   let headerContentWidth, $nav
   let mobileSidebarOpen = false
 
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
-   * 首頁top_img底下的箭頭
+   * 首頁top_img底下的箭�?
    */
   const scrollDownInIndex = () => {
     const handleScrollToDest = () => {
@@ -57,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /**
    * 代碼
-   * 只適用於Hexo默認的代碼渲染
+   * 只適用於Hexo默認的代碼渲�?
    */
   const addHighlightTool = () => {
     const highLight = GLOBAL_CONFIG.highlight
@@ -364,7 +368,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const isChatBtn = typeof chatBtn !== 'undefined'
     const isShowPercent = GLOBAL_CONFIG.percent.rightside
 
-    // 當滾動條小于 56 的時候
+    // 當滾動條小于 56 的時�?
     if (document.body.scrollHeight <= innerHeight) {
       $rightside.classList.add('rightside-show')
       return
@@ -630,7 +634,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
-   * 手机端目录点击
+   * 手机端目录点�?
    */
   const openMobileMenu = () => {
     const handleClick = () => { sidebarFn.open() }
@@ -638,7 +642,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
- * 複製時加上版權信息
+ * 複製時加上版權信�?
  */
   const addCopyright = () => {
     const { limitCount, languages } = GLOBAL_CONFIG.copyright
@@ -672,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /**
-   * 最後一次更新時間
+   * 最後一次更新時�?
    */
   const addLastPushDate = () => {
     const $lastPushDateItem = document.getElementById('last-push-date')

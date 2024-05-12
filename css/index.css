@@ -1600,7 +1600,7 @@ blockquote {
 }
 blockquote footer cite:before {
   padding: 0 5px;
-  content: 'â€”';
+  content: 'â€?';
 }
 blockquote > :last-child {
   margin-bottom: 0 !important;
