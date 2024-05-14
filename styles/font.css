@@ -1,0 +1,15 @@
+@font-face{
+    font-family: 'XiaoMingChaoPro';
+    font-display: swap;
+    src: url('/font/XiaoMingChaoPro-B-6.otf') format("truetype");
+}
+@font-face{
+    font-family: 'fzktjw';
+    font-display: swap;
+    src: url('/font/fzktjw.ttf') format("truetype");
+}
+
+body {
+    font-family: 'XiaoMingChaoPro','fzktjw'；
+}
+
