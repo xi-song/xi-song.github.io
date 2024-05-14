@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>论文粗略阅读——Sqare Root SAM | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Sqare Root SAM Simultaneous Localization and Mapping via Square Root Information Smoothing 基于平方根信息平滑法的同步定位和映射  后面的其他部分 和 因子图优化相关问题重了  摘要 我们研究平滑方法作为一个可行的替代扩展卡尔曼滤波的解决方案。特别地，我们研究了将相关信息矩阵或度量雅可比矩阵分解">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>论文粗略阅读——Sqare Root SAM | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Sqare Root SAM Simultaneous Localization and Mapping via Square Root Information Smoothing 基于平方根信息平滑法的同步定位和映射  后面的其他部分 和 因子图优化相关问题重了  摘要 我们研究平滑方法作为一个可行的替代扩展卡尔曼滤波的解决方案。特别地，我们研究了将相关信息矩阵或度量雅可比矩阵分解为平方根形式的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文粗略阅读——Sqare Root SAM">
 <meta property="og:url" content="https://www.lling.online/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/index.html">
 <meta property="og:site_name" content="汐汐的成长之路">
-<meta property="og:description" content="Sqare Root SAM Simultaneous Localization and Mapping via Square Root Information Smoothing 基于平方根信息平滑法的同步定位和映射  后面的其他部分 和 因子图优化相关问题重了  摘要 我们研究平滑方法作为一个可行的替代扩展卡尔曼滤波的解决方案。特别地，我们研究了将相关信息矩阵或度量雅可比矩阵分解">
+<meta property="og:description" content="Sqare Root SAM Simultaneous Localization and Mapping via Square Root Information Smoothing 基于平方根信息平滑法的同步定位和映射  后面的其他部分 和 因子图优化相关问题重了  摘要 我们研究平滑方法作为一个可行的替代扩展卡尔曼滤波的解决方案。特别地，我们研究了将相关信息矩阵或度量雅可比矩阵分解为平方根形式的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.lling.online/img/miao.png">
 <meta property="article:published_time" content="2024-05-12T02:37:54.000Z">
@@ -163,7 +163,7 @@
       detectApple()
     })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><meta name="generator" content="Hexo 7.2.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/Abominable.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">论文粗略阅读——Sqare Root SAM</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-12T02:37:54.000Z" title="发表于 2024-05-12 10:37:54">2024-05-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-12T11:20:52.762Z" title="更新于 2024-05-12 19:20:52">2024-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">27.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>86分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="论文粗略阅读——Sqare Root SAM"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="sqare-root-sam">Sqare Root SAM</h1>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: /img/ali.jpg# 当没有设置文章封面时 默认的封面展示"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">论文粗略阅读——Sqare Root SAM</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-12T02:37:54.000Z" title="发表于 2024-05-12 10:37:54">2024-05-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-12T11:20:52.762Z" title="更新于 2024-05-12 19:20:52">2024-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">27.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>86分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="论文粗略阅读——Sqare Root SAM"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="sqare-root-sam">Sqare Root SAM</h1>
 <p>Simultaneous Localization and Mapping via Square Root Information
 Smoothing 基于平方根信息平滑法的同步定位和映射</p>
 <blockquote>
@@ -202,8 +202,7 @@ Smoothing 基于平方根信息平滑法的同步定位和映射</p>
 <p>信念网也叫贝叶斯网络</p>
 </blockquote>
 <p>根据FastSLAM和其他[61,58,63,29,25,74]设定的趋势，我们通过引用一个信念网络表示来表述这个问题。信念网是一个有向无环图，它编码一组变量的条件独立结构，其中每个变量只直接依赖于图中的前身。我们所采用的模型如图2所示。这里我们用xi表示机器人的时间步长状态，i∈0..M，lj的地标，j∈1..N，用zk测量，用k∈1..K.该网络对应的联合概率模型为</p>
-<p><span
-class="math inline">\(P(X,L,Z)=P(x_0)\prod_{i=1}^MP(x_i|x_{i-1},u_i)\prod_{k=1}^KP(z_k|x_{i_k},l_{j_k})\)</span></p>
+<p><span class="math inline">\(P(X,L,Z)=P(x_0)\prod_{i=1}^MP(x_i|x_{i-1},u_i)\prod_{k=1}^KP(z_k|x_{i_k},l_{j_k})\)</span></p>
 <p>其中P（x0）为初始状态的先验，P（xi|xi−1，ui）为运动模型，由控制输入ui参数化，P（z|x，l）为地标测量模型。以上假设在地标l上有一个统一的先验。此外，它假设数据关联问题已经得到解决，即每个测量zk所对应的指标ik和jk都是已知的。</p>
 <p>SLAM问题的贝叶斯信念网络表示。机器人的状态x由顶部的马尔可夫链控制，而机器人的环境在底部由一组地标l表示。中间层的测量z由机器人的状态和测量的地标参数控制。
 <span class="math display">\[
@@ -220,13 +219,8 @@ P(z_k|x_{i_k},l_{j_k})\propto\exp-\frac{1}{2}\|h_k(x_{i_k},l_{j_k})-z_k\|_{\Sigm
 <blockquote>
 <p>这两个式子展示的是状态空间模型中的状态转移的描述，一个是通过随机方程的形式，另一个是通过条件概率密度的形式.</p>
 <p>在状态空间模型中，每个状态<span class="math inline">\(x_i\)</span>
-是基于上一个状态<span
-class="math inline">\(x_{i-1}\)</span>和一些控制输入<span
-class="math inline">\(u_i\)</span>,通过一个确定性的函数 <span
-class="math inline">\(f_i\)</span> 来预测的，并加上一些随机噪声<span
-class="math inline">\(w_i\)</span>。随机噪声通常假定为高斯分布，也就是正态分布，具有零均值和一定的协方差矩阵<span
-class="math inline">\(Q_i\)</span>。</p>
-<p><img src="D:\typora\pic\image-20240510171449639.png" alt="image-20240510171449639" style="zoom:67%;" /></p>
+是基于上一个状态<span class="math inline">\(x_{i-1}\)</span>和一些控制输入<span class="math inline">\(u_i\)</span>,通过一个确定性的函数 <span class="math inline">\(f_i\)</span> 来预测的，并加上一些随机噪声<span class="math inline">\(w_i\)</span>。随机噪声通常假定为高斯分布，也就是正态分布，具有零均值和一定的协方差矩阵<span class="math inline">\(Q_i\)</span>。</p>
+<p><img src="D:\typora\pic\image-20240510171449639.png" alt="image-20240510171449639" style="zoom:67%;"></p>
 </blockquote>
 <h3 id="slam-as-a-factor-gragh">SLAM as a Factor Gragh</h3>
 <p>虽然信念网是思考SLAM问题的生成方面的一种非常自然的表示，但因子图与潜在的优化问题有更紧密的联系。由于测量值z_k在图2是已知的（证据，在图形模型的术语中），我们可以自由地消除它们作为变量。相反，我们把它们作为实际未知数上的联合概率因子的参数，这自然导致了众所周知的因子图表示，这是一类二部图图形模型，可以用来表示这种因子密度[46]。在因子图中，有未知数的节点和定义在它们上的概率因子的节点，图的结构表示每个因子涉及哪些未知数。
@@ -239,27 +233,23 @@ Mapping）问题时，我们通常需要处理大量的变量和测量数据。�
 <p>在因子图中，我们通常关注的是如何根据已知的测量值（如传感器数据）来推断机器人的位置和地图的配置。测量值
 ( z_k )
 通常被视为“已知”的，它们是收集到的传感器数据，不是需要求解的未知数。在构建模型时，我们不需要将这些测量值作为待求解的变量；它们是给定的条件或“证据”，已经存在并用于影响其他未知变量的估计。</p>
-<h3
-id="为什么我们把它们作为实际未知数上的联合概率因子的参数">为什么我们把它们作为实际未知数上的联合概率因子的参数</h3>
+<h3 id="为什么我们把它们作为实际未知数上的联合概率因子的参数">为什么我们把它们作为实际未知数上的联合概率因子的参数</h3>
 <p>在因子图表示中，每一个因子通常表示变量之间的概率关系。例如，在SLAM中，一个因子可能表示在特定的位置和地图配置下获得某个测量值的概率。这样，测量值
 ( z_k )
 作为参数出现在因子中，而非作为独立的变量。这使得因子图直接反映了未知变量（如机器人位置和地图配置）之间的条件依赖关系。通过这种方式，因子图将关注点集中在如何根据测量数据来推断或优化未知变量上，而非处理测量数据本身作为未知数。</p>
-<h3
-id="这自然导致了众所周知的因子图表示">这自然导致了众所周知的因子图表示</h3>
+<h3 id="这自然导致了众所周知的因子图表示">这自然导致了众所周知的因子图表示</h3>
 <p>因子图的这种表示方式使得它非常适合于SLAM这类问题的求解，因为SLAM本质上是一个基于大量测量数据对未知状态进行优化的问题。在因子图中，各个因子直接关联到一组变量，并定义这些变量间的局部关系，这对于执行如图搜索、优化和推断等操作是非常有效的。相对于信念网，因子图提供了一种更为紧凑和针对优化问题的自然表示，使得算法能更直接地操作相关的概率分布，从而更有效地实现SLAM。</p>
 <p>总之，因子图通过将测量值作为已知的参数而不是变量来简化问题表示，使得模型更直接地关联到优化问题本身，这对于高效解决SLAM等复杂问题至关重要。</p>
 </blockquote>
 <blockquote>
 <p>因子图是图形模型中的一种，它用于表示多个变量间复杂的依赖关系。在因子图中，节点表示变量（例如，在SLAM中的机器人位置和地图的特征点），而边则表示这些变量之间的条件依赖，即因子。因子通常定义了一组变量之间的概率关系，这些概率关系直接反映了变量间如何相互影响。</p>
-<h3
-id="反映未知变量之间的条件依赖关系">反映未知变量之间的条件依赖关系</h3>
+<h3 id="反映未知变量之间的条件依赖关系">反映未知变量之间的条件依赖关系</h3>
 <p>在SLAM问题中，机器人的位置和地图的特征点都是未知变量，它们之间的关系通过传感器的测量数据（如激光雷达、摄像头等）被间接地捕获。因子图通过以下方式来反映这些未知变量之间的条件依赖关系：</p>
 <ol type="1">
 <li><strong>变量节点</strong>：表示SLAM中的每一个未知元素，如每个时刻的机器人位置、地图上的每一个特征点。</li>
 <li><strong>因子节点</strong>：表示测量数据与这些未知变量之间的概率函数。例如，<strong>一个因子节点可以表示在给定机器人位置和方向的情况下，预期的激光雷达测量与实际测量之间的误差概率分布。</strong></li>
 </ol>
-<h3
-id="集中关注点在未知变量的推断或优化上">集中关注点在未知变量的推断或优化上</h3>
+<h3 id="集中关注点在未知变量的推断或优化上">集中关注点在未知变量的推断或优化上</h3>
 <p>因子图将关注点放在了如何使用这些条件依赖关系来推断或优化未知变量上，而不是将测量数据本身作为解决问题的一部分。这是通过以下步骤实现的：</p>
 <ol type="1">
 <li><p><strong>整合测量数据</strong>：测量数据作为参数整合到因子节点中，而不是作为独立的求解变量。<strong>这意味着我们不需要对测量数据本身进行优化或求解，而是使用这些数据作为已知的信息来帮助确定未知变量的最可能值。</strong></p></li>
@@ -289,8 +279,7 @@ Problem</h2>
 \begin{aligned}\Theta^*\triangleq\underset{\Theta}{\operatorname*{argmax}}P(X,L|Z)&amp;=\quad\underset{\Theta}{\operatorname*{argmax}}P(X,L,Z)\\&amp;=\quad\underset{\Theta}{\operatorname*{argmin}}-\log
 P(X,L,Z)\end{aligned}
 \]</span></p>
-<p>这使我们通过(2)和(3)得出以下非线性最小二乘问题： <span
-class="math display">\[
+<p>这使我们通过(2)和(3)得出以下非线性最小二乘问题： <span class="math display">\[
 \Theta^*\triangleq\underset{\Theta}{\operatorname*{argmin}}\left\{\sum_{i=1}^M\|f_i(x_{i-1},u_i)-x_i\|_{\Lambda_i}^2+\sum_{k=1}^K\|h_k(x_{i_k},l_{j_k})-z_k\|_{\Sigma_k}^2\right\}
 \]</span>
 对于先前的P（x0），我们将假设x0是给定的，因此它被视为一个常数。这大大简化了本文档其余部分中的方程式。这是很常见的事情。在实践中：坐标系的原点是任意的，我们可以把x0固定在原点。该阐述很容易适应这种假设无效的情况。</p>
@@ -305,9 +294,7 @@ the Jacobian of }f_i(.)\text{ at the linearization point
 }x_{i-1}^0,\text{defined by}\)</span> <span class="math display">\[
 F_i^{i-1}\triangleq\frac{\partial f_i(x_{i-1},u_i)}{\partial
 x_{i-1}}\Bigg|_{x_{i-1}^0}$​
-\]</span> <span
-class="math inline">\(a_i\stackrel{\Delta}{=}x_i^0-f_i(x_{i-1}^0,u_i)\)</span>是测程预测误差（注意，<span
-class="math inline">\(u_i\)</span>是这里是给出的，因此是常数）。(5)中的线性化测量项也同样得到，
+\]</span> <span class="math inline">\(a_i\stackrel{\Delta}{=}x_i^0-f_i(x_{i-1}^0,u_i)\)</span>是测程预测误差（注意，<span class="math inline">\(u_i\)</span>是这里是给出的，因此是常数）。(5)中的线性化测量项也同样得到，
 <span class="math display">\[
 h_k(x_{i_k},l_{j_k})-z_k\approx\left\{h_k(x_{i_k}^0,l_{j_k}^0)+H_k^{i_k}\delta
 x_{i_k}+J_k^{j_k}\delta l_{j_k}\right\}-z_k=\left\{H_k^{i_k}\delta
@@ -320,22 +307,15 @@ h_k(x_{i_k},l_{j_k})}{\partial l_{j_k}}\bigg|_{(x_{i_k}^0,l_{j_k}^0)}\
 \]</span></p>
 <p><span class="math inline">\(c_k\triangleq
 z_k-h_k(x_{i_k}^0,l_{j_k}^0)\)</span>是测量预测误差。</p>
-<p>分别使用线性化的过程和测量模型(6)和(7)，(5)开始 <span
-class="math display">\[
+<p>分别使用线性化的过程和测量模型(6)和(7)，(5)开始 <span class="math display">\[
 \delta^*=\underset{\delta}{\operatorname*{argmin}}\left\{\sum_{i=1}^M\|F_i^{i-1}\delta
 x_{i-1}+G_i^i\delta
 x_i+a_i\|_{\Lambda_i}^2+\sum_{k=1}^K\|H_k^{i_k}\delta
 x_{i_k}+J_k^{j_k}\delta l_{j_k}-c_k\|_{\Sigma_k}^2\right\}
 \]</span>
-也就是说，我们得到了一个需要有效求解的δ中的线性最小二乘问题。为了避免处理<span
-class="math inline">\(\delta
-x_{i}\)</span>的一种特殊方法，我们引入了矩阵<span
-class="math inline">\(G_i^i=-I_{d\times d},\)</span>，xi维数为d。</p>
-<p>我们总是可以通过预乘以<span
-class="math inline">\(F_i^{i-1},G_i^i,\)</span>和<span
-class="math inline">\(a_i\)</span>的每个项<span
-class="math inline">\(\Lambda_i^{-T/2},\)</span>来消除<span
-class="math inline">\(\Lambda_i,\)</span>(8)，对于测量协方差矩阵Σk也是如此。对于标量测量，这仅仅意味着将每一项除以测量的标准差。下面我们假设已经这样做了，然后去掉马氏符号。</p>
+也就是说，我们得到了一个需要有效求解的δ中的线性最小二乘问题。为了避免处理<span class="math inline">\(\delta
+x_{i}\)</span>的一种特殊方法，我们引入了矩阵<span class="math inline">\(G_i^i=-I_{d\times d},\)</span>，xi维数为d。</p>
+<p>我们总是可以通过预乘以<span class="math inline">\(F_i^{i-1},G_i^i,\)</span>和<span class="math inline">\(a_i\)</span>的每个项<span class="math inline">\(\Lambda_i^{-T/2},\)</span>来消除<span class="math inline">\(\Lambda_i,\)</span>(8)，对于测量协方差矩阵Σk也是如此。对于标量测量，这仅仅意味着将每一项除以测量的标准差。下面我们假设已经这样做了，然后去掉马氏符号。</p>
 <p>最后，将雅可比矩阵收集为矩阵a，并将向量纳入右侧（RHS）向量b，得到以下标准最小二乘问题，
 <span class="math display">\[
 \delta^*=\underset{\sim}{\operatorname*{argmin}}\left\|A\delta-b\right\|_2^2
@@ -349,16 +329,12 @@ b=\left[\begin{array}{c}a_1\\a_2\\a_3\\c_1\\c_2\\c_3\\c_4\end{array}\right]
 上半部分描述了机器人的运动，下半部分是测量值。不同类型（和尺寸）的地标和/或测量值易于混合。</p>
 <h2 id="a-linear-algebra-perspective线性代数透视">4. A Linear Algebra
 Perspective（线性代数透视）</h2>
-<p><a
-target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ag411M76G/?share_source=copy_web&amp;vd_source=8d5f94cac4ef1f7256e3572189ec255b">cholesky
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Ag411M76G/?share_source=copy_web&amp;vd_source=8d5f94cac4ef1f7256e3572189ec255b">cholesky
 分解是什么</a></p>
 <p>在本节中，我们将简要回顾 Cholesky 和 QR 因式分解及其在 (9)
 中全秩线性最小二乘 (LS) 问题中的应用。(9) 中的全秩线性最小二乘 (LS)
 问题的应用。这些材料已广为人知，给出它们主要是为了回顾线性代数算法与下一节的图论观点进行对比。论述紧跟[34]，更深入的论述可参阅[34]。</p>
-<p>原始问题是一个典型的最小二乘问题，目的是找到向量 <span
-class="math inline">\(\delta\)</span>，使得 <span
-class="math inline">\(A\delta - b\)</span> 的欧几里得范数（即 <span
-class="math inline">\(L_2\)</span> 范数）最小化：</p>
+<p>原始问题是一个典型的最小二乘问题，目的是找到向量 <span class="math inline">\(\delta\)</span>，使得 <span class="math inline">\(A\delta - b\)</span> 的欧几里得范数（即 <span class="math inline">\(L_2\)</span> 范数）最小化：</p>
 <p><span class="math display">\[
 \delta^* = \underset{\delta}{\operatorname*{argmin}} \|A\delta - b\|_2^2
 \]</span></p>
@@ -374,8 +350,7 @@ class="math inline">\(L_2\)</span> 范数）最小化：</p>
 <p><span class="math display">\[
 = \delta^T A^T A \delta - 2b^T A \delta + b^T b
 \]</span></p>
-<p>为了找到这个函数的最小值，我们对 <span
-class="math inline">\(\delta\)</span>
+<p>为了找到这个函数的最小值，我们对 <span class="math inline">\(\delta\)</span>
 求导，并设其导数为零。由于这里是一个二次式，其导数可以用来找到极小值点：</p>
 <p><span class="math display">\[
 \frac{\partial}{\partial \delta} (\delta^T A^T A \delta - 2b^T A \delta
@@ -389,22 +364,16 @@ class="math inline">\(\delta\)</span>
 <p><span class="math display">\[
 A^T A \delta = A^T b
 \]</span></p>
-<p>这就是所谓的<strong>正规方程</strong>，它提供了一个求解 <span
-class="math inline">\(\delta\)</span> 的直接方法，即通过求解线性方程组
+<p>这就是所谓的<strong>正规方程</strong>，它提供了一个求解 <span class="math inline">\(\delta\)</span> 的直接方法，即通过求解线性方程组
 <span class="math inline">\(A^T A \delta = A^T b\)</span>
 来找到原始最小二乘问题的解。</p>
 <p>这样，我们从最小化欧几里得范数的问题过渡到解线性方程的问题，两者实际上是等价的。解
 <span class="math inline">\(A^T A \delta = A^T b\)</span> 不仅找到了使得
-<span class="math inline">\(A\delta\)</span> 最接近 <span
-class="math inline">\(b\)</span> 的 <span
-class="math inline">\(\delta\)</span>，而且还以线性方程组的形式给出了直接的计算方法。这也是为什么在实际应用中（尤其是在数据拟合和机器学习中）我们经常需要计算
-<span class="math inline">\(A^T A\)</span> 和 <span
-class="math inline">\(A^T b\)</span></p>
+<span class="math inline">\(A\delta\)</span> 最接近 <span class="math inline">\(b\)</span> 的 <span class="math inline">\(\delta\)</span>，而且还以线性方程组的形式给出了直接的计算方法。这也是为什么在实际应用中（尤其是在数据拟合和机器学习中）我们经常需要计算
+<span class="math inline">\(A^T A\)</span> 和 <span class="math inline">\(A^T b\)</span></p>
 <h3 id="cholesky分解">Cholesky分解</h3>
-<p>对于全秩m×n矩阵a，具有m≥n，通过求解正规方程可以得到(9)的唯一LS解：<span
-class="math inline">\(A^TA\delta^*=A^Tb\)</span></p>
-<p>这通常是通过信息矩阵I的Cholesky因子分解来完成的，定义和分解如下：<span
-class="math inline">\(\mathcal{I}\triangleq A^TA=R^TR\)</span></p>
+<p>对于全秩m×n矩阵a，具有m≥n，通过求解正规方程可以得到(9)的唯一LS解：<span class="math inline">\(A^TA\delta^*=A^Tb\)</span></p>
+<p>这通常是通过信息矩阵I的Cholesky因子分解来完成的，定义和分解如下：<span class="math inline">\(\mathcal{I}\triangleq A^TA=R^TR\)</span></p>
 <p>Cholesky三角分解
 R是一个上三角n×n矩阵，使用Cholesky分解矩阵计算，即对称正定矩阵的LU分解的一个变体。对于密集矩阵，Cholesky分解需要n<sup>3</sup>/3的运算量。
 <span class="math display">\[
@@ -428,8 +397,7 @@ Q^Tb=\left[\begin{array}{c}d\\e\end{array}\right]
 这里Q是一个m×m正交矩阵，R是上三角的Cholesky三角。分解密集矩阵A的首选方法是逐列计算R，从左到右进行。对于每一列j，对角线下的所有非零元素都通过将左边的A与Householder反射矩阵Hj相乘而归零。经过n次迭代后，A被完全分解。
 <span class="math display">\[
 \left.H_n..H_2H_1A=Q^TA=\left|\begin{array}{c}R\\0\end{array}\right.\right|
-\]</span> 正交矩阵Q通常不形成：相反，转换后的RHS <span
-class="math inline">\(Q^Tb\)</span>是通过将b作为A的附加一列来计算的。因为Q因子是正交的，我们有：
+\]</span> 正交矩阵Q通常不形成：相反，转换后的RHS <span class="math inline">\(Q^Tb\)</span>是通过将b作为A的附加一列来计算的。因为Q因子是正交的，我们有：
 <span class="math display">\[
 \left\|A\delta-b\right\|_2^2=\left\|Q^TA\delta-Q^Tb\right\|_2^2=\left\|R\delta-d\right\|_2^2+\left\|e\right\|_2^2
 \]</span> 显然，||e||将是最小二乘残差，通过求解平方系统可以得到LS解δ∗:Rδ
@@ -440,34 +408,19 @@ class="math inline">\(Q^Tb\)</span>是通过将b作为A的附加一列来计算�
 Perspective(图像模型透视图)</h2>
 <h3 id="matrices-graphs-矩阵-图">5.1 Matrices ⇔ Graphs （矩阵 图）</h3>
 <p>从上面的说明中，现在可以很容易地认识到，测量雅可比矩阵A是与SLAM相关的因子图的矩阵。我们可以从两个层面上理解这个说法。首先，A的每个块对应于最小二乘准则(8)中的一项，要么是一个地标测量，要么是一个测程约束，并且每一个块行对应于因子图中的一个因子。在每个块行中，稀疏性模式表示哪些未知的姿态和/或地标与该因素相连。因此，A的块结构完全对应于与SAM相关的因子图的邻接矩阵。</p>
-<p>其次，在标量水平上，每一行Ai在A（见图5）对应于稀疏矩阵最小二乘准则(9)中的一个标量项<span
-class="math inline">\(\|A_i\delta-b_i\|_2^2\)</span>，如 <span
-class="math display">\[
+<p>其次，在标量水平上，每一行Ai在A（见图5）对应于稀疏矩阵最小二乘准则(9)中的一个标量项<span class="math inline">\(\|A_i\delta-b_i\|_2^2\)</span>，如 <span class="math display">\[
 \left\|A\delta-b\right\|_2^2=\sum_i\left\|A_i\delta-b_i\right\|_2^2
-\]</span> 因此，这定义了一个精细结构的因图，通过 <span
-class="math display">\[
+\]</span> 因此，这定义了一个精细结构的因图，通过 <span class="math display">\[
 P(\delta)\propto\exp-\frac12\left\|A\delta-b\right\|_2^2=\prod_i\exp-\frac12\left\|A_i\delta-b_i\right\|_2^2
 \]</span>
 重要的是要认识到，在这个更精细的观点中，SLAM问题的块结构被丢弃了，并且它是这个图被通用的线性代数方法所检验。通过使用块结构来代替，我们将能够做得更好。</p>
 <p>如之前在[75]以及其他文献中提到的，信息矩阵Ⅰ=A<sup>T</sup>A是与SLAM问题关联的马尔可夫随机场(MRF）的矩阵表达形式。同时，从块级别来看，A<sup>T</sup>A的稀疏模式完全等同于相应MRF的邻接矩阵。方程5中的目标函通过哈默斯利-克利福德定理[77]对应于成对马尔可夫随机场（MRF）[77,78]。而在这个MRF中，节点对应于机器人的状态和地标。链接代表里程计或地标测量。</p>
 <p>在文献[63,
 75]中，采用马尔可夫随机场（MRF）图的视角来揭示SLAM滤波版本中固有的相关性结构。<strong>研究表明，当将过去的轨迹
-<span
-class="math inline">\(𝑋_{1:𝑀−1}\)</span>边缘化时，信息矩阵不可避免地变得完全密集</strong>。因此，这些方法的重点是选择性地移除链接以减少滤波器的计算成本，并取得了显著的成功。相比之下，本文考虑的是与平滑信息矩阵<span
-class="math inline">\(I\)</span>关联的MRF，该信息矩阵不会变得密集，因为过去的状态从未被边缘化。</p>
+<span class="math inline">\(𝑋_{1:𝑀−1}\)</span>边缘化时，信息矩阵不可避免地变得完全密集</strong>。因此，这些方法的重点是选择性地移除链接以减少滤波器的计算成本，并取得了显著的成功。相比之下，本文考虑的是与平滑信息矩阵<span class="math inline">\(I\)</span>关联的MRF，该信息矩阵不会变得密集，因为过去的状态从未被边缘化。</p>
 <h3 id="因式分解变量消除">5.2 因式分解⇔变量消除</h3>
 <p>剩下的一个问题是平方根信息矩阵R对应于什么图？请记住，R是在第4节中对I或A进行因素分解的结果。Cholesky或QR因子分解最常被用作“黑盒”算法，但实际上它们与最近在图形模型[11]中开发的推理方法相似。从下面可以看到，R与结树基本对应，从图形模型的推理中知道，最近也在SLAM中应用</p>
-<p>两种因式分解方法，QR和Cholesky（或LDL），都基于变量消除算法[4,11]。这两种方法的区别在于QR通过消除因子图中的变量节点得到<span
-class="math display">\[A=QR\]</span>，而Cholesky或LDL则从马尔可夫随机场(MRF)开始，因此得到<span
-class="math display">\[A^TA = R^TR\]</span>。这两种方法都是从<span
-class="math display">\[\delta_1\]</span>开始，一次消除一个变量，<span
-class="math display">\[\delta_1\]</span>对应于<span
-class="math display">\[A\]</span>或<span
-class="math display">\[\mathcal{I}\]</span>的最左列。消除的结果是<span
-class="math display">\[\delta_1\]</span>现在表示为所有其他未知数<span
-class="math display">\[\delta_{j&gt;1}\]</span>的线性组合，系数位于对应的<span
-class="math display">\[R_1\]</span>行中。然而，在此过程中，新的依赖性被引入到所有与<span
-class="math display">\[\delta_1\]</span>相连的变量之间，这导致图中添加了边。然后以类似方式处理下一个变量，直到所有变量都被消除。这正是图形模型推理中熟悉的公理化和三角化过程。消除所有变量的结果是一个有向的、三角化（弦图）的图，在我们的示例中显示在图6中。</p>
+<p>两种因式分解方法，QR和Cholesky（或LDL），都基于变量消除算法[4,11]。这两种方法的区别在于QR通过消除因子图中的变量节点得到<span class="math display">\[A=QR\]</span>，而Cholesky或LDL则从马尔可夫随机场(MRF)开始，因此得到<span class="math display">\[A^TA = R^TR\]</span>。这两种方法都是从<span class="math display">\[\delta_1\]</span>开始，一次消除一个变量，<span class="math display">\[\delta_1\]</span>对应于<span class="math display">\[A\]</span>或<span class="math display">\[\mathcal{I}\]</span>的最左列。消除的结果是<span class="math display">\[\delta_1\]</span>现在表示为所有其他未知数<span class="math display">\[\delta_{j&gt;1}\]</span>的线性组合，系数位于对应的<span class="math display">\[R_1\]</span>行中。然而，在此过程中，新的依赖性被引入到所有与<span class="math display">\[\delta_1\]</span>相连的变量之间，这导致图中添加了边。然后以类似方式处理下一个变量，直到所有变量都被消除。这正是图形模型推理中熟悉的公理化和三角化过程。消除所有变量的结果是一个有向的、三角化（弦图）的图，在我们的示例中显示在图6中。</p>
 <blockquote>
 <p>这段话描述的是在处理线性系统或矩阵分解时，如何使用变量消除算法，具体包括QR分解和Cholesky分解（或LDL分解）。以下是每部分的具体解释：</p>
 <ol type="1">
@@ -476,25 +429,14 @@ class="math display">\[\delta_1\]</span>相连的变量之间，这导致图中�
 <li><p><strong>QR分解和Cholesky分解的对比</strong>:</p>
 <ul>
 <li><strong>QR分解</strong>(<span class="math display">\[A =
-QR\]</span>)：这是通过在因子图中消除变量节点实现的。在此过程中，矩阵<span
-class="math display">\[A\]</span>被分解为一个正交矩阵<span
-class="math display">\[Q\]</span>和一个上三角矩阵<span
-class="math display">\[R\]</span>。QR分解特别适用于求解具有线性独立列的线性系统。</li>
+QR\]</span>)：这是通过在因子图中消除变量节点实现的。在此过程中，矩阵<span class="math display">\[A\]</span>被分解为一个正交矩阵<span class="math display">\[Q\]</span>和一个上三角矩阵<span class="math display">\[R\]</span>。QR分解特别适用于求解具有线性独立列的线性系统。</li>
 <li><strong>Cholesky分解</strong>(<span class="math display">\[A^TA =
-R^TR\]</span>)：这种方法以马尔可夫随机场(MRF)为起点。在数学上，这涉及到将矩阵<span
-class="math display">\[A\]</span>的转置与<span
-class="math display">\[A\]</span>本身相乘，得到的结果是一个对称正定矩阵，然后对这个矩阵进行因式分解以得到一个上三角矩阵<span
-class="math display">\[R\]</span>。此方法适用于正定矩阵的分解。</li>
+R^TR\]</span>)：这种方法以马尔可夫随机场(MRF)为起点。在数学上，这涉及到将矩阵<span class="math display">\[A\]</span>的转置与<span class="math display">\[A\]</span>本身相乘，得到的结果是一个对称正定矩阵，然后对这个矩阵进行因式分解以得到一个上三角矩阵<span class="math display">\[R\]</span>。此方法适用于正定矩阵的分解。</li>
 </ul></li>
 <li><p><strong>变量消除过程</strong>:</p>
 <ul>
-<li>从<span class="math display">\[\delta_1\]</span>开始，它是矩阵<span
-class="math display">\[A\]</span>或<span
-class="math display">\[\mathcal{I}\]</span>的最左列所对应的变量。这个变量被消除或解算出来，并用其它变量(<span
-class="math display">\[\delta_{j&gt;1}\]</span>)的线性组合表示。</li>
-<li>在消除<span
-class="math display">\[\delta_1\]</span>的过程中，会在图中介入新的依赖性，这些依赖性在与<span
-class="math display">\[\delta_1\]</span>相连的所有变量之间形成新的边。这是因为消除一个变量通常会使其相关的其他变量之间产生直接的联系，这些联系在原始图中可能并不存在。</li>
+<li>从<span class="math display">\[\delta_1\]</span>开始，它是矩阵<span class="math display">\[A\]</span>或<span class="math display">\[\mathcal{I}\]</span>的最左列所对应的变量。这个变量被消除或解算出来，并用其它变量(<span class="math display">\[\delta_{j&gt;1}\]</span>)的线性组合表示。</li>
+<li>在消除<span class="math display">\[\delta_1\]</span>的过程中，会在图中介入新的依赖性，这些依赖性在与<span class="math display">\[\delta_1\]</span>相连的所有变量之间形成新的边。这是因为消除一个变量通常会使其相关的其他变量之间产生直接的联系，这些联系在原始图中可能并不存在。</li>
 </ul></li>
 <li><p><strong>公理化和三角化过程</strong>:</p>
 <ul>
@@ -507,23 +449,19 @@ class="math display">\[\delta_1\]</span>相连的所有变量之间形成新的�
 </ol>
 <p>这些概念通常用于数值分析、统计建模和计算机视觉等领域，用于优化算法的效率并减少计算复杂性。</p>
 </blockquote>
-<p>一旦获得了弦图 <span
-class="math inline">\((R!)\)</span>，我们就可以得到 <span
-class="math inline">\(R\)</span>
+<p>一旦获得了弦图 <span class="math inline">\((R!)\)</span>，我们就可以得到 <span class="math inline">\(R\)</span>
 的消元树，它被定义为消元后弦图的深度优先生成树，并且在反向替代阶段中用于说明计算流程。为了说明这一点，图
 7
 展示了使用<strong>先消除地标再消除姿态</strong>的著名启发式方法所获得的弦图（我们将其称为
 <span class="math inline">\(LX\)</span> 排序）。相应的消元树在图 8
-中展示。树的根对应于最后一个被消除的变量 <span
-class="math inline">\(\delta_n\)</span>，它是在反向替代（方程
+中展示。树的根对应于最后一个被消除的变量 <span class="math inline">\(\delta_n\)</span>，它是在反向替代（方程
 13）中首先被计算的。然后，计算沿树向下进行，尽管这通常按逆列顺序完成，但在不相连的子树中的变量可以按任何顺序计算。实际上，如果只对某些变量感兴趣，那么没有必要计算不包含这些变量的任何子树。</p>
 <p>然而，分析并没有就此结束。<span class="math inline">\(R\)</span>
 的图具有一个可以完全封装在称为团树（clique
 tree）的根树数据结构中的团结构 [64,
 4]，在人工智能文献中也称为连接树（junction tree）[11]。例如，图 1
 问题上的 <span class="math inline">\(LX\)</span> 排序的团树在图 9
-中展示。对应关系几乎是一对一的：每个 <span
-class="math inline">\(R\)</span>
+中展示。对应关系几乎是一对一的：每个 <span class="math inline">\(R\)</span>
 准确对应一个团树，反之亦然，仅需在团内进行列重排。团树也是多前端 QR 方法
 [56] 的基础，我们在下面的模拟中也对此进行了评估。在多前端 QR
 因式分解中，计算从树的叶子到根进行，以分解一个稀疏矩阵，然后从根到叶子进行反向替代步骤。关于平方根信息矩阵和团树之间关系的完整处理超出了当前论文的范围，但在其他工作中，我们已经在分布式推断的新算法中使用了团树结构
@@ -545,16 +483,10 @@ MRF上工作，而不是直接在稀疏矩阵上工作，有时可以提高2到1
 <li><strong>QR 和
 Cholesky（或LDL）因子分解</strong>：这两种方法都基于变量消除算法。QR方法通过从因子图中消除变量节点来获得
 <span class="math display">\[A =
-QR\]</span>，而Cholesky或LDL方法从马尔可夫随机场(MRF)出发，得到 <span
-class="math display">\[A^T A = R^T R\]</span>。</li>
-<li><strong>变量消除过程</strong>：从 <span
-class="math display">\[\delta_1\]</span> 开始，逐一消除变量，<span
-class="math display">\[\delta_1\]</span> 是矩阵 <span
-class="math display">\[A\]</span> 或 <span
-class="math display">\[\mathcal{I}\]</span>
+QR\]</span>，而Cholesky或LDL方法从马尔可夫随机场(MRF)出发，得到 <span class="math display">\[A^T A = R^T R\]</span>。</li>
+<li><strong>变量消除过程</strong>：从 <span class="math display">\[\delta_1\]</span> 开始，逐一消除变量，<span class="math display">\[\delta_1\]</span> 是矩阵 <span class="math display">\[A\]</span> 或 <span class="math display">\[\mathcal{I}\]</span>
 的最左列。消除的结果是，<span class="math display">\[\delta_1\]</span>
-被表示为所有其他未知数 <span
-class="math display">\[\delta_{j&gt;1}\]</span> 的线性组合，系数存放在
+被表示为所有其他未知数 <span class="math display">\[\delta_{j&gt;1}\]</span> 的线性组合，系数存放在
 <span class="math display">\[R_1\]</span>
 行中。这个过程引入了新的依赖性，导致图中增加了边。</li>
 </ul></li>
@@ -565,11 +497,8 @@ class="math display">\[\delta_{j&gt;1}\]</span> 的线性组合，系数存放�
 </ul></li>
 <li><strong>团树结构</strong>:
 <ul>
-<li><strong>团树（clique tree）或连接树（junction tree）</strong>：<span
-class="math display">\[R\]</span>
-的图具有可以完全封装在团树数据结构中的团结构。团树几乎与 <span
-class="math display">\[R\]</span> 一一对应，每个 <span
-class="math display">\[R\]</span>
+<li><strong>团树（clique tree）或连接树（junction tree）</strong>：<span class="math display">\[R\]</span>
+的图具有可以完全封装在团树数据结构中的团结构。团树几乎与 <span class="math display">\[R\]</span> 一一对应，每个 <span class="math display">\[R\]</span>
 精确对应一个团树，反之亦然，只需在团内进行列重排。</li>
 <li><strong>多前端QR方法</strong>：在多前端QR因式分解中，计算从树的叶子到根进行，以分解一个稀疏矩阵，然后从根到叶子进行反向替代步骤。这种方法基于团树结构进行计算。</li>
 </ul></li>
@@ -607,9 +536,7 @@ LDL<sup>T</sup>的一个变体，D为对角矩阵，L是对角上的三角矩阵
 <h2 id="其他">其他</h2>
 <h3 id="消元树">消元树</h3>
 <p>消元树是一种用来表示消除过程中变量依赖关系的树状结构，它帮助指导了矩阵分解过程中的计算流程，特别是在反向替代阶段。这里用一个具体的例子来说明这一点：</p>
-<p>假设我们有一个系统的矩阵 <span
-class="math display">\[A\]</span>，我们想要进行Cholesky分解（假设<span
-class="math display">\[A\]</span>是对称正定的）。我们首先选择一个变量来消除，这通常是基于某种启发式方法，比如最小填充法或最小度法。</p>
+<p>假设我们有一个系统的矩阵 <span class="math display">\[A\]</span>，我们想要进行Cholesky分解（假设<span class="math display">\[A\]</span>是对称正定的）。我们首先选择一个变量来消除，这通常是基于某种启发式方法，比如最小填充法或最小度法。</p>
 <p>考虑以下矩阵：</p>
 <p><span class="math display">\[
 A = \begin{bmatrix}
@@ -636,10 +563,7 @@ A = \begin{bmatrix}
 <li>依次类推，直到所有变量都被放置在树中。</li>
 </ul>
 <p><strong>在反向替代阶段的作用</strong></p>
-<p>在进行例如Cholesky分解后，求解线性系统 <span
-class="math display">\[Ax = b\]</span> 需要先进行前代（使用 <span
-class="math display">\[L\]</span> 矩阵）和后代（使用 <span
-class="math display">\[L^T\]</span>
+<p>在进行例如Cholesky分解后，求解线性系统 <span class="math display">\[Ax = b\]</span> 需要先进行前代（使用 <span class="math display">\[L\]</span> 矩阵）和后代（使用 <span class="math display">\[L^T\]</span>
 矩阵）。在后代过程中，消元树指导了计算的顺序：从树的叶子（最先消除的变量）开始，逐步向根节点（最后消除的变量）进行，确保在计算当前变量值之前，所有依赖于它的变量值已经被计算。</p>
 <p>通过这种方式，消元树不仅帮助优化计算过程，还确保了在计算过程中遵循正确的依赖关系，有效地利用了矩阵的稀疏性质。</p>
 <h3 id="滤波器与平滑器">滤波器与平滑器</h3>
@@ -991,11 +915,8 @@ A^T A \delta = A^T b
 <li><strong>效率和稳定性</strong>：
 <ul>
 <li><strong>效率</strong>：Cholesky分解相比于其他方法（如LU分解或QR分解）通常更为高效。它的计算复杂度大约是
-<span class="math display">\[\frac{1}{3} n^3\]</span> 对于 <span
-class="math display">\[n \times n\]</span>
-矩阵，而LU分解和QR分解的计算复杂度分别大约是 <span
-class="math display">\[\frac{2}{3} n^3\]</span> 和 <span
-class="math display">\[2n^3\]</span>。这使得Cholesky分解成为求解大型正定线性系统的首选方法。</li>
+<span class="math display">\[\frac{1}{3} n^3\]</span> 对于 <span class="math display">\[n \times n\]</span>
+矩阵，而LU分解和QR分解的计算复杂度分别大约是 <span class="math display">\[\frac{2}{3} n^3\]</span> 和 <span class="math display">\[2n^3\]</span>。这使得Cholesky分解成为求解大型正定线性系统的首选方法。</li>
 <li><strong>稳定性</strong>：对于对称正定矩阵，Cholesky分解非常稳定。由于对称性和正定性保证了分解的成功执行，它避免了在数值分解过程中的潜在不稳定性。</li>
 </ul></li>
 <li><strong>数值属性</strong>：
@@ -1010,21 +931,16 @@ class="math display">\[2n^3\]</span>。这使得Cholesky分解成为求解大型
 被分解为一个下三角矩阵 <span class="math display">\[L\]</span>
 和其转置的上三角矩阵 <span class="math display">\[L^T\]</span>
 的乘积，即 <span class="math display">\[A^T A = L
-L^T\]</span>。这种分解简化了线性系统的求解，因为只需先解下三角系统 <span
-class="math display">\[L \mathbf{y} = A^T \mathbf{b}\]</span>
-获得临时向量 <span
-class="math display">\[\mathbf{y}\]</span>，然后解上三角系统 <span
-class="math display">\[L^T \mathbf{x} = \mathbf{y}\]</span> 获取最终解
+L^T\]</span>。这种分解简化了线性系统的求解，因为只需先解下三角系统 <span class="math display">\[L \mathbf{y} = A^T \mathbf{b}\]</span>
+获得临时向量 <span class="math display">\[\mathbf{y}\]</span>，然后解上三角系统 <span class="math display">\[L^T \mathbf{x} = \mathbf{y}\]</span> 获取最终解
 <span class="math display">\[\mathbf{x}\]</span>。</li>
 <li>这种分步求解的过程比直接求解原方程更易于处理，并且可以有效地利用现代计算机体系结构。</li>
 </ul></li>
 </ol>
 <p><strong>总结</strong></p>
 <p>由于上述优点，Cholesky分解成为解决正定线性系统（特别是在涉及正规方程时）的理想选择，提供了一种高效、稳定的方法来求解最小二乘问题中的线性系统。这在实际应用中，如图优化、信号处理、统计数据分析等领域，具有广泛的应用。</p>
-<h3 id="为什么要引进g_ii-i_dtimes-d">为什么要引进<span
-class="math inline">\(G_i^i=-I_{d\times d}\)</span></h3>
-<p>在因子图和图优化中进行线性化处理时，引入矩阵<span
-class="math inline">\(G_i^i = -I_{d \times
+<h3 id="为什么要引进g_ii-i_dtimes-d">为什么要引进<span class="math inline">\(G_i^i=-I_{d\times d}\)</span></h3>
+<p>在因子图和图优化中进行线性化处理时，引入矩阵<span class="math inline">\(G_i^i = -I_{d \times
 d}\)</span>是为了便于表达和操作线性化的状态变化量。这里，$ I_{d d} $表示
 ( d )-维的单位矩阵。矩阵 ( G_i^i ) 的作用是在数学表达式中简化状态变量 (
 x_i ) 的运算，从而使得该线性系统易于使用线性代数技术求解。</p>
@@ -1122,8 +1038,7 @@ F_i^{i-1} \delta x_{i-1} - \delta x_i = F_i^{i-1} \delta x_{i-1} + G_i^i
 <li><strong>时间标记</strong>：每个因子可以携带时间信息，因此状态更新可以在正确的时间点进行，与数据实际测量的时间相匹配。</li>
 </ul>
 <p>因此，因子图模型通过在合适的时间点添加因子来自然地处理非同步的传感器数据，从而避免了在卡尔曼滤波器中必须进行的数据插值或同步。这样不仅简化了处理过程，而且可能提高了系统的整体性能和精度。</p>
-<h3
-id="因子图优化更新节点状态"><strong>因子图优化更新节点状态</strong></h3>
+<h3 id="因子图优化更新节点状态"><strong>因子图优化更新节点状态</strong></h3>
 <ul>
 <li><strong>应用方式</strong>：图优化通常处理的是整个数据集（如历史路径或多个观测数据点），并且通常适用于离线或批处理模式，适用于大规模空间问题，如SLAM。而EKF通常在线性化当前或最近的状态来进行实时更新，适用于需要快速反应的动态系统，如实时机器人导航。</li>
 <li><strong>数据处理方式</strong>：EKF以递归方式连续更新状态，侧重于实时估计；图优化则可能在获得新数据后对整个历史数据进行重新优化，侧重于精度和全局一致性。</li>
@@ -1171,12 +1086,10 @@ g2o，这些工具能够有效地更新信息矩阵和求解增量更新问题�
 <ul>
 <li><p><strong>最大似然估计（MLE）</strong>:
 在这种情况下，我们寻找的是最大化观测数据 (Z) 出现概率的位置 (X) 和地图
-(L) 配置，不考虑位置和地图的先验概率。数学上表达为 <span
-class="math inline">\(\arg\max_{X, L} P(Z|X, L)\)</span>。</p></li>
+(L) 配置，不考虑位置和地图的先验概率。数学上表达为 <span class="math inline">\(\arg\max_{X, L} P(Z|X, L)\)</span>。</p></li>
 <li><p><strong>最大后验估计（MAP）</strong>:
 更常见的是，我们寻找能够最大化后验概率<span class="math inline">\(P(X, L
-| Z)\)</span>的 (X) 和 (L)。由于根据贝叶斯公式，<span
-class="math inline">\(P(X, L | Z) \propto P(Z | X, L) P(X,
+| Z)\)</span>的 (X) 和 (L)。由于根据贝叶斯公式，<span class="math inline">\(P(X, L | Z) \propto P(Z | X, L) P(X,
 L)\)</span>，这不仅考虑了观测数据的似然度，还包括了关于位置和地图的先验知识。</p></li>
 </ul>
 <p><strong>计算过程</strong></p>
@@ -1207,8 +1120,7 @@ L)\)</span>可能基于以前的知识或假设（如位置的均匀分布，或
 <p>通过最大化后验概率<span class="math inline">\(P(X, L |
 Z)\)</span>，我们找到一组 (X) 和 (L)，使得在已有的观测 (Z)
 和可能的先验知识下，这组配置是最有可能的。这就是如何使用联合概率模型来优化并解释机器人的导航和地图构建问题。这种方法使得可以在不确定的环境中做出最好的估计和决策。</p>
-<h3
-id="为什么用联合概率密度来描述导航问题">为什么用联合概率密度来描述导航问题</h3>
+<h3 id="为什么用联合概率密度来描述导航问题">为什么用联合概率密度来描述导航问题</h3>
 <p>在导航和其他机器人感知系统中，状态估计问题经常涉及位置（X），地图（L）和观测数据（Z）的不确定性。利用联合概率密度函数来表示这些变量，可以系统地包含所有相关的不确定性和依赖关系，从而使得可以进行精确的推断和决策。以下是详细解释为什么采用这种表示方法：</p>
 <p>在导航问题中：</p>
 <ul>
@@ -1270,8 +1182,7 @@ l_{j_k}))：每个观测 (z_k) 都依赖于特定时刻 (i_k) 的位置 (x_{i_k}
 <li><strong>灵活的推断和优化</strong>：有了这个联合模型，我们可以利用不同的数学工具和算法（如贝叶斯滤波器、粒子滤波、最大似然估计等）来推断未知的状态和地图。</li>
 </ul>
 <p>总结来说，这个联合概率密度函数提供了一种全面并且系统的方法来考虑和处理导航问题中的所有不确定性和依赖性。这种方法使得可以更有效地进行状态估计和环境映射，帮助机器人更好地理解和操作在其所处的环境中。</p>
-<h3
-id="因子图通过将测量值作为已知的参数而不是变量来简化问题表示">因子图通过将测量值作为已知的参数而不是变量来简化问题表示？</h3>
+<h3 id="因子图通过将测量值作为已知的参数而不是变量来简化问题表示">因子图通过将测量值作为已知的参数而不是变量来简化问题表示？</h3>
 <p>因子图通过将测量值作为已知的参数而不是变量来简化问题表示，使得模型更直接地关联到优化问题本身，这对于高效解决SLAM等复杂问题至关重要。
 这段话怎么理解？通过将测量值作为已知的参数而不是变量来简化问题表示？</p>
 <p>这段话指出因子图在处理如SLAM这样的问题时的一个关键特性：将测量数据视为已知参数，而不是作为需要求解的变量。这种处理方式在建模和求解复杂系统时有几个重要的好处：</p>
@@ -1286,8 +1197,7 @@ id="因子图通过将测量值作为已知的参数而不是变量来简化问�
 <li><p><strong>提高算法效率</strong>：当模型聚焦于核心变量时，优化算法可以更有效地调整和优化这些变量的值以达到最佳估计。这通常会导致更快的计算速度和更好的优化性能，因为算法可以直接利用固定的、已知的测量数据来逐步改进状态估计。</p></li>
 </ol>
 <p>总之，将测量值作为已知参数处理，有助于因子图更加高效和直接地应对复杂的优化问题，如SLAM，这样做能够减轻计算负担，同时提高问题求解的准确性和效率。这种方法使得模型设计和算法实现都更加直接和实用，特别是在实时或资源受限的应用场景中。</p>
-<h3
-id="在因子图中各个因子直接关联到一组变量并定义这些变量间的局部关系这对于执行如图搜索优化和推断等操作是非常有效的">在因子图中，各个因子直接关联到一组变量，并定义这些变量间的局部关系，这对于执行如图搜索、优化和推断等操作是非常有效的？</h3>
+<h3 id="在因子图中各个因子直接关联到一组变量并定义这些变量间的局部关系这对于执行如图搜索优化和推断等操作是非常有效的">在因子图中，各个因子直接关联到一组变量，并定义这些变量间的局部关系，这对于执行如图搜索、优化和推断等操作是非常有效的？</h3>
 <p>这段话描述了因子图的核心特性：因子图是一种图形模型，用于表示变量之间的依赖关系。在因子图中，各个因子直接与一组变量相连，并且定义了这些变量之间的具体关系。这种结构对于图搜索、优化和推断等操作非常有效。以下是几个关键点来帮助理解这个概念：</p>
 <p><strong>因子图的结构</strong></p>
 <ol type="1">
@@ -1303,14 +1213,14 @@ id="在因子图中各个因子直接关联到一组变量并定义这些变量�
 <p><strong>效率的原因</strong></p>
 <p>因子图将复杂的全局问题分解为多个简单的局部问题，每个局部问题都集中在一小组变量上。这种分解使得可以并行处理这些局部问题，或者专注于最关键的部分，从而大大提高了计算的效率。此外，因为因子定义了变量之间的确切关系，算法可以避免处理无关变量间的不必要计算，进一步优化性能。</p>
 <p>因此，因子图是处理具有复杂依赖关系的优化和推断问题的一个非常强大和灵活的工具。</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lling.online">汐汐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lling.online/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/">https://www.lling.online/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lling.online" target="_blank">汐汐的成长之路</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%A0%E5%AD%90%E5%9B%BE%E7%90%86%E8%AE%BA/">因子图理论</a><a class="post-meta__tags" href="/tags/SAM/">SAM</a></div><div class="post_share"><div class="social-share" data-image="/img/miao.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/05/04/%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" title="因子图优化相关问题"><img class="cover" src="/img/top-img/001%20FGO%20question.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">因子图优化相关问题</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/miao.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">汐汐</div><div class="author-info__description">总有一些坚持，能从一寸冰封的土壤里培育出十万朵怒放的蔷薇</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xi-song"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到汐汐的知识小窝，不定期分享导航定位，编程，科研相关知识，欢迎关注收藏噢~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sqare-root-sam"><span class="toc-number">1.</span> <span class="toc-text">Sqare Root SAM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.1.</span> <span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.2.</span> <span class="toc-text">1.介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#smoothing-and-mapping-or-sam"><span class="toc-number">1.2.1.</span> <span class="toc-text">Smoothing and Mapping or SAM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%80%E7%96%8F%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%9B%BE%E8%AE%BA%E5%92%8C%E7%A8%80%E7%96%8Fsam"><span class="toc-number">1.2.2.</span> <span class="toc-text">稀疏线性代数，图论，和稀疏√SAM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#slam-and-graph"><span class="toc-number">1.3.</span> <span class="toc-text">2. SLAM and Graph</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#slam-as-a-belief-net"><span class="toc-number">1.3.1.</span> <span class="toc-text">SLAM as a Belief Net</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#slam-as-a-factor-gragh"><span class="toc-number">1.3.2.</span> <span class="toc-text">SLAM as a Factor Gragh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E8%87%AA%E7%94%B1%E6%B6%88%E9%99%A4%E6%B5%8B%E9%87%8F%E5%80%BC-z_k-%E4%BD%9C%E4%B8%BA%E5%8F%98%E9%87%8F"><span class="toc-number">1.3.3.</span> <span class="toc-text">为什么可以自由消除测量值
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lling.online">汐汐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lling.online/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/">https://www.lling.online/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lling.online" target="_blank">汐汐的成长之路</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%A0%E5%AD%90%E5%9B%BE%E7%90%86%E8%AE%BA/">因子图理论</a><a class="post-meta__tags" href="/tags/SAM/">SAM</a></div><div class="post_share"><div class="social-share" data-image="/img/miao.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/05/04/%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" title="因子图优化相关问题"><img class="cover" src="/img/top-img/001%20FGO%20question.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">因子图优化相关问题</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/miao.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">汐汐</div><div class="author-info__description">总有一些坚持，能从一寸冰封的土壤里培育出十万朵怒放的蔷薇</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">2</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53131867?type=blog"><i class="/img/sun.png"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到汐汐的知识小窝，不定期分享导航定位，编程，科研相关知识，欢迎关注收藏噢~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sqare-root-sam"><span class="toc-number">1.</span> <span class="toc-text">Sqare Root SAM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">1.1.</span> <span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.2.</span> <span class="toc-text">1.介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#smoothing-and-mapping-or-sam"><span class="toc-number">1.2.1.</span> <span class="toc-text">Smoothing and Mapping or SAM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%80%E7%96%8F%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E5%9B%BE%E8%AE%BA%E5%92%8C%E7%A8%80%E7%96%8Fsam"><span class="toc-number">1.2.2.</span> <span class="toc-text">稀疏线性代数，图论，和稀疏√SAM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#slam-and-graph"><span class="toc-number">1.3.</span> <span class="toc-text">2. SLAM and Graph</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#slam-as-a-belief-net"><span class="toc-number">1.3.1.</span> <span class="toc-text">SLAM as a Belief Net</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#slam-as-a-factor-gragh"><span class="toc-number">1.3.2.</span> <span class="toc-text">SLAM as a Factor Gragh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E8%87%AA%E7%94%B1%E6%B6%88%E9%99%A4%E6%B5%8B%E9%87%8F%E5%80%BC-z_k-%E4%BD%9C%E4%B8%BA%E5%8F%98%E9%87%8F"><span class="toc-number">1.3.3.</span> <span class="toc-text">为什么可以自由消除测量值
 ( z_k ) 作为变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E6%8A%8A%E5%AE%83%E4%BB%AC%E4%BD%9C%E4%B8%BA%E5%AE%9E%E9%99%85%E6%9C%AA%E7%9F%A5%E6%95%B0%E4%B8%8A%E7%9A%84%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%9B%A0%E5%AD%90%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.3.4.</span> <span class="toc-text">为什么我们把它们作为实际未知数上的联合概率因子的参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E8%87%AA%E7%84%B6%E5%AF%BC%E8%87%B4%E4%BA%86%E4%BC%97%E6%89%80%E5%91%A8%E7%9F%A5%E7%9A%84%E5%9B%A0%E5%AD%90%E5%9B%BE%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.3.5.</span> <span class="toc-text">这自然导致了众所周知的因子图表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E6%98%A0%E6%9C%AA%E7%9F%A5%E5%8F%98%E9%87%8F%E4%B9%8B%E9%97%B4%E7%9A%84%E6%9D%A1%E4%BB%B6%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.6.</span> <span class="toc-text">反映未知变量之间的条件依赖关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E4%B8%AD%E5%85%B3%E6%B3%A8%E7%82%B9%E5%9C%A8%E6%9C%AA%E7%9F%A5%E5%8F%98%E9%87%8F%E7%9A%84%E6%8E%A8%E6%96%AD%E6%88%96%E4%BC%98%E5%8C%96%E4%B8%8A"><span class="toc-number">1.3.7.</span> <span class="toc-text">集中关注点在未知变量的推断或优化上</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#slam-as-a-markov-random-field"><span class="toc-number">1.3.8.</span> <span class="toc-text">SLAM as a Markov Random
 Field</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sam-as-a-least-squares-problem"><span class="toc-number">1.4.</span> <span class="toc-text">3.SAM as a Least Squares
 Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-linear-algebra-perspective%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E9%80%8F%E8%A7%86"><span class="toc-number">1.5.</span> <span class="toc-text">4. A Linear Algebra
 Perspective（线性代数透视）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cholesky%E5%88%86%E8%A7%A3"><span class="toc-number">1.5.1.</span> <span class="toc-text">Cholesky分解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-graphical-model-perspective%E5%9B%BE%E5%83%8F%E6%A8%A1%E5%9E%8B%E9%80%8F%E8%A7%86%E5%9B%BE"><span class="toc-number">1.6.</span> <span class="toc-text">5.A Graphical Model
 Perspective(图像模型透视图)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#matrices-graphs-%E7%9F%A9%E9%98%B5-%E5%9B%BE"><span class="toc-number">1.6.1.</span> <span class="toc-text">5.1 Matrices ⇔ Graphs （矩阵 图）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%BC%8F%E5%88%86%E8%A7%A3%E5%8F%98%E9%87%8F%E6%B6%88%E9%99%A4"><span class="toc-number">1.6.2.</span> <span class="toc-text">5.2 因式分解⇔变量消除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E5%87%8F%E5%B0%91%E5%A1%AB%E6%96%99"><span class="toc-number">1.6.3.</span> <span class="toc-text">5.3提高性能⇔减少填料</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#square-root-sam"><span class="toc-number">1.7.</span> <span class="toc-text">6 Square Root SAM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#batchsam"><span class="toc-number">1.7.1.</span> <span class="toc-text">6.1 Batch√SAM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.8.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E5%85%83%E6%A0%91"><span class="toc-number">1.8.1.</span> <span class="toc-text">消元树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BB%A4%E6%B3%A2%E5%99%A8%E4%B8%8E%E5%B9%B3%E6%BB%91%E5%99%A8"><span class="toc-number">1.8.2.</span> <span class="toc-text">滤波器与平滑器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BB%A4%E6%B3%A2"><span class="toc-number">1.8.2.1.</span> <span class="toc-text">滤波</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B3%E6%BB%91"><span class="toc-number">1.8.2.2.</span> <span class="toc-text">平滑</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qr%E5%88%86%E8%A7%A3"><span class="toc-number">1.8.3.</span> <span class="toc-text">QR分解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E7%9F%A9%E9%98%B5i"><span class="toc-number">1.8.4.</span> <span class="toc-text">信息矩阵I</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8Eax-b-%E4%B8%ADa%E5%92%8Cb%E7%9A%84%E7%89%A9%E7%90%86%E6%84%8F%E4%B9%89"><span class="toc-number">1.8.5.</span> <span class="toc-text">关于AX-b 中A和b的物理意义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%AD%90%E5%9B%BE%E7%9A%84%E8%BF%AD%E4%BB%A3%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95"><span class="toc-number">1.8.6.</span> <span class="toc-text">因子图的迭代优化算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8cholesky-%E5%88%86%E8%A7%A3%E6%B1%82%E8%A7%A3%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B"><span class="toc-number">1.8.7.</span> <span class="toc-text">为什么用Cholesky
 分解求解正规方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E5%BC%95%E8%BF%9Bg_ii-i_dtimes-d"><span class="toc-number">1.8.8.</span> <span class="toc-text">为什么要引进\(G_i^i&#x3D;-I_{d\times d}\)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%AD%90%E5%9B%BE%E7%9A%84%E5%8D%B3%E6%8F%92%E5%8D%B3%E7%94%A8"><span class="toc-number">1.8.9.</span> <span class="toc-text">因子图的即插即用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E6%9B%B4%E6%96%B0%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81"><span class="toc-number">1.8.10.</span> <span class="toc-text">因子图优化更新节点状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%A0%B9%E6%8D%AE%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%88%86%E5%B8%83-%E6%B1%82%E8%A7%A3"><span class="toc-number">1.8.11.</span> <span class="toc-text">如何根据联合概率密度分布
-求解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E6%9D%A5%E6%8F%8F%E8%BF%B0%E5%AF%BC%E8%88%AA%E9%97%AE%E9%A2%98"><span class="toc-number">1.8.12.</span> <span class="toc-text">为什么用联合概率密度来描述导航问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%AD%90%E5%9B%BE%E9%80%9A%E8%BF%87%E5%B0%86%E6%B5%8B%E9%87%8F%E5%80%BC%E4%BD%9C%E4%B8%BA%E5%B7%B2%E7%9F%A5%E7%9A%84%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E6%98%AF%E5%8F%98%E9%87%8F%E6%9D%A5%E7%AE%80%E5%8C%96%E9%97%AE%E9%A2%98%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.8.13.</span> <span class="toc-text">因子图通过将测量值作为已知的参数而不是变量来简化问题表示？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%B8%AD%E5%90%84%E4%B8%AA%E5%9B%A0%E5%AD%90%E7%9B%B4%E6%8E%A5%E5%85%B3%E8%81%94%E5%88%B0%E4%B8%80%E7%BB%84%E5%8F%98%E9%87%8F%E5%B9%B6%E5%AE%9A%E4%B9%89%E8%BF%99%E4%BA%9B%E5%8F%98%E9%87%8F%E9%97%B4%E7%9A%84%E5%B1%80%E9%83%A8%E5%85%B3%E7%B3%BB%E8%BF%99%E5%AF%B9%E4%BA%8E%E6%89%A7%E8%A1%8C%E5%A6%82%E5%9B%BE%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E5%92%8C%E6%8E%A8%E6%96%AD%E7%AD%89%E6%93%8D%E4%BD%9C%E6%98%AF%E9%9D%9E%E5%B8%B8%E6%9C%89%E6%95%88%E7%9A%84"><span class="toc-number">1.8.14.</span> <span class="toc-text">在因子图中，各个因子直接关联到一组变量，并定义这些变量间的局部关系，这对于执行如图搜索、优化和推断等操作是非常有效的？</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/" title="论文粗略阅读——Sqare Root SAM">论文粗略阅读——Sqare Root SAM</a><time datetime="2024-05-12T02:37:54.000Z" title="发表于 2024-05-12 10:37:54">2024-05-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/04/%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" title="因子图优化相关问题"><img src="/img/top-img/001%20FGO%20question.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="因子图优化相关问题"/></a><div class="content"><a class="title" href="/2024/05/04/%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" title="因子图优化相关问题">因子图优化相关问题</a><time datetime="2024-05-04T09:04:56.580Z" title="发表于 2024-05-04 17:04:56">2024-05-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 汐汐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi，welocme to my blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script>function panguFn () {
+求解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E6%9D%A5%E6%8F%8F%E8%BF%B0%E5%AF%BC%E8%88%AA%E9%97%AE%E9%A2%98"><span class="toc-number">1.8.12.</span> <span class="toc-text">为什么用联合概率密度来描述导航问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%A0%E5%AD%90%E5%9B%BE%E9%80%9A%E8%BF%87%E5%B0%86%E6%B5%8B%E9%87%8F%E5%80%BC%E4%BD%9C%E4%B8%BA%E5%B7%B2%E7%9F%A5%E7%9A%84%E5%8F%82%E6%95%B0%E8%80%8C%E4%B8%8D%E6%98%AF%E5%8F%98%E9%87%8F%E6%9D%A5%E7%AE%80%E5%8C%96%E9%97%AE%E9%A2%98%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.8.13.</span> <span class="toc-text">因子图通过将测量值作为已知的参数而不是变量来简化问题表示？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%B8%AD%E5%90%84%E4%B8%AA%E5%9B%A0%E5%AD%90%E7%9B%B4%E6%8E%A5%E5%85%B3%E8%81%94%E5%88%B0%E4%B8%80%E7%BB%84%E5%8F%98%E9%87%8F%E5%B9%B6%E5%AE%9A%E4%B9%89%E8%BF%99%E4%BA%9B%E5%8F%98%E9%87%8F%E9%97%B4%E7%9A%84%E5%B1%80%E9%83%A8%E5%85%B3%E7%B3%BB%E8%BF%99%E5%AF%B9%E4%BA%8E%E6%89%A7%E8%A1%8C%E5%A6%82%E5%9B%BE%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E5%92%8C%E6%8E%A8%E6%96%AD%E7%AD%89%E6%93%8D%E4%BD%9C%E6%98%AF%E9%9D%9E%E5%B8%B8%E6%9C%89%E6%95%88%E7%9A%84"><span class="toc-number">1.8.14.</span> <span class="toc-text">在因子图中，各个因子直接关联到一组变量，并定义这些变量间的局部关系，这对于执行如图搜索、优化和推断等操作是非常有效的？</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/" title="论文粗略阅读——Sqare Root SAM"><div style="background: /img/ali.jpg# 当没有设置文章封面时 默认的封面展示"></div></a><div class="content"><a class="title" href="/2024/05/12/%E8%AE%BA%E6%96%87%E2%80%94%E2%80%94SAM/" title="论文粗略阅读——Sqare Root SAM">论文粗略阅读——Sqare Root SAM</a><time datetime="2024-05-12T02:37:54.000Z" title="发表于 2024-05-12 10:37:54">2024-05-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/04/%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" title="因子图优化相关问题"><img src="/img/top-img/001%20FGO%20question.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="因子图优化相关问题"/></a><div class="content"><a class="title" href="/2024/05/04/%E5%9B%A0%E5%AD%90%E5%9B%BE%E4%BC%98%E5%8C%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" title="因子图优化相关问题">因子图优化相关问题</a><time datetime="2024-05-04T09:04:56.580Z" title="发表于 2024-05-04 17:04:56">2024-05-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 汐汐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi，welocme to my blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script>function panguFn () {
   if (typeof pangu === 'object') pangu.autoSpacingPage()
   else {
     getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
