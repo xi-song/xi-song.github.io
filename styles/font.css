@@ -2,15 +2,39 @@
 @font-face{
     font-family: 'fzktjw';
     font-display: swap;
-    src: url('/fonts/fzktjw.ttf') format("truetype");
+    src: url('./fonts/fzktjw.ttf') format("truetype");
 }
 @font-face{
     font-family: 'simkai';
     font-display: swap;
-    src: url('/fonts/simkai.ttf') format("truetype");
+    src: url('./fonts/simkai.ttf') format("truetype");
 }
 
+
+@font-face{
+    font-family: 'MaShanZheng';
+    font-display: swap;
+    src: url('./fonts/MaShanZheng-Regular.ttf') format("truetype");
+}
+@font-face{
+    font-family: 'xingshu';
+    font-display: swap;
+    src: url('./fonts/xingshu.ttf') format("truetype");
+}
+@font-face{
+    font-family: 'vijaya';
+    font-display: swap;
+    src: url('./fonts/vijaya.ttf') format("truetype");
+}
+@font-face{
+    font-family: 'hwkt';
+    font-display: swap;
+    src: url('./fonts/hwkt.ttf') format("truetype");
+}
+
+
+
 body {
-    font-family: 'fzktjw','simkai'；
+    font-family: 'fzktjw','simkai','MaShanZheng','xingshu','vijaya','hwkt'；
 }
 
