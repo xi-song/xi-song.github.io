@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta name="referrer" content="no-referrer"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>C++ 学习 关于const的整理 | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="今天回顾C++ 时候 发现遇到关于const的变量类型（底层const 顶层const 常量指针 指针常量 常量引用…）又有点懵懵的了，然后又仔细复盘了一下 最后整理了一下 也方便记忆   ps 虽然前面也写了相关的 但是我觉得这版好一些哈哈哈哈哈  引入 首先明确一下C&#x2F;C++中的基本类型 在C&#x2F;C++中，分为常量，变量，字面量三大类。 🍎常量，简单而言，就是数据类型前面加了const 的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ 学习 关于const的整理">
+<meta property="og:url" content="https://www.lling.online/2024/07/27/C-const/index.html">
+<meta property="og:site_name" content="汐汐的成长之路">
+<meta property="og:description" content="今天回顾C++ 时候 发现遇到关于const的变量类型（底层const 顶层const 常量指针 指针常量 常量引用…）又有点懵懵的了，然后又仔细复盘了一下 最后整理了一下 也方便记忆   ps 虽然前面也写了相关的 但是我觉得这版好一些哈哈哈哈哈  引入 首先明确一下C&#x2F;C++中的基本类型 在C&#x2F;C++中，分为常量，变量，字面量三大类。 🍎常量，简单而言，就是数据类型前面加了const 的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lling.online/img/top-img/C++.png">
+<meta property="article:published_time" content="2024-07-27T14:33:00.000Z">
+<meta property="article:modified_time" content="2024-07-27T14:38:50.967Z">
+<meta property="article:author" content="汐汐">
+<meta property="article:tag" content="const">
+<meta property="article:tag" content="常量指针">
+<meta property="article:tag" content="指针常量">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.lling.online/img/top-img/C++.png"><link rel="shortcut icon" href="/img/xix.png"><link rel="canonical" href="https://www.lling.online/2024/07/27/C-const/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e588f3c6266a7f7c4936775cbf8be029";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="/styles/font.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++ 学习 关于const的整理',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-27 22:38:50'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/icon.css"><link rel="stylesheet" href="/styles/font.css"><meta name="generator" content="Hexo 7.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top-img/C++.png')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">C++ 学习 关于const的整理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-27T14:33:00.000Z" title="发表于 2024-07-27 22:33:00">2024-07-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-27T14:38:50.967Z" title="更新于 2024-07-27 22:38:50">2024-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/C/">C++</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="C++ 学习 关于const的整理"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>今天回顾C++ 时候 发现遇到关于const的变量类型（底层const 顶层const
+常量指针 指针常量 常量引用…）又有点懵懵的了，然后又仔细复盘了一下
+最后整理了一下 也方便记忆</p>
+</blockquote>
+<blockquote>
+<p>ps 虽然前面也写了相关的 但是我觉得这版好一些哈哈哈哈哈</p>
+</blockquote>
+<h2 id="引入">引入</h2>
+<p>首先明确一下C/C++中的基本类型</p>
+<p>在C/C++中，分为常量，变量，字面量三大类。</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🍎</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f34e.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>常量，简单而言，就是数据类型前面加了const 的 ；</p>
+<p>比如 const int a=2；</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🍌</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f34c.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>变量，就是正常的数据类型 比如，int a=0; float a=3.2;</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🍊</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f34a.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> 字面量，就是用的各种字符串，数字，比如上面我提到的
+2，0，3.2等。</p>
+<blockquote>
+<p>具体可以自行百度 这不是重点</p>
+</blockquote>
+<p>另，要再讲讲指针变量这个东西。</p>
+<p>指针变量也就只是一个数据类型而已，和int
+float等一样，int类型里面存储的是整型变量，float是浮点型，而指针变量存储的是变量的地址而已，我们可以通过对指针进行一系列操作，来对这个地址上的变量的值进行更改。具体可以看看这篇<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53131867/article/details/134937138?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522172209044216800227480390%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&amp;request_id=172209044216800227480390&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-12-134937138-null-null.nonecase&amp;utm_term=c&amp;spm=1018.2226.3001.4450">blog</a></p>
+<hr>
+<h2 id="顶层const和底层const">顶层const和底层const</h2>
+<p>而本文的const变量 就是 “常量”的类型,由这个常量可以引入顶层const
+和底层const。</p>
+<h3 id="顶层const">顶层const</h3>
+<p>所谓顶层const
+就是一般的各种数据类型前面加上了const。对于任何数据类型都适用 算术类型
+类 指针等。如：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a=<span class="number">2</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">float</span> b=<span class="number">3.2</span>;</span><br><span class="line"><span class="type">int</span>* <span class="type">const</span> p=&amp;a;<span class="comment">//p是一个const变量，是一个int*类型的；也就是这是一个int类型的常量指针（从右往左读）</span></span><br></pre></td></tr></tbody></table></figure>
+<p>这种类型的const
+被成为顶层const。可以这样理解，这种类型的数据的值，一旦初始化就不可更改（所以叫顶层嘛）。具体的，一旦定义了a
+这个整型常量，a就不可更改了；定义了p这个<strong>指针常量</strong>（挺好记忆的，就是这个指针变量的值是一个常量，一经初始化地址不可更改），由于指针变量的值就是地址，所以p的值，也就是p指向的地址就不可更改了；</p>
+<blockquote>
+<p>同时 int cosnt 和const int
+类似的都是一个东西，所以不用太纠结。它们都是定义一个常量类型。</p>
+</blockquote>
+<h3 id="底层const">底层const</h3>
+<p>所谓顶层const 与指针
+引用等复合类型部分相关。也就是我们常见的指向常量的指针，和
+常量引用（可以类比指向常量的指针 ，简称<strong>常量指针</strong>）。</p>
+<p>不管是常量指针还是常量引用，它们都只负责一件事：<strong>仅仅要求不能用于改变所指对象的值</strong>，而没有规定那个对象的值不能通过其他途径改变。</p>
+<p><strong>举个栗子</strong><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌰</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f330.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<p>比如，我用了这个指针变量，这个指针变量就不能用于改变所指对象的值，但是指针变量本身的地址是可以改变的，至于这个对象是不是const没关系，只是说不能用这个指针变量改变了。常量引用也是一样的意思。</p>
+<p>具体一点</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i=<span class="number">0</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> j=<span class="number">3</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *p =&amp;j;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *p2=&amp;i;</span><br></pre></td></tr></tbody></table></figure>
+<p>上面两个都是合法的，只是说，不能通过指针变量去更改j和i的值了，但是指针指向的地址可以后面再变化。</p>
+<h2 id="总结一下">总结一下</h2>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌿</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f33f.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span></p>
+<p>顶层const 可以理解为很普通的常量类型，在各个变量之前加一个const</p>
+<p>底层const 与指针 引用等复合类型部分相关。</p>
+<p>由这两组cosnt 催生出了指针常量（顶层const）
+和常量指针（底层const），前者，由于是顶层const，所以一旦初始化之后就不能够更改指针变量的值，也就是地址。而后者，仅仅要求不能用于改变所指对象的值</p>
+<h3 id="一些练习">一些练习</h3>
+<p>这些练习选于C++ Primer</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> v2= <span class="number">0</span>;<span class="type">int</span> v1 = v2;</span><br><span class="line"><span class="type">int</span> *pl = &amp;v1,&amp;r1 = v1;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *p2 = &amp;v2， *<span class="type">const</span> p3 = &amp;i,&amp;r2 = v2;</span><br><span class="line"><span class="comment">//判断下面的语句是否合法，声明如上。</span></span><br><span class="line">rl = v2;</span><br><span class="line">pl = p2; </span><br><span class="line">p2 = pl;</span><br><span class="line">pl = p3;</span><br><span class="line">p2 = p3;</span><br></pre></td></tr></tbody></table></figure>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌈</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f308.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>下面进行逐步的分析。</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>1⃣</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>rl是int类型的变量，v2是顶层const，简单理解为int类型的常量。</p>
+<p>rl=v2，合法，就是一个简单的赋值操作。</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>2⃣</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/0032-20e3.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>p1是int类型的指针，p2是底层const（也就是常量指针），p1=p2，可以这么理解，把p2的值（也就是p2指向的地址）赋值给p1的值（p1指向的地址）。但是我们知道p2是一个底层const，不能用于改变指向的值，也就是说既然选择用了p2这样的数据类型，那么其指向的地址的值默认不能随意被改变，从而起到一个保护的作用。而p1
+是一个普通的指针变量，可以随意改变指向地址的值。所以把p2赋值给p1是不安全的行为，是不合法的。</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>3⃣</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/0033-20e3.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>
+如果要把p1​赋值给p2，最多就是p1指向的地址的值不能用p2进行随意更改了，变得更安全了，所以是合法的。</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>4⃣</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/0034-20e3.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> p3 即const int *const
+p3=&amp;i；是顶层const也是底层const，和上面的同理，如果pl=p3
+那么pl就可以改变p3 所指的值和地址了。</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>5⃣</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/0035-20e3.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> p2 = p3;
+这是合法的。p2得到了p3指向的地址，不能进行更改，而p3恰好也是一个底层const，其所指向的地址值不允许被更改，所以是合法的。</p>
+<blockquote>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌈</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f308.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>ok ,完结 看到这里点个赞吧 ~~ 如有错误，欢迎批评指正。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lling.online">汐汐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lling.online/2024/07/27/C-const/">https://www.lling.online/2024/07/27/C-const/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lling.online" target="_blank">汐汐的成长之路</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/const/">const</a><a class="post-meta__tags" href="/tags/%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88/">常量指针</a><a class="post-meta__tags" href="/tags/%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F/">指针常量</a></div><div class="post_share"><div class="social-share" data-image="/img/top-img/C++.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/06/19/%E6%AF%95%E4%B8%9A%E5%89%8D%E5%A4%95/" title="毕业前夕"><img class="cover" src="/img/top-img/Broken%20thoughts.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">毕业前夕</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/05/31/const/" title="C++ 学习 关于const 上"><img class="cover" src="/img/top-img/C++.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-31</div><div class="title">C++ 学习 关于const 上</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/miao.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">汐汐</div><div class="author-info__description">总有一些坚持，能从一寸冰封的土壤里培育出十万朵怒放的蔷薇❀❀</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53131867?type=blog"><i class="fab custom csdn"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xi-song" target="_blank" title="GitHub"><i class="iconfont icon-GitHub" style="color: #24292e;"></i></a><a class="social-icon" href="/%5Cimg%5Cali.jpg" target="_blank" title="Wechat"><i class="iconfont icon-weixin" style="color: #28c445;"></i></a><a class="social-icon" href="https://blog.csdn.net/qq_53131867?type=blog" target="_blank" title="CSDN"><i class="iconfont icon-csdn" style="color: #dd1700;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/shui-meng-tong-hua" target="_blank" title="Zhihu"><i class="iconfont icon-zhihu" style="color: #0066ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到汐汐的知识小窝，不定期分享导航定位，编程，科研相关知识，欢迎关注收藏噢~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-number">1.</span> <span class="toc-text">引入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B6%E5%B1%82const%E5%92%8C%E5%BA%95%E5%B1%82const"><span class="toc-number">2.</span> <span class="toc-text">顶层const和底层const</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B6%E5%B1%82const"><span class="toc-number">2.1.</span> <span class="toc-text">顶层const</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%95%E5%B1%82const"><span class="toc-number">2.2.</span> <span class="toc-text">底层const</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B"><span class="toc-number">3.</span> <span class="toc-text">总结一下</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%BB%83%E4%B9%A0"><span class="toc-number">3.1.</span> <span class="toc-text">一些练习</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/07/27/C-const/" title="C++ 学习 关于const的整理"><img src="/img/top-img/C++.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++ 学习 关于const的整理"/></a><div class="content"><a class="title" href="/2024/07/27/C-const/" title="C++ 学习 关于const的整理">C++ 学习 关于const的整理</a><time datetime="2024-07-27T14:33:00.000Z" title="发表于 2024-07-27 22:33:00">2024-07-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/19/%E6%AF%95%E4%B8%9A%E5%89%8D%E5%A4%95/" title="毕业前夕"><img src="/img/top-img/Broken%20thoughts.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="毕业前夕"/></a><div class="content"><a class="title" href="/2024/06/19/%E6%AF%95%E4%B8%9A%E5%89%8D%E5%A4%95/" title="毕业前夕">毕业前夕</a><time datetime="2024-06-19T04:06:10.000Z" title="发表于 2024-06-19 12:06:10">2024-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/31/const/" title="C++ 学习 关于const 上"><img src="/img/top-img/C++.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++ 学习 关于const 上"/></a><div class="content"><a class="title" href="/2024/05/31/const/" title="C++ 学习 关于const 上">C++ 学习 关于const 上</a><time datetime="2024-05-31T06:10:00.000Z" title="发表于 2024-05-31 14:10:00">2024-05-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/26/feelings/" title="毕业设计emo的那一天"><img src="/img/top-img/Broken%20thoughts.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="毕业设计emo的那一天"/></a><div class="content"><a class="title" href="/2024/05/26/feelings/" title="毕业设计emo的那一天">毕业设计emo的那一天</a><time datetime="2024-05-26T09:07:58.000Z" title="发表于 2024-05-26 17:07:58">2024-05-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/21/pointer1/" title="C++ 指针上"><img src="/img/top-img/C++.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++ 指针上"/></a><div class="content"><a class="title" href="/2024/05/21/pointer1/" title="C++ 指针上">C++ 指针上</a><time datetime="2024-05-21T14:19:28.000Z" title="发表于 2024-05-21 22:19:28">2024-05-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 By 汐汐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi，welocme to my blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const initGitalk = () => {
+    const gitalk = new Gitalk(Object.assign({
+      clientID: 'Ov23lilBvAg6ryz910Bq',
+      clientSecret: '35f8ef4fa5095c847021e15ea2be9f3c413e55b8',
+      repo: 'xi-song.github.io',
+      owner: 'xi-song',
+      admin: ['xi-song'],
+      id: '4a790ecfcd14d89dd62620c407abe111',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async() => {
+    if (typeof Gitalk === 'function') initGitalk()
+    else {
+      await getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk()
+    }
+  }
+  
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/styles/fish.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
