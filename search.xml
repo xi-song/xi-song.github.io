@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>武汉大学OB-Gins 环境配置的记录</title>
+      <link href="/2024/09/06/%E6%AD%A6%E6%B1%89%E5%A4%A7%E5%AD%A6OB-Gins%20%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%9A%84%E8%AE%B0%E5%BD%95/"/>
+      <url>/2024/09/06/%E6%AD%A6%E6%B1%89%E5%A4%A7%E5%AD%A6OB-Gins%20%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%9A%84%E8%AE%B0%E5%BD%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="武汉大学ob-gins-环境配置的记录">武汉大学OB-Gins环境配置的记录</h1><blockquote><p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🌈</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f308.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span>本blog记录OB-GINS在虚拟机下的环境配置过程，整个过程主要是大概的步骤，和参考其它博主的详细的分详细步骤。整个过程，敲重点的是注意配置过程的版本号，以及虚拟机的设置（最好虚拟机运行前主机给他分配多一点性能，不然装ceres库的时候会卡死）</p></blockquote><h2 id="虚拟机和ubuntu">1.虚拟机和Ubuntu</h2><p>首先你需要一台虚拟机，市面上很多不同的软件可以达到这个要求，我下载的是VMware。然后系统是Ubuntu18.04 or Ubuntu 20.04 。</p><p>新手的话这个配置的过程具体可以参考这个链接。</p><blockquote><p>https://blog.csdn.net/m0_70885101/article/details/137871474</p></blockquote><p>如果是新手配置，配置完一下需要倒腾一下包括字体，分辨率，然后还可以在内部下载一些浏览器，VSCODE等等。当然别弄太多，毕竟这只是一个用于跑代码的环境。</p><p>因为我是之前配的ubuntu16.0版本的，所以需要倒腾一下，把16.0的，升级成18.04的，具体的教程可以参考这个（之前新手已配完的可以不看）：</p><p>https://blog.csdn.net/qq_18256855/article/details/124169962</p><h2 id="gcc和g下载">2.GCC和g++下载</h2><p>配置完之后配置gcc 和g++</p><p>注意 <strong>配置的版本</strong>是大于8.0以上的</p><h2 id="cmake下载">3.Cmake下载</h2><p>然后下载Cmake <strong>最好是3.2以上的</strong> 具体教程可以搜一下</p><h2 id="ceres库配置">4.Ceres库配置</h2><p>接着下载Ceres</p><p>这个过程及其痛苦。因为容易卡，所以需要你给虚拟机配置大一点的内存，处理核数也给它整个4个。</p><p>具体参考连接参考这个：</p><p><a href="http://ceres-solver.org/installation.html">安装 — CeresSolver (ceres-solver.org)</a></p><h2 id="其他">5.其他</h2><p>接下来就是下载yaml-cpp</p><p>在命令行敲：</p><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libyaml-cpp-dev</span><br></pre></td></tr></tbody></table></figure><h2 id="运行程序">6.运行程序</h2><p>至于运行程序</p><p>就是按照武大给的readme的说明进行命令输入然后运行</p><p>后期有机会讲讲这个代码是怎么个实现的~</p><p>浅浅记录一下~</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 因子图 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 因子图 </tag>
+            
+            <tag> C++ </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>C 指针、多维数组零碎知识点</title>
       <link href="/2024/08/06/C-%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3/"/>
       <url>/2024/08/06/C-%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3/</url>
