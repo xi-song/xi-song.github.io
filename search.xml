@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>【ccs debug】error</title>
+      <link href="/2025/05/21/ccs-bug/"/>
+      <url>/2025/05/21/ccs-bug/</url>
+      
+        <content type="html"><![CDATA[<hr><h1 id="关于ccs12-编译报错error-10099-dprogram-will-not-fit-into-available-memory解决办法">关于CCS12编译报错：error #10099-D:program will not fit into availablememory解决办法</h1><p>最近在做DSP<a href="https://www.ti.com/product/ja-jp/TMS320F28335">TMS320F28335</a>为MCU的大作业，然后是在CCS进行编译烧录的。但是如果随着变量增多，然后还需要加入一些图片元素什么的就会出现RAM不足的问题</p><p>我这边查阅了很多相关的资料，找到一篇感觉比较好的blog 记录一下</p><p><a href="https://blog.csdn.net/xht2403267701/article/details/125582513">blog</a></p><p>下面给一下我看了这篇blog 解决的方案 亲测有效</p><p>比如，如果说RAML0 不足，可以点开MemoryAllocation，看看自己的每个部分占用的大小我这边就是.text不足，这个位于RAML0</p><p>原来的配置文件 主要内容是这样的</p><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">BEGIN      : origin = <span class="number">0x000000</span>, length = <span class="number">0x000002</span>     <span class="comment">/* Boot to M0 will go here                      */</span></span><br><span class="line">  BOOT_RSVD  : origin = <span class="number">0x000002</span>, length = <span class="number">0x00004E</span>     <span class="comment">/* Part of M0, BOOT rom will use this for stack */</span>               </span><br><span class="line">  RAMM0      : origin = <span class="number">0x000050</span>, length = <span class="number">0x0003B0</span></span><br><span class="line"></span><br><span class="line">  RAML0      : origin = <span class="number">0x008000</span>, length = <span class="number">0x001000</span>    </span><br><span class="line">  RAML1      : origin = <span class="number">0x009000</span>, length = <span class="number">0x001000</span>    </span><br><span class="line">  RAML2      : origin = <span class="number">0x00A000</span>, length = <span class="number">0x001000</span>    </span><br><span class="line">  RAML3      : origin = <span class="number">0x00B000</span>, length = <span class="number">0x001000</span> </span><br><span class="line">  ZONE6A     : origin = <span class="number">0x100000</span>, length = <span class="number">0x00FC00</span>    <span class="comment">/* XINTF zone 6 - program space */</span> </span><br><span class="line">  CSM_RSVD   : origin = <span class="number">0x33FF80</span>, length = <span class="number">0x000076</span>     <span class="comment">/* Part of FLASHA.  Program with all 0x0000 when CSM is in use. */</span></span><br><span class="line">  CSM_PWL    : origin = <span class="number">0x33FFF8</span>, length = <span class="number">0x000008</span>     <span class="comment">/* Part of FLASHA.  CSM password locations in FLASHA            */</span></span><br></pre></td></tr></tbody></table></figure><p>这个时候，从MemoryAllocation进去，可以看到RAML1还有富余的空间，于是可以把RAML1长度分配一部分给RAML0</p><p><strong>分配的原则是：保证地址是连续的</strong></p><p>于是 经过修改过后，变成这样</p><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">BEGIN      : origin = <span class="number">0x000000</span>, length = <span class="number">0x000002</span>     <span class="comment">/* Boot to M0 will go here                      */</span></span><br><span class="line">   BOOT_RSVD  : origin = <span class="number">0x000002</span>, length = <span class="number">0x00004E</span>     <span class="comment">/* Part of M0, BOOT rom will use this for stack */</span>               </span><br><span class="line">   RAMM0      : origin = <span class="number">0x000050</span>, length = <span class="number">0x0003B0</span></span><br><span class="line"></span><br><span class="line">   RAML0      : origin = <span class="number">0x008000</span>, length =<span class="number">0x000F00</span></span><br><span class="line">   RAML1      : origin = <span class="number">0x008F00</span>, length =<span class="number">0x001F00</span></span><br><span class="line">   RAML2      : origin = <span class="number">0x00AE00</span>, length = <span class="number">0x000200</span></span><br><span class="line">   RAML3      : origin = <span class="number">0x00B000</span>, length = <span class="number">0x001000</span> </span><br></pre></td></tr></tbody></table></figure><p>可以看到RAMM00 RAML1 总体长度不变 但是分配内存的大小变化了</p><p>ok 完结~~</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 嵌入式 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> debug </tag>
+            
+            <tag> ccs </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【stm32 bug那些事儿】</title>
       <link href="/2025/03/17/stm32_debug/"/>
       <url>/2025/03/17/stm32_debug/</url>
