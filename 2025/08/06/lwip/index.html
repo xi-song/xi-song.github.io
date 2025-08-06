@@ -1,0 +1,612 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta name="referrer" content="no-referrer"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx 这边记录一下这块mcu 配置以太网的过程，IDE是KEIL MDK，其实就是在下面多次提到的blog的基础上 在scatter file进行配置  首先，如果想要简单一点 直接去cubemx 那边获取相关的例程，直接在例程上面改 根据实际要求注意改相关的引脚 和 时钟配置  感谢这个blog 墙裂感谢">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx">
+<meta property="og:url" content="https://www.lling.online/2025/08/06/lwip/index.html">
+<meta property="og:site_name" content="汐汐的成长之路">
+<meta property="og:description" content="STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx 这边记录一下这块mcu 配置以太网的过程，IDE是KEIL MDK，其实就是在下面多次提到的blog的基础上 在scatter file进行配置  首先，如果想要简单一点 直接去cubemx 那边获取相关的例程，直接在例程上面改 根据实际要求注意改相关的引脚 和 时钟配置  感谢这个blog 墙裂感谢">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lling.online/img/top-img/stm32.png">
+<meta property="article:published_time" content="2025-08-06T10:33:17.000Z">
+<meta property="article:modified_time" content="2025-08-06T10:35:19.019Z">
+<meta property="article:author" content="汐汐">
+<meta property="article:tag" content="STM32H7">
+<meta property="article:tag" content="LWIP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.lling.online/img/top-img/stm32.png"><link rel="shortcut icon" href="/img/xix.png"><link rel="canonical" href="https://www.lling.online/2025/08/06/lwip/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e588f3c6266a7f7c4936775cbf8be029";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="/styles/font.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-08-06 18:35:19'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/icon.css"><link rel="stylesheet" href="/styles/font.css"><meta name="generator" content="Hexo 7.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top-img/stm32.png')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-06T10:35:19.019Z" title="更新于 2025-08-06 18:35:19">2025-08-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="stm32h723zg-lan8742-ethernet-lwip-配置-cubemx">STM32H723ZG +
+LAN8742 + Ethernet +LWIP 配置 cubemx</h2>
+<p>这边记录一下这块mcu 配置以太网的过程，IDE是KEIL
+MDK，其实就是在下面多次提到的blog的基础上 在scatter file进行配置</p>
+<blockquote>
+<p>首先，如果想要简单一点 直接去cubemx
+那边获取相关的例程，直接在例程上面改 根据实际要求注意改相关的引脚 和
+时钟配置</p>
+</blockquote>
+<p>感谢这个<a target="_blank" rel="noopener" href="https://blog.csdn.net/Motseturtle/article/details/126165780">blog</a></p>
+<p>墙裂感谢我超级好的同事 zxp哥 帮我解决问题！！</p>
+<h2 id="法一-直接用cubemx-上面的库进行配置">法一 直接用cubemx
+上面的库进行配置</h2>
+<p>如果你的板子是stm32+lan8742 那可以参考这个方法进行配置</p>
+<figure>
+<img src="D:\typora\pic\image-20250805193116021.png" alt="image-20250805193116021">
+<figcaption aria-hidden="true">image-20250805193116021</figcaption>
+</figure>
+<p>输入相应开发板的型号 然后直接配置 比如这个开发板</p>
+<p>到时候可以直接在这个例程上改
+成功的概率会比自己用cubemx移植的概率高</p>
+<figure>
+<img src="D:\typora\pic\image-20250805193342084.png" alt="image-20250805193342084">
+<figcaption aria-hidden="true">image-20250805193342084</figcaption>
+</figure>
+<h2 id="法二-用cubemx自己配置">法二 用cubemx自己配置</h2>
+<h3 id="前置知识">前置知识</h3>
+<blockquote>
+<p>ps 这两个前置知识 是两个坑点 当然也可以跳过这个前置知识
+直接到cubemx的配置部分</p>
+</blockquote>
+<h4 id="不同的外设存储区可访问的区域不同-所以要自己定义相应的内存区域">不同的外设存储区可访问的区域不同
+所以要自己定义相应的内存区域</h4>
+<p>以太网外设通常需要==专用的内存区域==来存储<strong>发送和接收的数据包</strong>。这些区域被称为<strong>DMA描述符（Descriptors）和</strong>
+缓冲区Buffers</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>1⃣</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> 首先以太网外设不是和其他外设一样
+可以随意的放在单片机的不同地方​</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>❗</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/2757.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> 不能将以太网的数据缓冲区随意放在 CPU 的 ITCM
+里，也不能将 LTDC 的图像数据放在 D2 域的 SRAM1
+里，因为它们位于不同的总线域，并且由不同的 DMA
+控制器管理。==需要在软件中根据这个硬件架构，将不同的外设缓冲区分配到它们所属的或可访问的存储区域中。==</p>
+<figure>
+<img src="D:\typora\pic\image-20250805194109618.png" alt="image-20250805194109618">
+<figcaption aria-hidden="true">image-20250805194109618</figcaption>
+</figure>
+<p>首先这张图清楚地说明了：<strong>不同的外设可以存储数据的地方是不一样的</strong>。</p>
+<ol type="1">
+<li><strong>分域存储：</strong>
+<ul>
+<li><strong>D1 域（高性能域）</strong> 的外设（如 SDMMC, MDMA, DMA2D,
+LTDC）通常会访问 D1 域中的高速存储器，例如 <strong>AXI SRAM</strong> 和
+<strong>Flash</strong>。这是因为这些外设需要高速的数据吞吐量来处理大量数据（例如图形、视频、高速存储卡）。</li>
+<li><strong>D2 域（中速域）</strong> 的外设（如 Ethernet MAC,
+USBHS1）通常会访问 D2 域中的 <strong>SRAM1</strong> 和
+<strong>SRAM2</strong>。虽然这些也是SRAM，但它们位于不同的总线矩阵上，且可能由不同的
+DMA 控制器（DMA1, DMA2）来管理。</li>
+</ul></li>
+<li><strong>DMA控制器与存储区域的绑定：</strong>
+<ul>
+<li><strong>D1 域</strong> 的 DMA 控制器（MDMA, DMA2D）通常用于在 D1
+域的内存（AXI SRAM、Flash等）之间进行数据传输。</li>
+<li><strong>D2 域</strong> 的 DMA 控制器（DMA1,
+DMA2）通常用于在外设（Ethernet MAC、USBHS1）与 D2
+域的内存（SRAM1、SRAM2）之间进行数据传输。</li>
+</ul></li>
+<li><strong>专用存储区：</strong>
+<ul>
+<li><strong>D3 域</strong> 有一个 <strong>Backup
+SRAM</strong>，这个存储区通常是专门用来在低功耗或掉电模式下保留关键数据的。其他外设一般不会使用这块内存。</li>
+<li><strong>CPU</strong> 有专门的 <strong>ITCM</strong> 和
+<strong>DTCM</strong>，这些是紧耦合内存，只供CPU使用，用于存储最高速的指令和数据。</li>
+</ul></li>
+</ol>
+<p><strong>总结一下：</strong></p>
+<p>这张架构图的核心思想就是根据<strong>外设的性能需求和功能</strong>，将它们和相应的<strong>存储区域</strong>划分到不同的<strong>总线域</strong>中。</p>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>❗</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/2757.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> 所以，不能将以太网的数据缓冲区随意放在 CPU
+的 ITCM 里，也不能将 LTDC 的图像数据放在 D2 域的 SRAM1
+里，因为它们位于不同的总线域，并且由不同的 DMA
+控制器管理。==需要在软件中根据这个硬件架构，将不同的外设缓冲区分配到它们所属的或可访问的存储区域中。==</p>
+<p>从这个总线矩阵上可以看到，以太网外设可以被定义在SRAM1,SRAM2中，对应的就是0x30000000
+- 0x30003FFF</p>
+<figure>
+<img src="D:\typora\pic\image-20250805195138489.png" alt="image-20250805195138489">
+<figcaption aria-hidden="true">image-20250805195138489</figcaption>
+</figure>
+<p>于是 以太网的DMA描述符就得后续这么定义在相应的存储区</p>
+<figure>
+<img src="D:\typora\pic\image-20250805195352458.png" alt="image-20250805195352458">
+<figcaption aria-hidden="true">image-20250805195352458</figcaption>
+</figure>
+<figure>
+<img src="D:\typora\pic\image-20250805195414937.png" alt="image-20250805195414937">
+<figcaption aria-hidden="true">image-20250805195414937</figcaption>
+</figure>
+<p>从上面的图也可以看到有两种不同的定义方式，一个是直接在前面定义</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((at(<span class="number">0x30000000</span>))) ETH_DMADescTypeDef  DMARxDscrTab[ETH_RX_DESC_CNT]; <span class="comment">/* Ethernet Rx DMA Descriptors */</span></span><br><span class="line">__attribute__((at(<span class="number">0x30000060</span>))) ETH_DMADescTypeDef  DMATxDscrTab[ETH_TX_DESC_CNT]; <span class="comment">/* Ethernet Tx DMA Descriptors */</span></span><br></pre></td></tr></tbody></table></figure>
+<p><strong>将一个名为 <code>DMARxDscrTab</code> 的、由
+<code>ETH_RX_DESC_CNT</code> 个 <code>ETH_DMADescTypeDef</code>
+结构体组成的数组，精确地放置在内存地址 <code>0x30000000</code>
+上。</strong>
+这块内存区域将作为以太网控制器<strong>接收DMA描述符</strong>的存储区域。</p>
+<p><strong>将一个名为 <code>DMATxDscrTab</code> 的、由
+<code>ETH_TX_DESC_CNT</code> 个 <code>ETH_DMADescTypeDef</code>
+结构体组成的数组，精确地放置在内存地址 <code>0x30000060</code>
+上。</strong>
+这块内存区域将作为以太网控制器<strong>发送DMA描述符</strong>的存储区域。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">memory_RX_POOL_base <span class="number">0x30000100</span> <span class="number">0x3F00</span> {</span><br><span class="line">  *(.Rx_PoolSection)</span><br><span class="line">  }</span><br></pre></td></tr></tbody></table></figure>
+<p>这个意思就是：在链接器脚本中，定义了一个内存区域，其起始地址为
+<code>0x30000100</code>，大小为 <code>0x3F00</code>
+字节。然后，告诉链接器，将所有输入目标文件（<code>*.o</code>）中所有名为
+<code>.Rx_PoolSection</code>
+的代码或数据段，都链接到这块内存区域中。</p>
+<p>这是专门为<strong>以太网接收缓冲区（RX
+Pool）</strong>分配一块特定的内存区域，并确保这个区域位于一个固定的、已知的高速内存地址（例如
+SRAM），以便于 DMA 控制器可以高效地访问</p>
+<p>.sct文件在魔法棒这边 点击edit就会出现了</p>
+<figure>
+<img src="D:\typora\pic\image-20250805200142956.png" alt="image-20250805200142956">
+<figcaption aria-hidden="true">image-20250805200142956</figcaption>
+</figure>
+<h5 id="为什么这么配置">为什么这么配置</h5>
+<ul>
+<li><strong>DMA控制器的局限性：</strong>
+并非所有内存区域都能被DMA控制器访问。通常，DMA控制器只能访问特定的片上SRAM或外部SRAM/SDRAM。而像闪存（Flash）或CPU的私有内存（如ITCM/DTCM）等区域是无法直接被DMA访问的。</li>
+<li><strong>DMA描述符的存储位置：</strong>
+以太网控制器（或任何DMA控制器）需要从一个预先配置好的内存地址读取<strong>DMA描述符</strong>，这些描述符包含了数据在内存中的地址、长度等信息。</li>
+<li><strong>确保可访问性：</strong>
+为了确保以太网控制器能够正确地找到并访问这些描述符，<strong>必须将它们放置在一个DMA控制器能够访问的内存地址上</strong>。</li>
+</ul>
+<p>通过 <code>__attribute__((at(...)))</code>
+这样的方式，程序员<strong>手动指定了</strong>这些关键数据结构（DMA描述符）的内存地址，确保它们位于<strong>可被DMA访问的高速SRAM区域</strong>（例如，在STM32系列芯片中，<code>0x30000000</code>
+通常指向D1域的高速SRAM）。</p>
+<p>这与链接器脚本的 <code>*(.Rx_PoolSection)</code>
+方式是异曲同工的，两者都是为了<strong>控制数据在内存中的绝对位置</strong>。前者是直接在代码中使用编译器扩展，后者是在链接阶段使用链接器脚本。在某些情况下，两者可以结合使用，以获得更精细的控制。</p>
+<h4 id="mpu的配置">MPU的配置</h4>
+<p>Cortex-M7 的 <strong>MPU （Memory Protection
+Unit，内存保护单元）</strong>是一个硬件单元，它允许你定义多达 8
+个独立的内存区域，并为每个区域设置不同的访问权限和属性。这些属性包括：</p>
+<ul>
+<li><strong>访问权限（AccessPermission）</strong>: 读/写/禁止访问。</li>
+<li><strong>可执行性（DisableExec）</strong>:
+允许或禁止从该区域执行代码。</li>
+<li><strong>缓存属性（IsCacheable, IsBufferable, IsShareable）</strong>:
+控制该区域的内存如何与 CPU 的数据缓存（D-Cache）和总线交互。</li>
+</ul>
+<p><strong>通过配置 MPU 的缓存属性，来解决 Cortex-M7
+的高速缓存（D-Cache）与以太网 DMA
+控制器之间的数据一致性问题。</strong></p>
+<ul>
+<li><strong>将 DMA
+描述符和以太网数据缓冲区所在的内存区域设置为“不可缓存”</strong>，强制
+CPU 每次都直接访问物理内存。</li>
+<li>这样做虽然牺牲了部分 CPU
+访问这些特定区域时的性能（因为没有使用缓存），但<strong>换来了数据一致性的可靠性</strong>，这对于网络通信这类对数据完整性要求极高的应用是至关重要的。</li>
+</ul>
+<p>以太网相应的MPU配置</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MPU_Config</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  MPU_Region_InitTypeDef MPU_InitStruct;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Disable the MPU */</span></span><br><span class="line">  HAL_MPU_Disable();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/* Configure the MPU as Strongly ordered for not defined regions */</span></span><br><span class="line">  MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">  MPU_InitStruct.BaseAddress = <span class="number">0x00</span>;</span><br><span class="line">  MPU_InitStruct.Size = MPU_REGION_SIZE_4GB;</span><br><span class="line">  MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;</span><br><span class="line">  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;</span><br><span class="line">  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;</span><br><span class="line">  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;</span><br><span class="line">  MPU_InitStruct.Number = MPU_REGION_NUMBER0;</span><br><span class="line">  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;</span><br><span class="line">  MPU_InitStruct.SubRegionDisable = <span class="number">0x87</span>;</span><br><span class="line">  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;</span><br><span class="line">  </span><br><span class="line">  HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/* Configure the MPU attributes as Device not cacheable</span></span><br><span class="line"><span class="comment">     for ETH DMA descriptors */</span></span><br><span class="line">  MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">  MPU_InitStruct.BaseAddress = <span class="number">0x30000000</span>;</span><br><span class="line">  MPU_InitStruct.Size = MPU_REGION_SIZE_256B;</span><br><span class="line">  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;</span><br><span class="line">  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;</span><br><span class="line">  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;</span><br><span class="line">  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;</span><br><span class="line">  MPU_InitStruct.Number = MPU_REGION_NUMBER1;</span><br><span class="line">  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;</span><br><span class="line">  MPU_InitStruct.SubRegionDisable = <span class="number">0x00</span>;</span><br><span class="line">  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;</span><br><span class="line"></span><br><span class="line">  HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Configure the MPU attributes as Normal Non Cacheable</span></span><br><span class="line"><span class="comment">     for LwIP RAM heap which contains the Tx buffers */</span></span><br><span class="line">  MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">  MPU_InitStruct.BaseAddress = <span class="number">0x30004000</span>;</span><br><span class="line">  MPU_InitStruct.Size = MPU_REGION_SIZE_16KB;</span><br><span class="line">  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;</span><br><span class="line">  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;</span><br><span class="line">  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;</span><br><span class="line">  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;</span><br><span class="line">  MPU_InitStruct.Number = MPU_REGION_NUMBER2;</span><br><span class="line">  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;</span><br><span class="line">  MPU_InitStruct.SubRegionDisable = <span class="number">0x00</span>;</span><br><span class="line">  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;</span><br><span class="line"></span><br><span class="line">  HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable the MPU */</span></span><br><span class="line">  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<h5 id="mpu-区域-0默认配置default-configuration">1. MPU 区域
+0：默认配置（Default Configuration）</h5>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Configure the MPU as Strongly ordered for not defined regions */</span></span><br><span class="line">MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">MPU_InitStruct.BaseAddress = <span class="number">0x00</span>;</span><br><span class="line">MPU_InitStruct.Size = MPU_REGION_SIZE_4GB;</span><br><span class="line">...</span><br><span class="line">HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><strong>作用：</strong> 这部分配置了一个覆盖整个 4GB
+地址空间的默认区域（区域0）。</li>
+<li><strong>属性：</strong> 它被设置为
+<code>Strongly ordered</code>（强排序），<code>No Access</code>（禁止访问），<code>Not Cacheable</code>（不可缓存）。<code>SubRegionDisable</code>
+设置为
+<code>0x87</code>，这通常是为了禁用某些子区域，从而让其他区域的配置生效。</li>
+<li><strong>为什么这么做？</strong>
+这是一个<strong>安全和规范的默认设置</strong>。它相当于一个“看门狗”，将所有未被明确配置的内存区域都设置为最严格的“禁止访问”和“强排序”属性。这样可以防止程序意外访问到未分配的内存区域，从而引发硬件异常，提高系统的鲁棒性。</li>
+</ul>
+<h5 id="mpu-区域-1以太网-dma-描述符ethernet-dma-descriptors">2. MPU 区域
+1：以太网 DMA 描述符（Ethernet DMA Descriptors）</h5>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Configure the MPU attributes as Device not cacheable</span></span><br><span class="line"><span class="comment">   for ETH DMA descriptors */</span></span><br><span class="line">MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">MPU_InitStruct.BaseAddress = <span class="number">0x30000000</span>;</span><br><span class="line">MPU_InitStruct.Size = MPU_REGION_SIZE_256B;</span><br><span class="line">...</span><br><span class="line">MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;</span><br><span class="line">MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;</span><br><span class="line">...</span><br><span class="line">HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><strong>作用：</strong> 为以太网 DMA
+描述符所在的内存区域（<code>0x30000000</code>）进行配置。这与你之前提到的代码
+<code>__attribute__((at(0x30000000)))</code> 是相对应的。</li>
+<li><strong>属性：</strong>
+<ul>
+<li><code>BaseAddress</code> 和 <code>Size</code>: 准确地指定了 DMA
+描述符表所在的内存地址和大小（256B）。</li>
+<li><code>IsCacheable = MPU_ACCESS_NOT_CACHEABLE</code>:
+<strong>这是最关键的配置之一！</strong> 它告诉
+CPU，这个区域的内存<strong>不能被缓存</strong>。</li>
+<li><code>IsBufferable = MPU_ACCESS_BUFFERABLE</code>:
+允许写操作进行<strong>写缓冲（Write Buffer）</strong>。</li>
+</ul></li>
+<li><strong>为什么这么做？</strong>
+<ul>
+<li><strong>缓存一致性问题：</strong> DMA 控制器和 CPU
+是两个独立的实体，它们都可以访问同一块内存区域。当 CPU
+读取数据时，它可能会将数据从 SRAM 拷贝到它的高速缓存（D-Cache）中。如果
+DMA 在此期间更新了 SRAM 中的数据，但 CPU
+仍然使用缓存中的旧数据，就会导致<strong>缓存不一致</strong>（Cache
+Incoherence）的问题，从而引发程序错误。</li>
+<li><strong>解决方案：</strong> 将 DMA 描述符所在的内存区域设置为
+<strong>不可缓存（Not Cacheable）</strong>，<strong>==强制 CPU
+每次读写该区域时都直接访问 SRAM。这样就保证了 CPU
+看到的数据永远是最新的，与 DMA
+控制器看到的数据是一致的。==</strong></li>
+</ul></li>
+</ul>
+<h5 id="mpu-区域-2lwip-ram-堆lwip-ram-heap">3. MPU 区域 2：LwIP RAM
+堆（LwIP RAM Heap）</h5>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Configure the MPU attributes as Normal Non Cacheable</span></span><br><span class="line"><span class="comment">   for LwIP RAM heap which contains the Tx buffers */</span></span><br><span class="line">MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">MPU_InitStruct.BaseAddress = <span class="number">0x30004000</span>;</span><br><span class="line">MPU_InitStruct.Size = MPU_REGION_SIZE_16KB;</span><br><span class="line">...</span><br><span class="line">MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;</span><br><span class="line">MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;</span><br><span class="line">...</span><br><span class="line">HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><strong>作用：</strong> 为 LwIP（一个轻量级TCP/IP协议栈）的 RAM
+堆（Heap）进行配置，这个堆通常用于存储发送和接收数据包的缓冲区。</li>
+<li><strong>属性：</strong>
+<ul>
+<li><code>BaseAddress</code> 和 <code>Size</code>: 指定了 RAM
+堆的地址和大小。</li>
+<li><code>IsCacheable = MPU_ACCESS_NOT_CACHEABLE</code>:
+同样，这个区域被设置为<strong>不可缓存</strong>。</li>
+<li><code>IsBufferable = MPU_ACCESS_NOT_BUFFERABLE</code>:
+也被设置为不可缓冲。</li>
+</ul></li>
+<li><strong>为什么这么做？</strong>
+<ul>
+<li>原因与区域1类似，都是为了解决<strong>缓存一致性</strong>问题。LwIP
+的数据缓冲区同样会被以太网 DMA 控制器读写，同时也可能被 CPU 读写。</li>
+<li>如果这个区域可缓存，CPU 可能会读到过时的数据，或者 CPU
+写入的数据还在缓存中，还没有写回 SRAM，而 DMA
+却去读取了旧的数据。这都会导致网络通信的错误。</li>
+<li>将该区域设置为<strong>不可缓存</strong>，确保 CPU
+读写缓冲区时都直接操作物理内存，从而保证了 CPU 和 DMA
+之间的数据一致性。</li>
+</ul></li>
+</ul>
+<h3 id="开始配置">开始配置</h3>
+<p>这边配置ETH的部分多数是参考这个<a target="_blank" rel="noopener" href="https://blog.csdn.net/Motseturtle/article/details/126165780">blog</a>
+后面也会多次提及</p>
+<p>我主要是针对我这个板子 在keil MDK上的配置</p>
+<p>首先RCC SYS 这些就不说了 就是比较常规的配置</p>
+<h4 id="配置eth-开启">1.配置ETH 开启</h4>
+<p>引脚全部配置成高速</p>
+<figure>
+<img src="D:\typora\pic\image-20250805202208537.png" alt="image-20250805202208537">
+<figcaption aria-hidden="true">image-20250805202208537</figcaption>
+</figure>
+<p>注意mac地址不能随便配 默认就好 其他的需要好好配
+对应于上面的前置知识所说的 地址</p>
+<figure>
+<img src="D:\typora\pic\image-20250805202111687.png" alt="image-20250805202111687">
+<figcaption aria-hidden="true">image-20250805202111687</figcaption>
+</figure>
+<h4 id="串口的配置">2.串口的配置</h4>
+<figure>
+<img src="D:\typora\pic\image-20250805201922394.png" alt="image-20250805201922394">
+<figcaption aria-hidden="true">image-20250805201922394</figcaption>
+</figure>
+<h4 id="lwip配置">3.LWIP配置</h4>
+<p>这一部分开始大部分参考这篇<a target="_blank" rel="noopener" href="https://blog.csdn.net/Motseturtle/article/details/126165780">blog</a>
+大家可以直接看原文</p>
+<p>这里用dhcp 也就是用路由器给单片机分配ip</p>
+<figure>
+<img src="D:\typora\pic\image-20250805202352717.png" alt="image-20250805202352717">
+<figcaption aria-hidden="true">image-20250805202352717</figcaption>
+</figure>
+<figure>
+<img src="D:\typora\pic\image-20250805202503806.png" alt="image-20250805202503806">
+<figcaption aria-hidden="true">image-20250805202503806</figcaption>
+</figure>
+<figure>
+<img src="D:\typora\pic\image-20250805202540021.png" alt="image-20250805202540021">
+<figcaption aria-hidden="true">image-20250805202540021</figcaption>
+</figure>
+<p>选择LAN8742</p>
+<figure>
+<img src="D:\typora\pic\image-20250805202606535.png" alt="image-20250805202606535">
+<figcaption aria-hidden="true">image-20250805202606535</figcaption>
+</figure>
+<figure>
+<img src="D:\typora\pic\image-20250805202651552.png" alt="image-20250805202651552">
+<figcaption aria-hidden="true">image-20250805202651552</figcaption>
+</figure>
+<p>checksum 默认的就行</p>
+<h4 id="phy的复位引脚配置-参考上述博客">4.PHY的复位引脚配置
+参考上述博客</h4>
+<figure>
+<img src="D:\typora\pic\image-20250805202748454.png" alt="image-20250805202748454">
+<figcaption aria-hidden="true">image-20250805202748454</figcaption>
+</figure>
+<figure>
+<img src="D:\typora\pic\image-20250805202809145.png" alt="image-20250805202809145">
+<figcaption aria-hidden="true">image-20250805202809145</figcaption>
+</figure>
+<h4 id="mpu的配置-1">5.MPU的配置</h4>
+<p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/Motseturtle/article/details/126165780">blog</a></p>
+<p>最后导出到KEIL_MDK 按照这个blog说的 该加的地方就加 该添的地方添</p>
+<h4 id="打开ethernetif.c文件-对相应的scatter-file文件进行配置">6.打开ethernetif.c文件
+对相应的scatter file文件进行配置</h4>
+<figure>
+<img src="D:\typora\pic\image-20250805204031864.png" alt="image-20250805204031864">
+<figcaption aria-hidden="true">image-20250805204031864</figcaption>
+</figure>
+<p>参考这边<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44788542/article/details/127537956">blog2</a>可以看到相应的scatter
+file文件的编辑</p>
+<p>现在这样操作可以让KEIL自动生成一个sct文件： 1.去掉勾选Usw Menory
+Layout from Target Dialog，这时Scatter
+File自动生成一个sct文件在obj文件的输出路径下 2.重新勾选Usw Menory Layout
+from Target Dialog，编译工程
+3.编译成功后就生成了一个默认的sct文件，其配置与Target页面的内存布局含义一样，再回到Options-&gt;Linker就可以点击Edit打开该sct文件</p>
+<figure>
+<img src="D:\typora\pic\image-20250805204139456.png" alt="image-20250805204139456">
+<figcaption aria-hidden="true">image-20250805204139456</figcaption>
+</figure>
+<p>然后就可以开始编辑了</p>
+<figure>
+<img src="D:\typora\pic\image-20250805204235039.png" alt="image-20250805204235039">
+<figcaption aria-hidden="true">image-20250805204235039</figcaption>
+</figure>
+<p>加上这一句</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> memory_RX_POOL_base <span class="number">0x30000100</span> <span class="number">0x3F00</span> {</span><br><span class="line">*(.Rx_PoolSection)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure>
+<img src="D:\typora\pic\image-20250805204348477.png" alt="image-20250805204348477">
+<figcaption aria-hidden="true">image-20250805204348477</figcaption>
+</figure>
+<h3 id="测试">测试</h3>
+<h4 id="测试说明">测试说明</h4>
+<p>用一根网线 一端连接单片机 一端连接路由器</p>
+<p>在原有的代码加上这几句</p>
+<figure>
+<img src="D:\typora\pic\image-20250806164952119.png" alt="image-20250806164952119">
+<figcaption aria-hidden="true">image-20250806164952119</figcaption>
+</figure>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN PFP */</span></span><br><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">netif</span> <span class="title">gnetif</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dhcp</span> *<span class="title">pdhcp</span>;</span></span><br><span class="line"><span class="comment">/* USER CODE END PFP */</span></span><br></pre></td></tr></tbody></table></figure>
+<figure>
+<img src="D:\typora\pic\image-20250806165037663.png" alt="image-20250806165037663">
+<figcaption aria-hidden="true">image-20250806165037663</figcaption>
+</figure>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pdhcp = netif_dhcp_data(&amp;gnetif);</span><br></pre></td></tr></tbody></table></figure>
+<p>打开debug模式 把pdhcp添加到监控区
+这边看到的就是路由器给我们板子分配的ip啦！ 这样就说明连接上了。
+后面就可以进行相应的udp/tcp测试~~ 偷个懒可以直接在cubemx上面下载相应的库
+然后直接移植，亲测可用</p>
+<figure>
+<img src="D:\typora\pic\image-20250806165210898.png" alt="image-20250806165210898">
+<figcaption aria-hidden="true">image-20250806165210898</figcaption>
+</figure>
+<h4 id="最终我的main.c的代码">最终我的main.c的代码</h4>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN Header */</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  ******************************************************************************</span></span><br><span class="line"><span class="comment">  * @file           : main.c</span></span><br><span class="line"><span class="comment">  * @brief          : Main program body</span></span><br><span class="line"><span class="comment">  ******************************************************************************</span></span><br><span class="line"><span class="comment">  * @attention</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * Copyright (c) 2025 STMicroelectronics.</span></span><br><span class="line"><span class="comment">  * All rights reserved.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * This software is licensed under terms that can be found in the LICENSE file</span></span><br><span class="line"><span class="comment">  * in the root directory of this software component.</span></span><br><span class="line"><span class="comment">  * If no LICENSE file comes with this software, it is provided AS-IS.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  ******************************************************************************</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="comment">/* USER CODE END Header */</span></span><br><span class="line"><span class="comment">/* Includes ------------------------------------------------------------------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"main.h"</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"lwip.h"</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"usart.h"</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">"gpio.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Private includes ----------------------------------------------------------*/</span></span><br><span class="line"><span class="comment">/* USER CODE BEGIN Includes */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END Includes */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Private typedef -----------------------------------------------------------*/</span></span><br><span class="line"><span class="comment">/* USER CODE BEGIN PTD */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END PTD */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Private define ------------------------------------------------------------*/</span></span><br><span class="line"><span class="comment">/* USER CODE BEGIN PD */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END PD */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Private macro -------------------------------------------------------------*/</span></span><br><span class="line"><span class="comment">/* USER CODE BEGIN PM */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END PM */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Private variables ---------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE BEGIN PV */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END PV */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Private function prototypes -----------------------------------------------*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">SystemClock_Config</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">MPU_Config</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="comment">/* USER CODE BEGIN PFP */</span></span><br><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">netif</span> <span class="title">gnetif</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dhcp</span> *<span class="title">pdhcp</span>;</span></span><br><span class="line"><span class="comment">/* USER CODE END PFP */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Private user code ---------------------------------------------------------*/</span></span><br><span class="line"><span class="comment">/* USER CODE BEGIN 0 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END 0 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  The application entry point.</span></span><br><span class="line"><span class="comment">  * @retval int</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MPU Configuration--------------------------------------------------------*/</span></span><br><span class="line">  MPU_Config();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable the CPU Cache */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable I-Cache---------------------------------------------------------*/</span></span><br><span class="line">  SCB_EnableICache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable D-Cache---------------------------------------------------------*/</span></span><br><span class="line">  SCB_EnableDCache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MCU Configuration--------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Reset of all peripherals, Initializes the Flash interface and the Systick. */</span></span><br><span class="line">  HAL_Init();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable I-Cache---------------------------------------------------------*/</span></span><br><span class="line">  SCB_EnableICache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable D-Cache---------------------------------------------------------*/</span></span><br><span class="line">  SCB_EnableDCache();</span><br><span class="line">  <span class="comment">/* USER CODE END Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Configure the system clock */</span></span><br><span class="line">  SystemClock_Config();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN SysInit */</span></span><br><span class="line">__HAL_RCC_D2SRAM1_CLK_ENABLE();</span><br><span class="line">  <span class="comment">/* USER CODE END SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize all configured peripherals */</span></span><br><span class="line">  MX_GPIO_Init();</span><br><span class="line">  MX_USART1_UART_Init();</span><br><span class="line">  MX_LWIP_Init();</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line">	<span class="comment">//DCache</span></span><br><span class="line">  SCB_CleanInvalidateDCache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//PHY</span></span><br><span class="line">  HAL_GPIO_WritePin(RMII_NRST_GPIO_Port, RMII_NRST_Pin, GPIO_PIN_RESET);</span><br><span class="line">  HAL_Delay(<span class="number">100</span>);</span><br><span class="line">  HAL_GPIO_WritePin(RMII_NRST_GPIO_Port, RMII_NRST_Pin, GPIO_PIN_SET);</span><br><span class="line">  HAL_Delay(<span class="number">100</span>);</span><br><span class="line">	</span><br><span class="line">	pdhcp = netif_dhcp_data(&amp;gnetif);</span><br><span class="line">  <span class="comment">/* USER CODE END 2 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN WHILE */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">  {</span><br><span class="line">    <span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">		MX_LWIP_Process();</span><br><span class="line">  }</span><br><span class="line">  <span class="comment">/* USER CODE END 3 */</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief System Clock Configuration</span></span><br><span class="line"><span class="comment">  * @retval None</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">SystemClock_Config</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  RCC_OscInitTypeDef RCC_OscInitStruct = {<span class="number">0</span>};</span><br><span class="line">  RCC_ClkInitTypeDef RCC_ClkInitStruct = {<span class="number">0</span>};</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Supply configuration update enable</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  HAL_PWREx_ConfigSupply(PWR_LDO_SUPPLY);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Configure the main internal regulator output voltage</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Initializes the RCC Oscillators according to the specified parameters</span></span><br><span class="line"><span class="comment">  * in the RCC_OscInitTypeDef structure.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;</span><br><span class="line">  RCC_OscInitStruct.HSIState = RCC_HSI_DIV1;</span><br><span class="line">  RCC_OscInitStruct.HSICalibrationValue = <span class="number">64</span>;</span><br><span class="line">  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;</span><br><span class="line">  <span class="keyword">if</span> (HAL_RCC_OscConfig(&amp;RCC_OscInitStruct) != HAL_OK)</span><br><span class="line">  {</span><br><span class="line">    Error_Handler();</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Initializes the CPU, AHB and APB buses clocks</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK</span><br><span class="line">                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2</span><br><span class="line">                              |RCC_CLOCKTYPE_D3PCLK1|RCC_CLOCKTYPE_D1PCLK1;</span><br><span class="line">  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;</span><br><span class="line">  RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;</span><br><span class="line">  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV1;</span><br><span class="line">  RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV1;</span><br><span class="line">  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;</span><br><span class="line">  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV2;</span><br><span class="line">  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (HAL_RCC_ClockConfig(&amp;RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)</span><br><span class="line">  {</span><br><span class="line">    Error_Handler();</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE BEGIN 4 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* USER CODE END 4 */</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">/* MPU Configuration */</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">MPU_Config</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  MPU_Region_InitTypeDef MPU_InitStruct = {<span class="number">0</span>};</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Disables the MPU */</span></span><br><span class="line">  HAL_MPU_Disable();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Initializes and configures the Region and the memory to be protected</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">  MPU_InitStruct.Number = MPU_REGION_NUMBER0;</span><br><span class="line">  MPU_InitStruct.BaseAddress = <span class="number">0x30000000</span>;</span><br><span class="line">  MPU_InitStruct.Size = MPU_REGION_SIZE_256B;</span><br><span class="line">  MPU_InitStruct.SubRegionDisable = <span class="number">0x00</span>;</span><br><span class="line">  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;</span><br><span class="line">  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;</span><br><span class="line">  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;</span><br><span class="line">  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;</span><br><span class="line">  MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE;</span><br><span class="line">  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;</span><br><span class="line"></span><br><span class="line">  HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Initializes and configures the Region and the memory to be protected</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  MPU_InitStruct.Number = MPU_REGION_NUMBER1;</span><br><span class="line">  MPU_InitStruct.BaseAddress = <span class="number">0x030004000</span>;</span><br><span class="line">  MPU_InitStruct.Size = MPU_REGION_SIZE_16KB;</span><br><span class="line">  MPU_InitStruct.SubRegionDisable = <span class="number">0x0</span>;</span><br><span class="line">  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1;</span><br><span class="line"></span><br><span class="line">  HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** Initializes and configures the Region and the memory to be protected</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  MPU_InitStruct.Number = MPU_REGION_NUMBER2;</span><br><span class="line">  MPU_InitStruct.BaseAddress = <span class="number">0x30004000</span>;</span><br><span class="line">  MPU_InitStruct.SubRegionDisable = <span class="number">0x00</span>;</span><br><span class="line">  MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE;</span><br><span class="line">  MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE;</span><br><span class="line"></span><br><span class="line">  HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br><span class="line">  <span class="comment">/* Enables the MPU */</span></span><br><span class="line">  HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);</span><br><span class="line"></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  This function is executed in case of error occurrence.</span></span><br><span class="line"><span class="comment">  * @retval None</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Error_Handler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN Error_Handler_Debug */</span></span><br><span class="line">  <span class="comment">/* User can add his own implementation to report the HAL error return state */</span></span><br><span class="line">  __disable_irq();</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">  {</span><br><span class="line">  }</span><br><span class="line">  <span class="comment">/* USER CODE END Error_Handler_Debug */</span></span><br><span class="line">}</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> USE_FULL_ASSERT</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * @brief  Reports the name of the source file and the source line number</span></span><br><span class="line"><span class="comment">  *         where the assert_param error has occurred.</span></span><br><span class="line"><span class="comment">  * @param  file: pointer to the source file name</span></span><br><span class="line"><span class="comment">  * @param  line: assert_param error line source number</span></span><br><span class="line"><span class="comment">  * @retval None</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">assert_failed</span><span class="params">(<span class="type">uint8_t</span> *file, <span class="type">uint32_t</span> line)</span></span><br><span class="line">{</span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 6 */</span></span><br><span class="line">  <span class="comment">/* User can add his own implementation to report the file name and line number,</span></span><br><span class="line"><span class="comment">     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */</span></span><br><span class="line">  <span class="comment">/* USER CODE END 6 */</span></span><br><span class="line">}</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">/* USE_FULL_ASSERT */</span></span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>最终我的代码 <a target="_blank" rel="noopener" href="https://gitee.com/ruoxiandmosong/ch32-free-rtos-ds/blob/master/stm32H723ZG+LAN8742_HAL_KEIL.rar">stm32H723ZG+LAN8742_HAL_KEIL</a>
+也上传到gitee上</p>
+<p>然后墙裂安利一下可以比较文件的工具beyond compare
+有兴趣的家人可以去看看</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lling.online">汐汐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lling.online/2025/08/06/lwip/">https://www.lling.online/2025/08/06/lwip/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lling.online" target="_blank">汐汐的成长之路</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STM32H7/">STM32H7</a><a class="post-meta__tags" href="/tags/LWIP/">LWIP</a></div><div class="post_share"><div class="social-share" data-image="/img/top-img/stm32.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"><img class="cover" src="/img/top-img/stm32.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/miao.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">汐汐</div><div class="author-info__description">总有一些坚持，能从一寸冰封的土壤里培育出十万朵怒放的蔷薇❀❀</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53131867?type=blog"><i class="fab custom csdn"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xi-song" target="_blank" title="GitHub"><i class="iconfont icon-GitHub" style="color: #24292e;"></i></a><a class="social-icon" href="/%5Cimg%5Cali.jpg" target="_blank" title="Wechat"><i class="iconfont icon-weixin" style="color: #28c445;"></i></a><a class="social-icon" href="https://blog.csdn.net/qq_53131867?type=blog" target="_blank" title="CSDN"><i class="iconfont icon-csdn" style="color: #dd1700;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/shui-meng-tong-hua" target="_blank" title="Zhihu"><i class="iconfont icon-zhihu" style="color: #0066ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到汐汐的知识小窝，不定期分享导航定位，编程，科研相关知识，欢迎关注收藏噢~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#stm32h723zg-lan8742-ethernet-lwip-%E9%85%8D%E7%BD%AE-cubemx"><span class="toc-number">1.</span> <span class="toc-text">STM32H723ZG +
+LAN8742 + Ethernet +LWIP 配置 cubemx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%95%E4%B8%80-%E7%9B%B4%E6%8E%A5%E7%94%A8cubemx-%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%BA%93%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">法一 直接用cubemx
+上面的库进行配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%95%E4%BA%8C-%E7%94%A8cubemx%E8%87%AA%E5%B7%B1%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">法二 用cubemx自己配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">3.1.</span> <span class="toc-text">前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E7%9A%84%E5%A4%96%E8%AE%BE%E5%AD%98%E5%82%A8%E5%8C%BA%E5%8F%AF%E8%AE%BF%E9%97%AE%E7%9A%84%E5%8C%BA%E5%9F%9F%E4%B8%8D%E5%90%8C-%E6%89%80%E4%BB%A5%E8%A6%81%E8%87%AA%E5%B7%B1%E5%AE%9A%E4%B9%89%E7%9B%B8%E5%BA%94%E7%9A%84%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-number">3.1.1.</span> <span class="toc-text">不同的外设存储区可访问的区域不同
+所以要自己定义相应的内存区域</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.1.1.</span> <span class="toc-text">为什么这么配置</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mpu%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.2.</span> <span class="toc-text">MPU的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#mpu-%E5%8C%BA%E5%9F%9F-0%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AEdefault-configuration"><span class="toc-number">3.1.2.1.</span> <span class="toc-text">1. MPU 区域
+0：默认配置（Default Configuration）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#mpu-%E5%8C%BA%E5%9F%9F-1%E4%BB%A5%E5%A4%AA%E7%BD%91-dma-%E6%8F%8F%E8%BF%B0%E7%AC%A6ethernet-dma-descriptors"><span class="toc-number">3.1.2.2.</span> <span class="toc-text">2. MPU 区域
+1：以太网 DMA 描述符（Ethernet DMA Descriptors）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#mpu-%E5%8C%BA%E5%9F%9F-2lwip-ram-%E5%A0%86lwip-ram-heap"><span class="toc-number">3.1.2.3.</span> <span class="toc-text">3. MPU 区域 2：LwIP RAM
+堆（LwIP RAM Heap）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">开始配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEeth-%E5%BC%80%E5%90%AF"><span class="toc-number">3.2.1.</span> <span class="toc-text">1.配置ETH 开启</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%B2%E5%8F%A3%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.2.</span> <span class="toc-text">2.串口的配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#lwip%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.3.</span> <span class="toc-text">3.LWIP配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#phy%E7%9A%84%E5%A4%8D%E4%BD%8D%E5%BC%95%E8%84%9A%E9%85%8D%E7%BD%AE-%E5%8F%82%E8%80%83%E4%B8%8A%E8%BF%B0%E5%8D%9A%E5%AE%A2"><span class="toc-number">3.2.4.</span> <span class="toc-text">4.PHY的复位引脚配置
+参考上述博客</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mpu%E7%9A%84%E9%85%8D%E7%BD%AE-1"><span class="toc-number">3.2.5.</span> <span class="toc-text">5.MPU的配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%93%E5%BC%80ethernetif.c%E6%96%87%E4%BB%B6-%E5%AF%B9%E7%9B%B8%E5%BA%94%E7%9A%84scatter-file%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.6.</span> <span class="toc-text">6.打开ethernetif.c文件
+对相应的scatter file文件进行配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">3.3.</span> <span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E8%AF%B4%E6%98%8E"><span class="toc-number">3.3.1.</span> <span class="toc-text">测试说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%88%91%E7%9A%84main.c%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="toc-number">3.3.2.</span> <span class="toc-text">最终我的main.c的代码</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"/></a><div class="content"><a class="title" href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</a><time datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"/></a><div class="content"><a class="title" href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置">【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置</a><time datetime="2025-06-22T01:44:13.000Z" title="发表于 2025-06-22 09:44:13">2025-06-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/21/hexo-config/" title="hexo &amp; git"><img src="/img/top-img/baofu.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hexo &amp; git"/></a><div class="content"><a class="title" href="/2025/05/21/hexo-config/" title="hexo &amp; git">hexo &amp; git</a><time datetime="2025-05-21T08:19:57.000Z" title="发表于 2025-05-21 16:19:57">2025-05-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/21/ccs-bug/" title="【ccs debug】error"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【ccs debug】error"/></a><div class="content"><a class="title" href="/2025/05/21/ccs-bug/" title="【ccs debug】error">【ccs debug】error</a><time datetime="2025-05-21T07:40:50.000Z" title="发表于 2025-05-21 15:40:50">2025-05-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/17/stm32_debug/" title="【stm32 bug那些事儿】"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【stm32 bug那些事儿】"/></a><div class="content"><a class="title" href="/2025/03/17/stm32_debug/" title="【stm32 bug那些事儿】">【stm32 bug那些事儿】</a><time datetime="2025-03-17T12:02:16.000Z" title="发表于 2025-03-17 20:02:16">2025-03-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By 汐汐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi，welocme to my blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const initGitalk = () => {
+    const gitalk = new Gitalk(Object.assign({
+      clientID: 'Ov23lilBvAg6ryz910Bq',
+      clientSecret: '35f8ef4fa5095c847021e15ea2be9f3c413e55b8',
+      repo: 'xi-song.github.io',
+      owner: 'xi-song',
+      admin: ['xi-song'],
+      id: '625913bc803481b3a8d0b7704ccc27ee',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async() => {
+    if (typeof Gitalk === 'function') initGitalk()
+    else {
+      await getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk()
+    }
+  }
+  
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/styles/fish.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
