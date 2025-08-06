@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://www.lling.online/img/top-img/stm32.png">
 <meta property="article:published_time" content="2025-08-06T10:33:17.000Z">
-<meta property="article:modified_time" content="2025-08-06T10:35:19.019Z">
+<meta property="article:modified_time" content="2025-08-06T10:44:01.209Z">
 <meta property="article:author" content="汐汐">
 <meta property="article:tag" content="STM32H7">
 <meta property="article:tag" content="LWIP">
@@ -64,7 +64,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-08-06 18:35:19'
+  postUpdate: '2025-08-06 18:44:01'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -163,7 +163,7 @@
       detectApple()
     })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/icon.css"><link rel="stylesheet" href="/styles/font.css"><meta name="generator" content="Hexo 7.2.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top-img/stm32.png')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-06T10:35:19.019Z" title="更新于 2025-08-06 18:35:19">2025-08-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="stm32h723zg-lan8742-ethernet-lwip-配置-cubemx">STM32H723ZG +
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">19</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top-img/stm32.png')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-06T10:44:01.209Z" title="更新于 2025-08-06 18:44:01">2025-08-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="stm32h723zg-lan8742-ethernet-lwip-配置-cubemx">STM32H723ZG +
 LAN8742 + Ethernet +LWIP 配置 cubemx</h2>
 <p>这边记录一下这块mcu 配置以太网的过程，IDE是KEIL
 MDK，其实就是在下面多次提到的blog的基础上 在scatter file进行配置</p>
@@ -178,14 +178,14 @@ MDK，其实就是在下面多次提到的blog的基础上 在scatter file进行
 上面的库进行配置</h2>
 <p>如果你的板子是stm32+lan8742 那可以参考这个方法进行配置</p>
 <figure>
-<img src="D:\typora\pic\image-20250805193116021.png" alt="image-20250805193116021">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061841848.png" alt="image-20250805193116021">
 <figcaption aria-hidden="true">image-20250805193116021</figcaption>
 </figure>
 <p>输入相应开发板的型号 然后直接配置 比如这个开发板</p>
 <p>到时候可以直接在这个例程上改
 成功的概率会比自己用cubemx移植的概率高</p>
 <figure>
-<img src="D:\typora\pic\image-20250805193342084.png" alt="image-20250805193342084">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061841704.png" alt="image-20250805193342084">
 <figcaption aria-hidden="true">image-20250805193342084</figcaption>
 </figure>
 <h2 id="法二-用cubemx自己配置">法二 用cubemx自己配置</h2>
@@ -205,7 +205,7 @@ MDK，其实就是在下面多次提到的blog的基础上 在scatter file进行
 里，因为它们位于不同的总线域，并且由不同的 DMA
 控制器管理。==需要在软件中根据这个硬件架构，将不同的外设缓冲区分配到它们所属的或可访问的存储区域中。==</p>
 <figure>
-<img src="D:\typora\pic\image-20250805194109618.png" alt="image-20250805194109618">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061841900.png" alt="image-20250805194109618">
 <figcaption aria-hidden="true">image-20250805194109618</figcaption>
 </figure>
 <p>首先这张图清楚地说明了：<strong>不同的外设可以存储数据的地方是不一样的</strong>。</p>
@@ -245,16 +245,16 @@ SRAM</strong>，这个存储区通常是专门用来在低功耗或掉电模式�
 <p>从这个总线矩阵上可以看到，以太网外设可以被定义在SRAM1,SRAM2中，对应的就是0x30000000
 - 0x30003FFF</p>
 <figure>
-<img src="D:\typora\pic\image-20250805195138489.png" alt="image-20250805195138489">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061841742.png" alt="image-20250805195138489">
 <figcaption aria-hidden="true">image-20250805195138489</figcaption>
 </figure>
 <p>于是 以太网的DMA描述符就得后续这么定义在相应的存储区</p>
 <figure>
-<img src="D:\typora\pic\image-20250805195352458.png" alt="image-20250805195352458">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061841812.png" alt="image-20250805195352458">
 <figcaption aria-hidden="true">image-20250805195352458</figcaption>
 </figure>
 <figure>
-<img src="D:\typora\pic\image-20250805195414937.png" alt="image-20250805195414937">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061841880.png" alt="image-20250805195414937">
 <figcaption aria-hidden="true">image-20250805195414937</figcaption>
 </figure>
 <p>从上面的图也可以看到有两种不同的定义方式，一个是直接在前面定义</p>
@@ -280,7 +280,7 @@ Pool）</strong>分配一块特定的内存区域，并确保这个区域位于�
 SRAM），以便于 DMA 控制器可以高效地访问</p>
 <p>.sct文件在魔法棒这边 点击edit就会出现了</p>
 <figure>
-<img src="D:\typora\pic\image-20250805200142956.png" alt="image-20250805200142956">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842364.png" alt="image-20250805200142956">
 <figcaption aria-hidden="true">image-20250805200142956</figcaption>
 </figure>
 <h5 id="为什么这么配置">为什么这么配置</h5>
@@ -400,18 +400,18 @@ Incoherence）的问题，从而引发程序错误。</li>
 <h4 id="配置eth-开启">1.配置ETH 开启</h4>
 <p>引脚全部配置成高速</p>
 <figure>
-<img src="D:\typora\pic\image-20250805202208537.png" alt="image-20250805202208537">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842641.png" alt="image-20250805202208537">
 <figcaption aria-hidden="true">image-20250805202208537</figcaption>
 </figure>
 <p>注意mac地址不能随便配 默认就好 其他的需要好好配
 对应于上面的前置知识所说的 地址</p>
 <figure>
-<img src="D:\typora\pic\image-20250805202111687.png" alt="image-20250805202111687">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842436.png" alt="image-20250805202111687">
 <figcaption aria-hidden="true">image-20250805202111687</figcaption>
 </figure>
 <h4 id="串口的配置">2.串口的配置</h4>
 <figure>
-<img src="D:\typora\pic\image-20250805201922394.png" alt="image-20250805201922394">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842455.png" alt="image-20250805201922394">
 <figcaption aria-hidden="true">image-20250805201922394</figcaption>
 </figure>
 <h4 id="lwip配置">3.LWIP配置</h4>
@@ -419,35 +419,35 @@ Incoherence）的问题，从而引发程序错误。</li>
 大家可以直接看原文</p>
 <p>这里用dhcp 也就是用路由器给单片机分配ip</p>
 <figure>
-<img src="D:\typora\pic\image-20250805202352717.png" alt="image-20250805202352717">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842057.png" alt="image-20250805202352717">
 <figcaption aria-hidden="true">image-20250805202352717</figcaption>
 </figure>
 <figure>
-<img src="D:\typora\pic\image-20250805202503806.png" alt="image-20250805202503806">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842026.png" alt="image-20250805202503806">
 <figcaption aria-hidden="true">image-20250805202503806</figcaption>
 </figure>
 <figure>
-<img src="D:\typora\pic\image-20250805202540021.png" alt="image-20250805202540021">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842298.png" alt="image-20250805202540021">
 <figcaption aria-hidden="true">image-20250805202540021</figcaption>
 </figure>
 <p>选择LAN8742</p>
 <figure>
-<img src="D:\typora\pic\image-20250805202606535.png" alt="image-20250805202606535">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842558.png" alt="image-20250805202606535">
 <figcaption aria-hidden="true">image-20250805202606535</figcaption>
 </figure>
 <figure>
-<img src="D:\typora\pic\image-20250805202651552.png" alt="image-20250805202651552">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842095.png" alt="image-20250805202651552">
 <figcaption aria-hidden="true">image-20250805202651552</figcaption>
 </figure>
 <p>checksum 默认的就行</p>
 <h4 id="phy的复位引脚配置-参考上述博客">4.PHY的复位引脚配置
 参考上述博客</h4>
 <figure>
-<img src="D:\typora\pic\image-20250805202748454.png" alt="image-20250805202748454">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842247.png" alt="image-20250805202748454">
 <figcaption aria-hidden="true">image-20250805202748454</figcaption>
 </figure>
 <figure>
-<img src="D:\typora\pic\image-20250805202809145.png" alt="image-20250805202809145">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842965.png" alt="image-20250805202809145">
 <figcaption aria-hidden="true">image-20250805202809145</figcaption>
 </figure>
 <h4 id="mpu的配置-1">5.MPU的配置</h4>
@@ -456,7 +456,7 @@ Incoherence）的问题，从而引发程序错误。</li>
 <h4 id="打开ethernetif.c文件-对相应的scatter-file文件进行配置">6.打开ethernetif.c文件
 对相应的scatter file文件进行配置</h4>
 <figure>
-<img src="D:\typora\pic\image-20250805204031864.png" alt="image-20250805204031864">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842728.png" alt="image-20250805204031864">
 <figcaption aria-hidden="true">image-20250805204031864</figcaption>
 </figure>
 <p>参考这边<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44788542/article/details/127537956">blog2</a>可以看到相应的scatter
@@ -467,18 +467,18 @@ File自动生成一个sct文件在obj文件的输出路径下 2.重新勾选Usw 
 from Target Dialog，编译工程
 3.编译成功后就生成了一个默认的sct文件，其配置与Target页面的内存布局含义一样，再回到Options-&gt;Linker就可以点击Edit打开该sct文件</p>
 <figure>
-<img src="D:\typora\pic\image-20250805204139456.png" alt="image-20250805204139456">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842434.png" alt="image-20250805204139456">
 <figcaption aria-hidden="true">image-20250805204139456</figcaption>
 </figure>
 <p>然后就可以开始编辑了</p>
 <figure>
-<img src="D:\typora\pic\image-20250805204235039.png" alt="image-20250805204235039">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061842068.png" alt="image-20250805204235039">
 <figcaption aria-hidden="true">image-20250805204235039</figcaption>
 </figure>
 <p>加上这一句</p>
 <figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> memory_RX_POOL_base <span class="number">0x30000100</span> <span class="number">0x3F00</span> {</span><br><span class="line">*(.Rx_PoolSection)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 <figure>
-<img src="D:\typora\pic\image-20250805204348477.png" alt="image-20250805204348477">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061843236.png" alt="image-20250805204348477">
 <figcaption aria-hidden="true">image-20250805204348477</figcaption>
 </figure>
 <h3 id="测试">测试</h3>
@@ -486,12 +486,12 @@ from Target Dialog，编译工程
 <p>用一根网线 一端连接单片机 一端连接路由器</p>
 <p>在原有的代码加上这几句</p>
 <figure>
-<img src="D:\typora\pic\image-20250806164952119.png" alt="image-20250806164952119">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061843376.png" alt="image-20250806164952119">
 <figcaption aria-hidden="true">image-20250806164952119</figcaption>
 </figure>
 <figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* USER CODE BEGIN PFP */</span></span><br><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">netif</span> <span class="title">gnetif</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dhcp</span> *<span class="title">pdhcp</span>;</span></span><br><span class="line"><span class="comment">/* USER CODE END PFP */</span></span><br></pre></td></tr></tbody></table></figure>
 <figure>
-<img src="D:\typora\pic\image-20250806165037663.png" alt="image-20250806165037663">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061843499.png" alt="image-20250806165037663">
 <figcaption aria-hidden="true">image-20250806165037663</figcaption>
 </figure>
 <figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pdhcp = netif_dhcp_data(&amp;gnetif);</span><br></pre></td></tr></tbody></table></figure>
@@ -500,7 +500,7 @@ from Target Dialog，编译工程
 后面就可以进行相应的udp/tcp测试~~ 偷个懒可以直接在cubemx上面下载相应的库
 然后直接移植，亲测可用</p>
 <figure>
-<img src="D:\typora\pic\image-20250806165210898.png" alt="image-20250806165210898">
+<img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202508061843357.png" alt="image-20250806165210898">
 <figcaption aria-hidden="true">image-20250806165210898</figcaption>
 </figure>
 <h4 id="最终我的main.c的代码">最终我的main.c的代码</h4>
