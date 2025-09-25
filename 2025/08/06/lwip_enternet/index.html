@@ -1,0 +1,371 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta name="referrer" content="no-referrer"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【记录】stm32H7 以太网配置引申的内存问题 | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="stm32H7 以太网配置引申的内存问题 这个blog主要是整合一下各个关于stm32H7 以太网配置引申的内存问题 blog的内容 感谢各位博主 为什么需要MPU 为什么需要MPU（为了解决CPU缓存和DMA之间的数据同步问题） 在STM32H7这样的高性能芯片里，有几个关键角色：  CPU内核 (Cortex-M7): 速度飞快，为了不被慢速的RAM拖后腿，它内置了高速缓存(Cache)。CP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【记录】stm32H7 以太网配置引申的内存问题">
+<meta property="og:url" content="https://www.lling.online/2025/08/06/lwip_enternet/index.html">
+<meta property="og:site_name" content="汐汐的成长之路">
+<meta property="og:description" content="stm32H7 以太网配置引申的内存问题 这个blog主要是整合一下各个关于stm32H7 以太网配置引申的内存问题 blog的内容 感谢各位博主 为什么需要MPU 为什么需要MPU（为了解决CPU缓存和DMA之间的数据同步问题） 在STM32H7这样的高性能芯片里，有几个关键角色：  CPU内核 (Cortex-M7): 速度飞快，为了不被慢速的RAM拖后腿，它内置了高速缓存(Cache)。CP">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lling.online/img/top-img/stm32.png">
+<meta property="article:published_time" content="2025-08-06T10:33:17.000Z">
+<meta property="article:modified_time" content="2025-09-25T12:13:52.858Z">
+<meta property="article:author" content="汐汐">
+<meta property="article:tag" content="STM32H7">
+<meta property="article:tag" content="LWIP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.lling.online/img/top-img/stm32.png"><link rel="shortcut icon" href="/img/xix.png"><link rel="canonical" href="https://www.lling.online/2025/08/06/lwip_enternet/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e588f3c6266a7f7c4936775cbf8be029";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="/styles/font.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【记录】stm32H7 以太网配置引申的内存问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-25 20:13:52'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/icon.css"><link rel="stylesheet" href="/styles/font.css"><meta name="generator" content="Hexo 7.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top-img/stm32.png')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【记录】stm32H7 以太网配置引申的内存问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-25T12:13:52.858Z" title="更新于 2025-09-25 20:13:52">2025-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【记录】stm32H7 以太网配置引申的内存问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>stm32H7 以太网配置引申的内存问题</h1>
+<p>这个blog主要是整合一下各个关于stm32H7 以太网配置引申的内存问题 blog的内容 感谢各位博主</p>
+<h2 id="为什么需要MPU"><strong>为什么</strong>需要MPU</h2>
+<p><strong>为什么</strong>需要MPU（为了解决CPU缓存和DMA之间的数据同步问题）</p>
+<p>在STM32H7这样的高性能芯片里，有几个关键角色：</p>
+<ul>
+<li><strong>CPU内核 (Cortex-M7):</strong> 速度飞快，为了不被慢速的RAM拖后腿，它内置了高速缓存(Cache)。CPU读写数据时，会优先操作Cache，而不是直接读写主内存(RAM)。</li>
+<li><strong>DMA控制器 (Direct Memory Access):</strong> 一个“搬运工”，可以在没有CPU干预的情况下，直接在内存和外设（比如以太网MAC）之间搬运数据。这大大解放了CPU。</li>
+<li><strong>主内存 (SRAM):</strong> 我们程序中定义的变量、数据缓冲区等都存放在这里。</li>
+</ul>
+<p><strong>主内存(RAM)</strong> 就像一个大仓库。</p>
+<p><strong>DMA</strong> 是一个只会看仓库清单、直接去仓库货架上搬货的“搬运工”。</p>
+<p><strong>CPU</strong> 是个脑子很快的“仓库管理员”，他为了效率，会把常用的货物信息记在自己的**小本本(Cache)**上。</p>
+<p><strong>矛盾一：发数据（CPU -&gt; DMA -&gt; 以太网）</strong></p>
+<ol>
+<li>CPU（管理员）要发一个网络包，于是把数据写到了自己的**小本本(Cache)**上。</li>
+<li>它告诉DMA（搬运工）：“去仓库的A货架把货搬走发掉。”</li>
+<li>但此时，数据可能还在CPU的“小本本”里，<strong>还没来得及同步更新到仓库的A货架上</strong>。</li>
+<li>DMA直接去A货架一看，发现是旧的、或者根本是空的数据，结果就把错误的数据发出去了。</li>
+</ol>
+<p><strong>矛盾二：收数据（以太网 -&gt; DMA -&gt; CPU）</strong></p>
+<ol>
+<li>DMA（搬运工）从以太网收到一个数据包，勤快地把它放到了仓库的B货架上。</li>
+<li>它通知CPU（管理员）：“货收到了，在B货架。”</li>
+<li>CPU想查看数据，但它习惯性地先看自己的<strong>小本本(Cache)</strong>，上面记录的还是B货架之前的老信息。</li>
+<li>结果，CPU读到了旧数据，以为网络没收到新包。</li>
+</ol>
+<p>这就是<strong>缓存一致性 (Cache Coherency) 问题</strong>。为了解决它，最直接的方法就是：<strong>划出一片特殊的内存区域，并告诉CPU：“对于这块区域，不许用你的小本本(Cache)，必须每次都老老实实地去仓库(RAM)里读写！”</strong></p>
+<p>这个“划定区域、设定规则”的工作，就是由 <strong>MPU (Memory Protection Unit)</strong> 来完成的。</p>
+<h3 id="MPU-配置-MPU-Config-代码解析">MPU 配置 (<code>MPU_Config</code>) 代码解析</h3>
+<p>以stm32H723ZGT6的MPU配置为例</p>
+<p><code>MPU_Config</code> 函数的作用，就是在SRAM（<code>0x30000000</code>开头的地址是STM32H7的SRAM区）里划定几个“特殊区域”，并为它们设定规则。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Disables the MPU */</span></span><br><span class="line">HAL_MPU_Disable(); <span class="comment">// 配置前先关闭MPU</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* --- Region 0: DMA描述符区 --- */</span></span><br><span class="line">MPU_InitStruct.Enable = MPU_REGION_ENABLE;</span><br><span class="line">MPU_InitStruct.Number = MPU_REGION_NUMBER0;</span><br><span class="line">MPU_InitStruct.BaseAddress = <span class="number">0x30000000</span>;</span><br><span class="line">MPU_InitStruct.Size = MPU_REGION_SIZE_256B; <span class="comment">// 256字节</span></span><br><span class="line">MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS; <span class="comment">// 允许完全访问</span></span><br><span class="line">MPU_InitStruct.IsCacheable = MPU_ACCESS_NOT_CACHEABLE; <span class="comment">// **关键：禁止缓存**</span></span><br><span class="line">MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE; <span class="comment">// 允许写缓冲</span></span><br><span class="line">MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE; <span class="comment">// 不共享</span></span><br><span class="line">MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE; <span class="comment">// 允许执行指令</span></span><br><span class="line">HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br></pre></td></tr></tbody></table></figure>
+<p><strong>这是什么？</strong> 这是为**以太网DMA描述符(Descriptors)**准备的区域。你可以把描述符想象成给DMA的“任务清单”，上面写着“数据包在内存的哪个位置”、“长度多少”、“处理完状态写回这里”等等。</p>
+<p><strong>为什么这么配？</strong> CPU和DMA都会频繁读写这个“任务清单”。为了保证双方看到的信息永远是最新最准确的，这个区域<strong>必须是“非缓存(Not Cacheable)”的</strong>。这是最重要的属性。</p>
+<hr>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* --- Region 1 &amp; 2: LwIP主堆和网络缓冲区 --- */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Region 1 的配置 */</span></span><br><span class="line">MPU_InitStruct.Number = MPU_REGION_NUMBER1;</span><br><span class="line">MPU_InitStruct.BaseAddress = <span class="number">0x30004000</span>; <span class="comment">// **注意这个地址！**</span></span><br><span class="line">MPU_InitStruct.Size = MPU_REGION_SIZE_16KB; <span class="comment">// 16KB大小</span></span><br><span class="line">MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL1; <span class="comment">// 通常与缓存策略关联</span></span><br><span class="line"><span class="comment">// ...其他属性继承自上一个配置，比如IsCacheable=NOT_CACHEABLE</span></span><br><span class="line">HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Region 2 的配置 */</span></span><br><span class="line">MPU_InitStruct.Number = MPU_REGION_NUMBER2;</span><br><span class="line"><span class="comment">// 注意：基地址和大小没有修改，所以仍然是针对0x30004000这片区域</span></span><br><span class="line">MPU_InitStruct.IsShareable = MPU_ACCESS_SHAREABLE; <span class="comment">// **关键：设置为共享**</span></span><br><span class="line">MPU_InitStruct.IsBufferable = MPU_ACCESS_NOT_BUFFERABLE; <span class="comment">// **关键：禁止写缓冲**</span></span><br><span class="line">HAL_MPU_ConfigRegion(&amp;MPU_InitStruct);</span><br></pre></td></tr></tbody></table></figure>
+<p><em>代码中Region 2似乎是在修改Region 1区域的属性。更常见的做法是在一个Region定义里设置好所有属性。但我们按其最终效果来分析)</em></p>
+<ul>
+<li><strong>这是什么？</strong> 这片从 <code>0x30004000</code> 开始的16KB内存，是专门留给 <strong>LwIP协议栈</strong> 使用的<strong>主内存堆(Heap)</strong>。所有的网络数据包(<code>pbuf</code>)都会从这里分配。这是收发网络数据的核心区域。</li>
+<li><strong>为什么这么配？</strong>
+<ul>
+<li><strong>地址 <code>0x30004000</code>：</strong> 这个地址不是随便写的，它需要和 <code>lwipopts.h</code> 中的一个宏定义精确对应，我们马上就会看到。</li>
+<li><strong>非缓存 (Not Cacheable):</strong> 和描述符区一样，这是为了避免CPU和DMA之间的数据不一致。</li>
+<li><strong>共享 (Shareable):</strong> 这个属性告诉总线系统，这块内存会被多个“主人”（CPU和DMA）同时访问，系统需要保证一个主人写完的数据能被另一个主人看到。这进一步加强了数据同步。</li>
+<li><strong>非缓冲 (Not Bufferable):</strong> 禁止写缓冲，意味着CPU的写操作会立刻穿透到后端内存(RAM)，而不是在某个缓冲区里等待。这提供了最强的数据一致性保证。</li>
+</ul>
+</li>
+</ul>
+<p><strong>MPU小结：</strong> 通过这几段代码，我们用硬件强制规定了内存 <code>0x30004000</code> 开始的区域是“DMA安全的”，即解决了我们前面提到的“小本本(Cache)”问题。</p>
+<h3 id="lwipopts-h-文件解析"><code>lwipopts.h</code> 文件解析</h3>
+<p>如果说MPU是设定了物理规则，那么<code>lwipopts.h</code>就是告诉LwIP软件如何利用这些规则。我们来看几个最重要的配置：</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CHECKSUM_BY_HARDWARE 1</span></span><br></pre></td></tr></tbody></table></figure>
+<p>这告诉LwIP：“我们芯片的以太网MAC硬件很强大，能自己计算TCP/IP的校验和，你（CPU）就别费劲了。”</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CHECKSUM_GEN_IP 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CHECKSUM_GEN_UDP 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CHECKSUM_GEN_TCP 0</span></span><br><span class="line"><span class="comment">// ...以及所有CHECKSUM_CHECK_* 也都为0</span></span><br></pre></td></tr></tbody></table></figure>
+<p>这些配置就是上面那条的必然结果：既然硬件做了，软件层面就全部关闭，从而把CPU解放出来做别的事情，极大提升性能。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MEM_ALIGNMENT 4</span></span><br></pre></td></tr></tbody></table></figure>
+<p>32位处理器访问4字节对齐的地址效率最高，这是一个通用的性能优化。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LWIP_RAM_HEAP_POINTER 0x30004000</span></span><br></pre></td></tr></tbody></table></figure>
+<p>这个宏告诉LwIP：“<strong>你的专属内存堆，不要自己随便找地方，就从物理地址 <code>0x30004000</code> 开始用！</strong>” 这个地址，和我们刚刚在MPU里费劲心思配置的那个“DMA安全区”的起始地址完全一样。这样一来，LwIP分配的所有网络缓冲区(<code>pbuf</code>)，就自动落在了我们用MPU保护起来的非缓存、共享内存区里，数据一致性问题就从根源上解决了。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MEMP_NUM_PBUF 10       <span class="comment">// PBUF缓冲池大小</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MEMP_NUM_TCP_SEG 10    <span class="comment">// TCP分段缓冲池大小</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>这些值定义了LwIP预先分配的各种内存池的大小。默认值通常是16。这里改成10，可能是为了节省一些RAM空间。这是一个典型的<strong>内存占用 vs 网络性能</strong>的权衡。如果你的应用网络负载很高，可能会需要调大这些值，反之则可以调小来节省内存。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> WITH_RTOS 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TCPIP_THREAD_STACKSIZE 1024</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TCPIP_THREAD_PRIO osPriorityNormal</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DEFAULT_UDP_RECVMBOX_SIZE 6</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DEFAULT_TCP_RECVMBOX_SIZE 6</span></span><br></pre></td></tr></tbody></table></figure>
+<p>这些配置告诉LwIP它正运行在FreeRTOS这样的操作系统环境下。LwIP会创建自己的核心线程(<code>tcpip_thread</code>)来处理网络事件，这里为它分配了1024字节的堆栈空间和普通优先级。而<code>MBOX_SIZE</code>定义了线程间通信邮箱（队列）的大小，用于在你的应用线程和LwIP核心线程之间传递消息（比如“收到了新数据”）。</p>
+<h3 id="总结">总结</h3>
+<ol>
+<li><strong>根本需求：</strong> 高性能的STM32H7芯片，CPU带着Cache，以太网用着DMA，两者直接操作内存会产生数据不一致的风险。</li>
+<li><strong>硬件对策：</strong> 使用MPU，在SRAM里划出一块16KB的“DMA安全区”（起始于<code>0x30004000</code>），并强制设定其属性为<strong>非缓存、共享、非缓冲</strong>，确保任何对这块内存的读写都是直接、实时的。</li>
+<li><strong>软件配合：</strong> 通过<code>lwipopts.h</code>文件，精准地告诉LwIP：
+<ul>
+<li><strong>用哪块内存：</strong> 使用<code>LWIP_RAM_HEAP_POINTER</code>宏，将其内存堆的起点指向MPU设定的安全区地址<code>0x30004000</code>。</li>
+<li><strong>相信硬件：</strong> 打开<code>CHECKSUM_BY_HARDWARE</code>，将校验和计算任务交给以太网硬件，解放CPU。</li>
+<li><strong>与系统相容：</strong> 配置好RTOS相关的线程、邮箱参数，让LwIP能顺利地在多任务环境下运行。</li>
+</ul>
+</li>
+</ol>
+<h2 id="变量分配至不同内存区域">变量分配至不同内存区域</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wallace89/article/details/117001405">STM32H743+CubeIDE-将变量定义到指定的内存_stm32把变量定义在外部ram-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/armfly/p/11014230.html">【STM32H7教程】第25章 STM32H7的TCM，SRAM等五块内存基础知识 - 硬汉嵌入式 - 博客园</a></p>
+<p>这篇blog主要是讲怎么把变量定义到指定的内存,介绍了</p>
+<ol>
+<li>
+<p>内存地址分配的情况</p>
+</li>
+<li>
+<p>DTCM SRAM 等情况</p>
+</li>
+<li>
+<p>一般普通定义的全局变量都是定义在指定的DTCM内存，但是<strong>DTCM内存的大小仅仅只有128K，资源很宝贵</strong>。如果项目规模较大，就需要考虑将一些全局变量存放到其他RAM里。于是可以通过链接文件ld文件给特定的变量定义到不同的内存里</p>
+<p>比如<strong>使用_attribute__((section(“name”)))声明变量</strong></p>
+<p>在keil里面可以用<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44788542/article/details/127537956">sct文件配置</a>	以及ld链接文件</p>
+</li>
+</ol>
+<p>​</p>
+<p>在实际项目中，充分发挥STM32H7的性能，必须将频繁存取的数据存放在DTCM内存。TCM：Tightly-Coupled Memory 紧密耦合内存，特点是跟内核速度一样（480M）。但是，其他内存（SRAM1,AXI SRAM,SRAM2,SRAM3等）跟CPU的通讯速度只有200M，CPU需要白白等待一段时间，才能把数据读取出来或者将数据存放进去。为了提高CPU与其他内存的通讯效率，Cortex-M7有了Cache（高速缓冲区，与CPU通讯速度400M）</p>
+<p><img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202509252013415.png" alt="image-20250808210107588"></p>
+<p>DTCM（在STM32CubeIDE称为RAM）： 0x20000000 ~ 0x20020000(size:128K)<br>
+AXI SRAM（RAM_D1) : 0x24000000 ~ 0x24080000(size:512K)<br>
+AHB SRAM（RAM_D2）：0x30000000 ~ 0x30048000(size:288K)<br>
+SRAM4（RAM_D3）：0x38000000 ~ 0x38010000(size:64K)</p>
+<p><img src="https://gitee.com/ruoxiandmosong/pic/raw/master/img2/202509252013781.png" alt="image-20250808203011882"></p>
+<h2 id="查看FLASH与RAM细节">查看FLASH与RAM细节</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wallace89/article/details/116723737">STM32CubeIDE教程-查看FLASH与RAM细节_stm32cubeide build analyzer-CSDN博客</a></p>
+<p>FLASH主要是保存代码而RAM是保存程序运行时的数据（比如全局变量，堆数据与栈数据</p>
+<p>栈（stack）空间，用于局部变量，函数调时现场保护和返回地址，函数的形参等。</p>
+<p>堆（heap）空间，主要用于动态内存分配，如malloc，calloc，realloc等函数分配的变量空间是在堆上。</p>
+<h2 id="Cortex-M7-MPU配置相关">Cortex M7 MPU配置相关</h2>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wallace89/article/details/117233443">STM32H743+CubeMX-梳理MPU的设置_background region privileged accesses only-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44584198/article/details/118964395">番外篇：STM32H7的Cache和MPU以及内存分配问题_xip模式 cache策略 h7-CSDN博客</a></p>
+<p>因为DMA是直接与SRAM交换数据的，而CPU与SRAM之间隔了一个Cache，如果DMA更新了某个数据到SRAM，CPU要去访问，而恰好Cache中有，那么CPU就不会去SRAM中拿，就会拿到Cache中已经过时的数据。因此使用了DMA的内存区要配置为无Cache或者拿数据前清一次Cache</p>
+<p>MPU防止不受信任的应用程序访问受保护的内存区域； 防止用户应用程序破坏操作系统使用的数据；通过阻止任务访问其它任务的数据区；允许将内存区域定义为只读，以便保护重要数据；检测意外的内存访问。 简单的说就是内存保护、外设保护和代码访问保护。</p>
+<p>为什么使用Cache才能充分发挥CPU的性能?在默认的配置下，静态内存优先使用128KB的DTCM。原因是CPU读写DTCM内存的速度是480M，所以一般优先使用128KB的DTCM。CPU直接读写其他静态内存的速度仅仅只有200M，白白浪费CPU的480M主频了。为了解决这个问题，Cortex-M7架构有了cache。通过提前将数据缓冲到12KB的cache，然后CPU再从cache里读取数据，这样就能解决当CPU读写AXI SRAM与SRAM1等内存时所造成的性能损失。<br>
+为什么要学习使用MPU?只有通过设置MPU才能配置cache，才能正常使用cache缓存数据</p>
+<p>并不是DTCM挤满了才有机会使用MPU。比如当使用ADC+DMA采集模拟量数据时，DMA并不能将外设采集的模拟量数据存放到DTCM里，一般只能放进AXI SRAM，SRAM1，SRAM2，SRAM3里。此时，就需要使用MPU+cache提高CPU读写AXI RAM，SRAM1等内存的速度。</p>
+<p><code>配置MPU的目的是使用cache，所以可以简单地将MPU的设置分为三部分。</code>第一部分是配置MPU的内存地址，第二部分是配置Cache的读写规则，第三部分设置保护规则（配置MPU是为了使用Cache，所以不用保护）。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lling.online">汐汐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lling.online/2025/08/06/lwip_enternet/">https://www.lling.online/2025/08/06/lwip_enternet/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lling.online" target="_blank">汐汐的成长之路</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STM32H7/">STM32H7</a><a class="post-meta__tags" href="/tags/LWIP/">LWIP</a></div><div class="post_share"><div class="social-share" data-image="/img/top-img/stm32.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><img class="cover" src="/img/top-img/stm32.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</div></div></a></div><div class="next-post pull-right"><a href="/2025/08/06/stm32h7_dma_lwip/" title="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题"><img class="cover" src="/img/top-img/stm32.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><img class="cover" src="/img/top-img/stm32.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-06</div><div class="title">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</div></div></a></div><div><a href="/2025/08/06/stm32h7_dma_lwip/" title="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题"><img class="cover" src="/img/top-img/stm32.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-06</div><div class="title">【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/miao.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">汐汐</div><div class="author-info__description">总有一些坚持，能从一寸冰封的土壤里培育出十万朵怒放的蔷薇❀❀</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53131867?type=blog"><i class="fab custom csdn"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xi-song" target="_blank" title="GitHub"><i class="iconfont icon-GitHub" style="color: #24292e;"></i></a><a class="social-icon" href="/%5Cimg%5Cali.jpg" target="_blank" title="Wechat"><i class="iconfont icon-weixin" style="color: #28c445;"></i></a><a class="social-icon" href="https://blog.csdn.net/qq_53131867?type=blog" target="_blank" title="CSDN"><i class="iconfont icon-csdn" style="color: #dd1700;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/shui-meng-tong-hua" target="_blank" title="Zhihu"><i class="iconfont icon-zhihu" style="color: #0066ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到汐汐的知识小窝，不定期分享导航定位，编程，科研相关知识，欢迎关注收藏噢~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">stm32H7 以太网配置引申的内存问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81MPU"><span class="toc-number">1.1.</span> <span class="toc-text">为什么需要MPU</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MPU-%E9%85%8D%E7%BD%AE-MPU-Config-%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90"><span class="toc-number">1.1.1.</span> <span class="toc-text">MPU 配置 (MPU_Config) 代码解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lwipopts-h-%E6%96%87%E4%BB%B6%E8%A7%A3%E6%9E%90"><span class="toc-number">1.1.2.</span> <span class="toc-text">lwipopts.h 文件解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.1.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E5%88%86%E9%85%8D%E8%87%B3%E4%B8%8D%E5%90%8C%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="toc-number">1.2.</span> <span class="toc-text">变量分配至不同内存区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BFLASH%E4%B8%8ERAM%E7%BB%86%E8%8A%82"><span class="toc-number">1.3.</span> <span class="toc-text">查看FLASH与RAM细节</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cortex-M7-MPU%E9%85%8D%E7%BD%AE%E7%9B%B8%E5%85%B3"><span class="toc-number">1.4.</span> <span class="toc-text">Cortex M7 MPU配置相关</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"/></a><div class="content"><a class="title" href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</a><time datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/08/06/lwip_enternet/" title="【记录】stm32H7 以太网配置引申的内存问题"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【记录】stm32H7 以太网配置引申的内存问题"/></a><div class="content"><a class="title" href="/2025/08/06/lwip_enternet/" title="【记录】stm32H7 以太网配置引申的内存问题">【记录】stm32H7 以太网配置引申的内存问题</a><time datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/08/06/stm32h7_dma_lwip/" title="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题"/></a><div class="content"><a class="title" href="/2025/08/06/stm32h7_dma_lwip/" title="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题">【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题</a><time datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"/></a><div class="content"><a class="title" href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置">【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置</a><time datetime="2025-06-22T01:44:13.000Z" title="发表于 2025-06-22 09:44:13">2025-06-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/21/hexo-config/" title="hexo &amp; git"><img src="/img/top-img/baofu.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hexo &amp; git"/></a><div class="content"><a class="title" href="/2025/05/21/hexo-config/" title="hexo &amp; git">hexo &amp; git</a><time datetime="2025-05-21T08:19:57.000Z" title="发表于 2025-05-21 16:19:57">2025-05-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By 汐汐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi，welocme to my blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const initGitalk = () => {
+    const gitalk = new Gitalk(Object.assign({
+      clientID: 'Ov23lilBvAg6ryz910Bq',
+      clientSecret: '35f8ef4fa5095c847021e15ea2be9f3c413e55b8',
+      repo: 'xi-song.github.io',
+      owner: 'xi-song',
+      admin: ['xi-song'],
+      id: '352d35091fc2c345a9f1871bf275b68e',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async() => {
+    if (typeof Gitalk === 'function') initGitalk()
+    else {
+      await getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk()
+    }
+  }
+  
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/styles/fish.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

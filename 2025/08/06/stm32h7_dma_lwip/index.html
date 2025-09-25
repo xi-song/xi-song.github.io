@@ -1,0 +1,490 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta name="referrer" content="no-referrer"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题 | 汐汐的成长之路</title><meta name="author" content="汐汐"><meta name="copyright" content="汐汐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题 主要的bug: 从串口发送数据，由DMA搬运到指定的数据地址（自己给分配的一段内存区域） 只有第一次发送的数据是正确的 后面发送的数据在相应的地址区域都是断断续续的，出现了数据丢失 比如 第一次发送的数据是88 88 88 88 ，第二次发送的也是一样的数据，但是在我设hi的那">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题">
+<meta property="og:url" content="https://www.lling.online/2025/08/06/stm32h7_dma_lwip/index.html">
+<meta property="og:site_name" content="汐汐的成长之路">
+<meta property="og:description" content="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题 主要的bug: 从串口发送数据，由DMA搬运到指定的数据地址（自己给分配的一段内存区域） 只有第一次发送的数据是正确的 后面发送的数据在相应的地址区域都是断断续续的，出现了数据丢失 比如 第一次发送的数据是88 88 88 88 ，第二次发送的也是一样的数据，但是在我设hi的那">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.lling.online/img/top-img/stm32.png">
+<meta property="article:published_time" content="2025-08-06T10:33:17.000Z">
+<meta property="article:modified_time" content="2025-09-25T12:15:11.490Z">
+<meta property="article:author" content="汐汐">
+<meta property="article:tag" content="STM32H7">
+<meta property="article:tag" content="LWIP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.lling.online/img/top-img/stm32.png"><link rel="shortcut icon" href="/img/xix.png"><link rel="canonical" href="https://www.lling.online/2025/08/06/stm32h7_dma_lwip/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e588f3c6266a7f7c4936775cbf8be029";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><link rel="stylesheet" href="/styles/font.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-25 20:15:11'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/styles/main.css"><script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script><link rel="stylesheet" href="/styles/icon.css"><link rel="stylesheet" href="/styles/font.css"><meta name="generator" content="Hexo 7.2.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/miao.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top-img/stm32.png')"><nav id="nav"><span id="blog-info"><a href="/" title="汐汐的成长之路"><img class="site-icon" src="/img/miao.png"/><span class="site-name">汐汐的成长之路</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-25T12:15:11.490Z" title="更新于 2025-09-25 20:15:11">2025-09-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题</h1>
+<p>主要的bug: 从串口发送数据，由DMA搬运到指定的数据地址（自己给分配的一段内存区域） 只有第一次发送的数据是正确的 后面发送的数据在相应的地址区域都是断断续续的，出现了数据丢失</p>
+<p>比如 第一次发送的数据是88 88 88 88 ，第二次发送的也是一样的数据，但是在我设hi的那块地址第一次接收的是88 88 88 88，第二次就出现了数据的丢失，出现的是 00 00 00 88</p>
+<h2 id="【bug1】-初始化配置顺序">【bug1】 初始化配置顺序</h2>
+<p>首先展示一下我这个初始化配置的内容，乍一看是不是没什么问题。</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">{</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 1 */</span></span><br><span class="line">HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);</span><br><span class="line">  <span class="comment">/* USER CODE END 1 */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MPU Configuration--------------------------------------------------------*/</span></span><br><span class="line">  MPU_Config();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable the CPU Cache */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable I-Cache---------------------------------------------------------*/</span></span><br><span class="line">  SCB_EnableICache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Enable D-Cache---------------------------------------------------------*/</span></span><br><span class="line">  SCB_EnableDCache();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* MCU Configuration--------------------------------------------------------*/</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Reset of all peripherals, Initializes the Flash interface and the Systick. */</span></span><br><span class="line">  HAL_Init();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE END Init */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Configure the system clock */</span></span><br><span class="line">  SystemClock_Config();</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN SysInit */</span></span><br><span class="line"></span><br><span class="line">    __HAL_RCC_D2SRAM1_CLK_ENABLE();</span><br><span class="line">	MX_GPIO_Init1();</span><br><span class="line">  <span class="comment">/* USER CODE END SysInit */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Initialize all configured peripherals */</span></span><br><span class="line">  MX_GPIO_Init();</span><br><span class="line">  MX_DMA_Init();</span><br><span class="line"></span><br><span class="line">  MX_UART5_Init();</span><br><span class="line">  MX_UART4_Init();</span><br><span class="line">  </span><br><span class="line">  MX_UART7_Init();</span><br><span class="line">  MX_UART8_Init();</span><br><span class="line">  MX_UART9_Init();</span><br><span class="line">  MX_USART1_UART_Init();</span><br><span class="line">  MX_USART2_UART_Init();</span><br><span class="line">  MX_USART3_UART_Init();</span><br><span class="line">  MX_USART6_UART_Init();</span><br><span class="line"> </span><br><span class="line">  <span class="comment">/* USER CODE BEGIN 2 */</span></span><br><span class="line">  </span><br><span class="line">  SCB_CleanInvalidateDCache();</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  <span class="comment">//MX_FREERTOS_Init();</span></span><br><span class="line">  <span class="comment">//osKernelStart();</span></span><br><span class="line">    HAL_GPIO_WritePin(RMII_NRST_GPIO_Port, RMII_NRST_Pin, GPIO_PIN_RESET);</span><br><span class="line">    HAL_Delay(<span class="number">100</span>);</span><br><span class="line">	</span><br><span class="line">    HAL_GPIO_WritePin(RMII_NRST_GPIO_Port, RMII_NRST_Pin, GPIO_PIN_SET);</span><br><span class="line">    HAL_Delay(<span class="number">100</span>);</span><br><span class="line"> 	UsartDMAInit();</span><br><span class="line">  <span class="comment">/* USER CODE END 2 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//  /* Call init function for freertos objects (in cmsis_os2.c) */</span></span><br><span class="line">	MX_FREERTOS_Init();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//  /* Start scheduler */</span></span><br><span class="line">	osKernelStart();</span><br><span class="line"> </span><br><span class="line">  <span class="comment">/* We should never get here as control is now taken by the scheduler */</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Infinite loop */</span></span><br><span class="line">  <span class="comment">/* USER CODE BEGIN WHILE */</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">  {</span><br><span class="line">    <span class="comment">/* USER CODE END WHILE */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* USER CODE BEGIN 3 */</span></span><br><span class="line">     </span><br><span class="line">  }</span><br><span class="line">  <span class="comment">/* USER CODE END 3 */</span></span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<hr>
+<p>但是其实 这个东西还是有坑的</p>
+<p>UsartDMAInit();放在 SCB_CleanInvalidateDCache();  前面 DMA数据不会出现这个问题  如果 UsartDMAInit() 放在 SCB_CleanInvalidateDCache(); 后面就会有问题</p>
+<p>其中UsartDMAInit() 是DMA 串口相关的配置函数的初始化</p>
+<p>SCB_CleanInvalidateDCache() 是一种用于在 ARM Cortex-M 处理器上管理数据缓存（D-Cache）的函数</p>
+<hr>
+<p>下面是一段AI的描述和解释 大家可以参考参考</p>
+<h4 id="关于SCB-CleanInvalidateDCache">关于SCB_CleanInvalidateDCache()</h4>
+<blockquote>
+<p>首先了解一下这个函数   这个函数使用主要是因为H7系列的单片机使用的lwip,这是以太网相关配置的一部分 至于为什么要配置这个函数可以看看相关的<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53131867/article/details/150145263?spm=1001.2014.3001.5501">blog</a> 简单来说，就是从以太网获取的数据需要实时更新，于是不能让cpu直接从缓存里面去读，而要让cpu去内存里面读数据，这样的数据才是完美的。</p>
+</blockquote>
+<p>SCB_CleanInvalidateDCache 是一种用于在 ARM Cortex-M 处理器上管理数据缓存（D-Cache）的函数。它有两个主要作用：<strong>清除（Clean）</strong> 和<strong>无效化（Invalidate）</strong>。理解这个函数，需要先了解数据缓存的工作原理。</p>
+<p>数据缓存是处理器中的一小块高速存储器，它位于主存储器（例如 RAM）和 CPU 之间。它的作用是存储 CPU 最近访问过的数据副本。当 CPU 需要一个数据时，它首先在缓存中查找。</p>
+<ul>
+<li><strong>如果数据在缓存中（命中）</strong>，CPU 可以立即从高速缓存中获取数据，这比从主存储器中读取要快得多。</li>
+<li><strong>如果数据不在缓存中（未命中）</strong>，CPU 必须从较慢的主存储器中获取数据，然后将该数据的一个副本也存入缓存，以便将来快速访问。</li>
+</ul>
+<p><strong>SCB_CleanInvalidateDCache 的功能</strong></p>
+<p>当主存储器和缓存中的数据不再同步时，就会出现问题。这个函数就是用来解决这种数据不一致问题的。</p>
+<h5 id="1-清除（Clean）">1. 清除（Clean）</h5>
+<p><strong>清除</strong>操作确保缓存中的数据被写回主存储器。</p>
+<ul>
+<li><strong>为什么需要清除？</strong> 当 CPU 修改了缓存中的数据时，这些修改通常不会立即被写回主存储器。如果另一个设备（比如 DMA 控制器、DMA - 直接存储器访问）需要从同一块主存储器中读取数据，它可能会读到旧的数据，而不是 CPU 刚刚修改过的新数据。</li>
+<li><strong>SCB_CleanInvalidateDCache</strong> 函数执行清除操作时，会遍历缓存中所有**已修改（dirty）**的数据块，并将它们强制写回到主存储器。</li>
+</ul>
+<p><strong>举例：</strong> 假设你正在使用 DMA 来传输数据。CPU 先修改了一个数组，该数组的副本在缓存中。如果 DMA 立刻开始从主存储器读取这个数组，它读到的会是旧的数据。在启动 DMA 传输之前调用 <code>SCB_CleanInvalidateDCache</code>，可以确保 CPU 做的所有修改都被“推”回到主存储器，这样 DMA 就能访问到最新的数据。</p>
+<h5 id="2-无效化（Invalidate）">2. 无效化（Invalidate）</h5>
+<p><strong>无效化</strong>操作会使缓存中的数据标记为无效，这意味着 CPU 下次访问该数据时，必须重新从主存储器中加载。</p>
+<ul>
+<li><strong>为什么需要无效化？</strong> 当主存储器中的数据被 CPU 以外的设备修改时（比如 DMA 或另一个 CPU 内核），缓存中的数据副本就过时了。如果 CPU 再次访问这个数据，它可能会从缓存中读取到一个“陈旧”的副本，而不是主存储器中已经更新过的新数据。</li>
+<li><strong>SCB_CleanInvalidateDCache</strong> 函数执行无效化操作时，会丢弃缓存中的所有数据，迫使 CPU 再次访问时从主存储器重新加载。</li>
+</ul>
+<p><strong>举例：</strong> 假设 DMA 已经完成了一次数据接收，并将新数据写入了主存储器中的一个缓冲区。这个缓冲区在缓存中可能有一个旧的、已失效的副本。在 CPU 准备处理这个新数据之前，调用 <code>SCB_CleanInvalidateDCache</code>，可以确保缓存中旧的副本被丢弃，CPU 只能从主存储器中获取 DMA 刚刚写入的最新数据。</p>
+<p><code>SCB_CleanInvalidateDCache</code> 函数结合了这两种操作：它首先<strong>清除</strong>所有已修改的缓存数据，将其写回主存储器，然后<strong>无效化</strong>整个数据缓存，以确保所有数据副本都是最新的。</p>
+<ul>
+<li>这个函数通常在需要确保<strong>主存储器和缓存同步</strong>的场景中使用，比如：
+<ul>
+<li>在启动 DMA 传输之前（需要清除缓存）。</li>
+<li>在 DMA 传输完成后，CPU 准备处理新数据之前（需要无效化缓存）。</li>
+<li>在进行内存映射的 I/O 操作时。</li>
+</ul>
+</li>
+<li><strong>滥用此函数会影响性能</strong>，因为每次调用都会导致 CPU 强制从较慢的主存储器加载数据。只在有明确需要同步缓存和主存储器的时候使用它。</li>
+<li>具体使用方式和参数可能会因不同的 Cortex-M 处理器和工具链而异，但其核心功能——清除和无效化——是相同的。通常这个函数会由芯片厂商提供的 HAL（硬件抽象层）或 CMSIS（Cortex 微控制器软件接口标准）库提供。</li>
+</ul>
+<h4 id="CPU-缓存和-DMA-的不一致性">CPU 缓存和 DMA 的不一致性</h4>
+<p>STM32H7 系列处理器拥有一个高性能的 Cortex-M7 内核，它带有数据缓存（D-Cache）。</p>
+<ol>
+<li><strong>DMA 的工作方式</strong>：DMA（直接存储器访问）是一种外设，它可以在没有 CPU 干预的情况下，将数据从一个地方（如 UART 接收寄存器）直接传输到另一个地方。<strong>DMA 传输是直接写入主存储器（RAM）的，它完全不经过 CPU 的数据缓存。</strong></li>
+<li><strong>CPU 缓存的工作方式</strong>：当 CPU 访问一个内存地址时，它会先检查自己的数据缓存。
+<ul>
+<li><strong>第一次访问</strong>：如果缓存中没有这个地址的数据，CPU 会从主存储器中加载数据到缓存中，然后进行操作。</li>
+<li><strong>后续访问</strong>：如果缓存中已经有了这个地址的数据，CPU 就会直接从缓存中读取或写入，而不会去访问主存储器。</li>
+</ul>
+</li>
+</ol>
+<h5 id="为什么会出现数据丢失？">为什么会出现数据丢失？</h5>
+<p>当你将 <code>UsartDMAInit()</code> 放在 <code>SCB_CleanInvalidateDCache()</code> <strong>之后</strong>时，问题就来了：</p>
+<ol>
+<li><strong><code>UsartDMAInit()</code> 执行</strong>：你的代码会初始化 DMA 并启动 UART 接收。DMA 开始工作，从 UART 接收数据并将其<strong>直接写入 <code>s_all_uart_dmarx_buf</code></strong> 这块主存储器区域。</li>
+<li><strong><code>SCB_CleanInvalidateDCache()</code> 执行</strong>：这是一个非常关键的步骤。在这个函数被调用时，数据缓存被 <strong>清除（Clean）</strong> 和 <strong>无效化（Invalidate）</strong>。
+<ul>
+<li><strong>清除</strong>：将所有被 CPU 修改过的缓存数据写回主存储器。</li>
+<li><strong>无效化</strong>：<strong>使整个数据缓存中的所有数据副本都变为无效</strong>。</li>
+</ul>
+</li>
+</ol>
+<p>当 <code>SCB_CleanInvalidateDCache()</code> 在 <code>UsartDMAInit()</code> 之后执行时，它会使你的 CPU 刚刚设置的 DMA 缓冲区（<code>s_all_uart_dmarx_buf</code>）在缓存中的状态变为无效。这本身不是问题。</p>
+<p><strong>真正的 bug 在于，你的代码中没有在 DMA 传输完成后，也就是在准备处理数据之前，再次进行缓存无效化。</strong></p>
+<p>在 <code>vUartRxProcessTask</code> 函数中，你会将 DMA 缓冲区中的数据拷贝到另一个私有缓冲区 <code>s_all_uart_rx_buf</code>。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 从DMA缓冲区拷贝数据</span><br><span class="line">memcpy(p_dev-&gt;rx_buf, (uint8_t *)region_start, region_len);</span><br></pre></td></tr></tbody></table></figure>
+<p>因为 <code>memcpy</code> 是一个 CPU 操作，它会通过数据缓存进行。</p>
+<ul>
+<li><strong>第一次发送数据</strong>：这是程序刚启动，CPU 第一次访问 <code>s_all_uart_dmarx_buf</code>。因为缓存中没有这块内存的数据，CPU 会从主存储器读取 DMA 写入的正确数据，并将其拷贝到私有缓冲区。</li>
+<li><strong>第二次发送数据</strong>：当 DMA 接收第二次数据并将其写入 <code>s_all_uart_dmarx_buf</code> 时，这个操作发生在主存储器。但 <strong>CPU 缓存中仍然可能保留着第一次访问时的旧数据副本</strong>。当你再次执行 <code>memcpy</code> 时，CPU 可能会直接从缓存中读取数据，而不是从主存储器中 DMA 写入的新数据，导致你看到的“数据丢失”或“数据不正确”现象，比如 <code>00 00 00 88</code>。这正是缓存和主存储器不一致的经典问题。</li>
+</ul>
+<h2 id="【bug2】-缓存清除函数">【bug2】 缓存清除函数</h2>
+<p>在解决完上面的问题之后，我以为是可以了，但是发现还是不行。因为我是想把来自串口的数据通过DMA搬运到我自己设置的内存区域，然后用队列进行发送和接收，整个处理的过程通过结构体传参传输到队列里面，然后通过队列发送，到另一个函数里面去处理解析相关的数据。</p>
+<p><strong>但是整个过程还是出现了原来那个问题。也就是会出现数据的丢失。</strong></p>
+<p>这个时候 ai给出了两个解决方案，第一个方案就是队列的传入的结构体参数过大了，然我把整个队列的结构体改小一点；第二个方案就是引入下面这个函数。</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCB_InvalidateDCache_by_Addr((uint32_t *)aligned_start_addr, aligned_end_addr - aligned_start_addr);</span><br></pre></td></tr></tbody></table></figure>
+<p><code>SCB_InvalidateDCache_by_Addr</code> 的作用就是：</p>
+<ul>
+<li><strong>锁定目标</strong>：你传入的 <code>aligned_start_addr</code> 和 <code>aligned_end_addr - aligned_start_addr</code> 精确地圈定了 DMA 刚刚写入的内存区域。</li>
+<li><strong>强制更新</strong>：该函数会遍历这个指定区域内的所有缓存行（Cache Line），并将它们标记为“无效”。</li>
+<li><strong>下次必读主存</strong>：一旦某个缓存行被标记为无效，当 CPU 下次试图读取该区域内的任何数据时，它将不再从缓存中获取，而是被强制性地从较慢但数据最新的<strong>主存储器</strong>中重新加载数据。</li>
+</ul>
+<p>这个操作就像你给CPU下达了一个明确的指令：“DMA已经更新了这块内存，你缓存里的副本是错的。下次需要数据时，请直接去内存里拿最新的。”</p>
+<blockquote>
+<p>显然 我用了第二种方案，当然也参考了ai给出的第一个方案。</p>
+</blockquote>
+<p><strong><code>SCB_InvalidateDCache_by_Addr</code></strong>：这个函数只针对你关心的、被 DMA 修改的那一小块内存区域进行操作，对其他缓存内容没有影响。因此，它是一种更精细、更高效的缓存管理方式。</p>
+<p>于是乎，我把我原来的代码用ai给的魔改了 加入了这一个函数**<code>SCB_InvalidateDCache_by_Addr</code>**。</p>
+<hr>
+<p>然后发现不管主函数里面的顺序是怎么样的，DMA缓冲区里面的数据都是正确的！</p>
+<h2 id="【bug3】网络协议栈发送数据不更新">【bug3】网络协议栈发送数据不更新</h2>
+<p>接着上一条bug</p>
+<p>我把从串口接收到的数据通过队列 发送给以太网 也出现了上述问题 也就是第一次发送给pc的数据是我发送的数据，但是第二次之后 就是0000</p>
+<blockquote>
+<p>ps :当然其中还发生了一个bug，就是指针作为指针变量传入是不需要加地址的，当时我加了一个地址导致刚开始的时候数据有些错乱。但是后面发现之后，修改过来以为可以，但是还是不行，挺绝望的哈哈哈哈哈哈</p>
+</blockquote>
+<p>其实这个问题也和之前DMA接收是镜像问题</p>
+<p>在我发送数据之前加上这一句也解决了这个问题</p>
+<figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCB_CleanDCache_by_Addr((<span class="type">uint32_t</span> *)debug_print_buffer, udp_msg_to_send.eternet_data_len_bytes);</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="问题分析：缓存与网络协议栈的冲突">问题分析：缓存与网络协议栈的冲突</h3>
+<p>在这个 <code>UdpSendTask1</code> 任务中，数据流向是：</p>
+<ol>
+<li>数据从队列 (<code>udp_tx_queue</code>) 中接收到，存储在 <code>udp_msg_to_send</code> 结构体里。</li>
+<li>数据被 <code>memcpy</code> 从 <code>udp_msg_to_send.data_to_eternet</code> 拷贝到本地缓冲区 <code>debug_print_buffer</code>。</li>
+<li>通过 <code>sendto</code> 函数，数据从 <code>debug_print_buffer</code> 发送到网络接口。</li>
+</ol>
+<p>这里的关键在于 <code>sendto</code> 函数。<strong>LwIP 网络协议栈</strong>，在底层通常会通过 DMA 或其他硬件机制将数据从内存发送到以太网硬件。<strong>这个发送过程和 DMA 接收一样，同样是直接访问主存储器，不经过 CPU 缓存。</strong></p>
+<h4 id="为什么会出现-0000-的问题？">为什么会出现 <code>0000</code> 的问题？</h4>
+<ol>
+<li><strong>第一次发送</strong>：程序刚启动，<code>debug_print_buffer</code> 缓冲区在缓存中是空的。当 <code>memcpy</code> 将数据从队列拷贝到 <code>debug_print_buffer</code> 时，CPU 会把数据写入缓存。由于是第一次访问，缓存中的数据是正确的。</li>
+<li><strong><code>sendto</code> 调用</strong>：网络协议栈的底层硬件（比如以太网 MAC 的 DMA）要发送数据时，它会从主存储器读取 <code>debug_print_buffer</code> 的内容。
+<ul>
+<li><strong>问题来了</strong>：CPU 已经将数据写入了它的<strong>缓存</strong>，但这些数据可能<strong>还没有被写回主存储器</strong>。</li>
+<li>于是，当网络硬件去主存储器读取数据时，它读到的是 <code>debug_print_buffer</code> 区域里的<strong>旧数据</strong>，或者因为这块内存刚被分配而导致的<strong>零值（<code>0x00</code>）</strong>。</li>
+<li>这就是你看到的第一次发送正常，但后续发送都是 <code>0000</code> 的原因。CPU 以为自己已经更新了数据，但主存储器里的数据仍然是旧的或空的，导致网络硬件发送了错误的数据。</li>
+</ul>
+</li>
+</ol>
+<h4 id="为什么-SCB-CleanDCache-by-Addr-可以解决问题？">为什么 <code>SCB_CleanDCache_by_Addr</code> 可以解决问题？</h4>
+<p><code>SCB_CleanDCache_by_Addr</code> 这个函数的作用是 <strong>“清除（Clean）”</strong> 指定地址范围的数据缓存。</p>
+<ul>
+<li><strong><code>SCB</code></strong>：系统控制块。</li>
+<li><strong><code>CleanDCache</code></strong>：<strong>清除数据缓存</strong>。这个操作会强制将指定地址范围内的、所有被 CPU 修改过的缓存数据（也就是“脏”数据）<strong>写回到主存储器</strong>。</li>
+<li><strong><code>by_Addr</code></strong>：和之前一样，表示操作是针对特定地址和长度进行的。</li>
+</ul>
+<p>当你加上这行代码：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCB_CleanDCache_by_Addr((uint32_t *)debug_print_buffer, udp_msg_to_send.eternet_data_len_bytes);</span><br></pre></td></tr></tbody></table></figure>
+<p>它做了以下关键工作：</p>
+<ol>
+<li>在调用 <code>sendto</code> 之前，你用 <code>memcpy</code> 将数据从队列拷贝到了 <code>debug_print_buffer</code>。这个 <code>memcpy</code> 操作让 CPU 缓存中的 <code>debug_print_buffer</code> 区域变“脏”了。</li>
+<li><code>SCB_CleanDCache_by_Addr</code> 会强制性地将 <code>debug_print_buffer</code> 区域在缓存中的所有修改，立即写回到主存储器。</li>
+<li>一旦这个操作完成，主存储器中的 <code>debug_print_buffer</code> 区域就包含了最新的、正确的数据。</li>
+<li><code>sendto</code> 函数随后调用底层硬件发送数据。当网络硬件通过 DMA 访问主存储器时，它读取到的就是刚刚被“清除”过来的正确数据，而不是旧的或空的。</li>
+</ol>
+<h4 id="所以为什么MPU配置好了之后，还需要手动让缓存区不可访问">所以为什么MPU配置好了之后，还需要手动让缓存区不可访问</h4>
+<blockquote>
+<p>在进行stm32H7系列这种高性能的单片机LWIP配置的时候 MPU是必须配置的一个环节，在配置的时候我们就已经设置了在LWIP相关网络区域内的数据是必须直接访问，而不是通过缓存区访问的。所以为什么还需要手动进行<code>SCB_CleanDCache_by_Addr</code> 呢？</p>
+</blockquote>
+<p>下面是ai的回复，大家参考参考：</p>
+<p>问题是：既然我已经用 MPU 配置了网络相关的内存区域，并且设置为 <code>MPU_ACCESS_NOT_CACHEABLE</code>（不可缓存），为什么还需要手动调用 <code>SCB_CleanDCache_by_Addr</code>？</p>
+<h5 id="MPU-的作用和局限性">MPU 的作用和局限性</h5>
+<p>首先，让我们澄清一下 MPU 的主要作用。</p>
+<p>MPU 主要用于：</p>
+<ol>
+<li><strong>内存保护</strong>：防止非法访问内存区域，例如禁止用户代码访问特权代码的内存。</li>
+<li><strong>定义内存属性</strong>：为特定内存区域定义不同的访问属性，如是否可执行、是否可读写、以及最重要的——<strong>缓存策略</strong>。</li>
+</ol>
+<p>通过将 <code>MPU_InitStruct.IsCacheable</code> 设置为 <code>MPU_ACCESS_NOT_CACHEABLE</code>，你的意图是让 CPU 访问这些内存区域时，<strong>不使用缓存</strong>。也就是说，每次读写都直接通过总线访问主存储器。</p>
+<p><strong>理论上，如果所有与 DMA 或网络硬件交互的内存区域都严格配置为“不可缓存”，那么你就不需要手动进行缓存同步操作了。因为 CPU 根本不会为这些区域创建缓存副本。</strong></p>
+<h5 id="为什么问题依然存在？">为什么问题依然存在？</h5>
+<p>既然理论上如此，为什么你的代码还是需要 <code>SCB_CleanDCache_by_Addr</code> 才能正常工作？这可能有以下几个原因：</p>
+<ol>
+<li>
+<p><strong>MPU 配置不完整或不正确</strong>：</p>
+<ul>
+<li>你提供的 <code>MPU_Config</code> 函数只配置了三个区域，地址分别是 <code>0x30000000</code>、<code>0x30004000</code> 和一个未指定地址的区域。</li>
+<li>你的网络协议栈（LwIP）使用的缓冲区可能不在你配置的这几个 MPU 区域内。</li>
+<li>例如，如果 <code>lwip</code> 在堆上动态分配了缓冲区，或者使用了 <code>D3SRAM</code> 区域，而你没有为这些区域配置正确的 MPU 属性，那么这些缓冲区仍然可能是可缓存的。当 CPU 访问这些可缓存的区域时，缓存不一致的问题就会再次出现。</li>
+</ul>
+</li>
+<li>
+<p><strong>MPU 和 <code>SCB_CleanDCache</code> 的职责不同</strong>：</p>
+<ul>
+<li><strong>MPU 是一个配置工具</strong>：它定义了内存区域的<strong>行为规则</strong>。它告诉 CPU “这块内存你永远不要缓存”。</li>
+<li><strong><code>SCB_CleanDCache</code> 是一个操作函数</strong>：它执行一个<strong>具体的动作</strong>，即“把缓存中已经存在的脏数据写回主存”。</li>
+<li>即使 MPU 已经定义了某些区域是不可缓存的，其他没有被 MPU 定义的、默认可缓存的区域依然存在。<code>SCB_CleanDCache_by_Addr</code> 的作用是确保在<strong>可缓存区域</strong>上的操作能够正确地同步到主存，这通常用于在 MPU 无法覆盖所有情况时，作为一种额外的安全措施。</li>
+</ul>
+</li>
+<li>
+<p><strong>调试缓冲区的位置问题</strong>：</p>
+<blockquote>
+<p><span class="github-emoji" style="display:inline;vertical-align:middle"><span>🤔</span><img src="https://github.githubassets.com/images/icons/emoji/unicode/1f914.png?v8" aria-hidden="true" onerror="this.parent.classList.add('github-emoji-fallback')"></span> 其实​我觉得是这个问题</p>
+</blockquote>
+<ul>
+<li>你的 <code>UdpSendTask1</code> 任务中，<code>debug_print_buffer</code> 是一个局部变量，它通常分配在任务的栈上，而栈所在的内存区域（通常在 <code>D1/D2/D3 SRAM</code> 中）默认是可缓存的。</li>
+<li><code>sendto</code> 函数要发送的数据是 <code>debug_print_buffer</code> 里的内容。</li>
+<li><code>memcpy</code> 将数据拷贝到 <code>debug_print_buffer</code> 后，数据可能只存在于 CPU 的缓存中。</li>
+<li>由于 <code>debug_print_buffer</code> 所在的栈内存区域是可缓存的，网络协议栈（通过 DMA）去主存读取数据时，读到的仍然是旧的或零值。</li>
+<li>手动调用 <code>SCB_CleanDCache_by_Addr</code> 正是解决了这个特定问题：它强制将 <code>debug_print_buffer</code> 里的数据从缓存写回到主存，让 <code>sendto</code> 函数能够读取到正确的数据。</li>
+</ul>
+</li>
+</ol>
+<h5 id="结论">结论</h5>
+<p><strong>MPU 和 <code>SCB_CleanDCache_by_Addr</code> 并不冲突，而是互补的。</strong></p>
+<ul>
+<li><strong>MPU</strong> 是在<strong>设计阶段</strong>对内存访问策略进行<strong>静态配置</strong>。</li>
+<li><strong><code>SCB_Clean/Invalidate</code></strong> 是在<strong>运行时</strong>对缓存进行<strong>动态操作</strong>。</li>
+</ul>
+<p>你遇到的问题很可能就是因为 <strong><code>debug_print_buffer</code> 所在的内存区域没有被 MPU 配置为不可缓存</strong>，或者说，你的 MPU 配置没有覆盖所有与网络相关的缓冲区。因此，当 CPU 对这个缓冲区进行操作时，仍然会用到缓存，而网络硬件访问主存时就会出现不同步。</p>
+<p><code>SCB_CleanDCache_by_Addr</code> 成了解决这个问题的有效方案，因为它强制将 CPU 缓存中的最新数据写回主存，从而确保网络硬件能够读取到正确的数据进行发送。</p>
+<h2 id="总结一下">总结一下</h2>
+<p>当 <code>SCB_CleanInvalidateDCache()</code> 放在 <code>UsartDMAInit()</code> <strong>前面</strong>时，程序流程变成了：</p>
+<ol>
+<li><code>SCB_CleanInvalidateDCache()</code>：<strong>在 DMA 初始化前</strong>，整个数据缓存被清空并无效化。</li>
+<li><code>UsartDMAInit()</code>：DMA 开始工作。</li>
+<li><strong>第一次数据传输</strong>：DMA 将数据写入主存储器。当 CPU 稍后访问这块内存时，由于缓存是空的，它会直接从主存储器加载数据，所以第一次数据是正确的。</li>
+<li><strong>第二次及后续数据传输</strong>：DMA 继续将新数据写入主存储器。然而，在你的 <code>UartDataProcess</code> 函数中，你有一个非常关键的步骤：</li>
+</ol>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCB_InvalidateDCache_by_Addr((uint32_t *)aligned_start_addr, aligned_end_addr - aligned_start_addr);</span><br></pre></td></tr></tbody></table></figure>
+<p>这个函数调用是在 <strong>每次处理 DMA 数据之前</strong> 执行的。它精确地无效化了 DMA 刚刚写入的那一块特定内存区域，确保 CPU 在执行 <code>memcpy</code> 之前，必须从主存储器加载最新数据，而不是使用缓存中的旧数据。</p>
+<ul>
+<li>
+<p><strong>DMA 传输（接收）和网络硬件发送（通过 DMA）</strong> 都直接访问主存储器，它们不关心 CPU 缓存。DMA 和 CPU 访问同一块内存时，必须通过缓存同步函数来保证数据一致性。</p>
+</li>
+<li>
+<p><strong>CPU 操作（如 <code>memcpy</code>）</strong> 会优先在数据缓存中进行。</p>
+</li>
+<li>
+<p>当 CPU 写入数据，然后 DMA 或网络硬件需要读取这些数据时，如果这些数据没有被及时从缓存同步到主存储器，就会出现数据不一致问题。</p>
+</li>
+<li>
+<p><strong><code>SCB_CleanDCache_by_Addr</code></strong> 正是解决这个问题的利器。它强制将 CPU 缓存中的修改推送到主存储器，确保外部硬件能读取到正确、最新的数据。</p>
+</li>
+<li>
+<p>DMA 写入主存储器，CPU 访问数据缓存。这两者是独立的。</p>
+</li>
+<li>
+<p>代码中的 <strong><code>SCB_InvalidateDCache_by_Addr</code> 是解决问题的关键</strong>，它确保了 CPU 在处理 DMA 数据之前，总是从主存储器中读取最新的数据。</p>
+</li>
+<li>
+<p><code>SCB_CleanInvalidateDCache()</code> 放在 <code>UsartDMAInit()</code> 之前或之后，实际上对后续的 DMA 操作影响不大，真正重要的是在 <strong>每次 DMA 传输完成后，CPU 准备读取数据时，调用</strong> <code>SCB_InvalidateDCache_by_Addr</code> <strong>来更新缓存</strong>。</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://www.lling.online">汐汐</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://www.lling.online/2025/08/06/stm32h7_dma_lwip/">https://www.lling.online/2025/08/06/stm32h7_dma_lwip/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lling.online" target="_blank">汐汐的成长之路</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STM32H7/">STM32H7</a><a class="post-meta__tags" href="/tags/LWIP/">LWIP</a></div><div class="post_share"><div class="social-share" data-image="/img/top-img/stm32.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/08/06/lwip_enternet/" title="【记录】stm32H7 以太网配置引申的内存问题"><img class="cover" src="/img/top-img/stm32.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">【记录】stm32H7 以太网配置引申的内存问题</div></div></a></div><div class="next-post pull-right"><a href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"><img class="cover" src="/img/top-img/stm32.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><img class="cover" src="/img/top-img/stm32.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-06</div><div class="title">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</div></div></a></div><div><a href="/2025/08/06/lwip_enternet/" title="【记录】stm32H7 以太网配置引申的内存问题"><img class="cover" src="/img/top-img/stm32.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-06</div><div class="title">【记录】stm32H7 以太网配置引申的内存问题</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/miao.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">汐汐</div><div class="author-info__description">总有一些坚持，能从一寸冰封的土壤里培育出十万朵怒放的蔷薇❀❀</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">21</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_53131867?type=blog"><i class="fab custom csdn"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xi-song" target="_blank" title="GitHub"><i class="iconfont icon-GitHub" style="color: #24292e;"></i></a><a class="social-icon" href="/%5Cimg%5Cali.jpg" target="_blank" title="Wechat"><i class="iconfont icon-weixin" style="color: #28c445;"></i></a><a class="social-icon" href="https://blog.csdn.net/qq_53131867?type=blog" target="_blank" title="CSDN"><i class="iconfont icon-csdn" style="color: #dd1700;"></i></a><a class="social-icon" href="https://www.zhihu.com/people/shui-meng-tong-hua" target="_blank" title="Zhihu"><i class="iconfont icon-zhihu" style="color: #0066ff;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到汐汐的知识小窝，不定期分享导航定位，编程，科研相关知识，欢迎关注收藏噢~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90bug1%E3%80%91-%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.1.</span> <span class="toc-text">【bug1】 初始化配置顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8ESCB-CleanInvalidateDCache"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">关于SCB_CleanInvalidateDCache()</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E6%B8%85%E9%99%A4%EF%BC%88Clean%EF%BC%89"><span class="toc-number">1.1.0.1.1.</span> <span class="toc-text">1. 清除（Clean）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E6%97%A0%E6%95%88%E5%8C%96%EF%BC%88Invalidate%EF%BC%89"><span class="toc-number">1.1.0.1.2.</span> <span class="toc-text">2. 无效化（Invalidate）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU-%E7%BC%93%E5%AD%98%E5%92%8C-DMA-%E7%9A%84%E4%B8%8D%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">CPU 缓存和 DMA 的不一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%87%BA%E7%8E%B0%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%EF%BC%9F"><span class="toc-number">1.1.0.2.1.</span> <span class="toc-text">为什么会出现数据丢失？</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90bug2%E3%80%91-%E7%BC%93%E5%AD%98%E6%B8%85%E9%99%A4%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">【bug2】 缓存清除函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90bug3%E3%80%91%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E5%8F%91%E9%80%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E6%9B%B4%E6%96%B0"><span class="toc-number">1.3.</span> <span class="toc-text">【bug3】网络协议栈发送数据不更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90%EF%BC%9A%E7%BC%93%E5%AD%98%E4%B8%8E%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E6%A0%88%E7%9A%84%E5%86%B2%E7%AA%81"><span class="toc-number">1.3.1.</span> <span class="toc-text">问题分析：缓存与网络协议栈的冲突</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%87%BA%E7%8E%B0-0000-%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">为什么会出现 0000 的问题？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-SCB-CleanDCache-by-Addr-%E5%8F%AF%E4%BB%A5%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">为什么 SCB_CleanDCache_by_Addr 可以解决问题？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%80%E4%BB%A5%E4%B8%BA%E4%BB%80%E4%B9%88MPU%E9%85%8D%E7%BD%AE%E5%A5%BD%E4%BA%86%E4%B9%8B%E5%90%8E%EF%BC%8C%E8%BF%98%E9%9C%80%E8%A6%81%E6%89%8B%E5%8A%A8%E8%AE%A9%E7%BC%93%E5%AD%98%E5%8C%BA%E4%B8%8D%E5%8F%AF%E8%AE%BF%E9%97%AE"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">所以为什么MPU配置好了之后，还需要手动让缓存区不可访问</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#MPU-%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-number">1.3.1.3.1.</span> <span class="toc-text">MPU 的作用和局限性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%E4%BE%9D%E7%84%B6%E5%AD%98%E5%9C%A8%EF%BC%9F"><span class="toc-number">1.3.1.3.2.</span> <span class="toc-text">为什么问题依然存在？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">1.3.1.3.3.</span> <span class="toc-text">结论</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B"><span class="toc-number">1.4.</span> <span class="toc-text">总结一下</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx"/></a><div class="content"><a class="title" href="/2025/08/06/lwip/" title="【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx">【 STM32 +LWIP 】STM32H723ZG + LAN8742 + Ethernet +LWIP 配置 cubemx</a><time datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/08/06/lwip_enternet/" title="【记录】stm32H7 以太网配置引申的内存问题"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【记录】stm32H7 以太网配置引申的内存问题"/></a><div class="content"><a class="title" href="/2025/08/06/lwip_enternet/" title="【记录】stm32H7 以太网配置引申的内存问题">【记录】stm32H7 以太网配置引申的内存问题</a><time datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/08/06/stm32h7_dma_lwip/" title="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题"/></a><div class="content"><a class="title" href="/2025/08/06/stm32h7_dma_lwip/" title="【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题">【bug 记录】stm32H7基于FreeRTOS +串口空闲中断+DMA+LWIP 环境下 DMA数据搬运不连续的问题</a><time datetime="2025-08-06T10:33:17.000Z" title="发表于 2025-08-06 18:33:17">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"><img src="/img/top-img/stm32.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置"/></a><div class="content"><a class="title" href="/2025/06/22/lexin-ubuntu/" title="【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置">【esp32 s3 环境配置】乐鑫esp32 s3 DevKitC-1  ubuntu20.04环境配置</a><time datetime="2025-06-22T01:44:13.000Z" title="发表于 2025-06-22 09:44:13">2025-06-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/21/hexo-config/" title="hexo &amp; git"><img src="/img/top-img/baofu.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hexo &amp; git"/></a><div class="content"><a class="title" href="/2025/05/21/hexo-config/" title="hexo &amp; git">hexo &amp; git</a><time datetime="2025-05-21T08:19:57.000Z" title="发表于 2025-05-21 16:19:57">2025-05-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2024 - 2025 By 汐汐</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi，welocme to my blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (true){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const initGitalk = () => {
+    const gitalk = new Gitalk(Object.assign({
+      clientID: 'Ov23lilBvAg6ryz910Bq',
+      clientSecret: '35f8ef4fa5095c847021e15ea2be9f3c413e55b8',
+      repo: 'xi-song.github.io',
+      owner: 'xi-song',
+      admin: ['xi-song'],
+      id: 'd073262255067ac5a34a191ce5842c30',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  const loadGitalk = async() => {
+    if (typeof Gitalk === 'function') initGitalk()
+    else {
+      await getCSS('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.css')
+      await getScript('https://cdn.jsdelivr.net/npm/gitalk@1.8.0/dist/gitalk.min.js')
+      initGitalk()
+    }
+  }
+  
+  const commentCount = n => {
+    const isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+    if (isCommentCount) {
+      isCommentCount.textContent= n
+    }
+  }
+
+  if ('Gitalk' === 'Gitalk' || !true) {
+    if (true) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+    else loadGitalk()
+  } else {
+    window.loadOtherComment = loadGitalk
+  }
+})()</script></div><script src="/styles/fish.js"></script><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-fluttering-ribbon.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
